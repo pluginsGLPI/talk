@@ -1,0 +1,173 @@
+.talk_box {
+   padding-top: 5px;
+   text-align: left;
+   background-color: #f2f2f2;
+   border-radius: 3px;
+   padding: 4px 8px;
+}
+
+.talk_box .break {
+   clear: both;
+}
+
+.talk_history {
+   margin-top: 25px;
+   clear: both;
+   border-top: 1px dashed #E1D39E;
+}
+
+.talk_history .h_item {
+   clear: both;
+   margin-top: 8px;
+}
+
+.talk_history .h_left {
+   width:25%;
+   float: left;
+
+}
+.talk_history .h_right {
+   width:73%;
+   float: right;
+   border-radius: 5px;
+   border:1px solid;
+   padding: 5px 5px 15px 8px;
+   margin-bottom: 25px;
+   min-height: 50px;
+   box-shadow: -1px 2px 5px #B7AFA8;
+   -moz-box-shadow: -1px 2px 5px #B7AFA8;
+   -webkit-box-shadow: -1px 2px 5px #B7AFA8;
+   position: relative;
+}
+
+.talk_history .followup {
+   background-color: #f1f4e3;
+   border-color: #7D854F;
+   color: #40442A;
+   background-image: url(../pics/followup.png);
+   background-repeat: no-repeat;
+}
+
+
+.talk_history .task {
+   background-color: #F0E4B5;
+   border-color: #A8A28F;
+   color: #645424;
+   border-width: 2px;
+   background-image: url(../pics/task.png);
+   background-repeat: no-repeat;
+}
+
+.talk_history .solution {
+   background-color: #E9F1FF;
+   border-color: #88A3CD;
+   color: #001F4F;
+   background-image: url(../pics/solution.png);
+   background-repeat: no-repeat;
+}
+
+.talk_history .document {
+   border: none;
+   -webkit-box-shadow:none;
+   -moz-box-shadow:none;
+   box-shadow:none;
+   margin-bottom: 0;
+   padding: 0;
+}
+
+.talk_history .h_right img.h_requesttype {
+   float: right;
+   height: 20px;
+}
+
+.talk_history .b_right {
+   position: absolute; 
+   right: 0; 
+   bottom: 2px;
+   margin-right: 3px;
+}
+
+.talk_history .b_right .actiontime {
+   font-style : italic;
+   padding-left: 17px;
+   background-image: url(../pics/actiontime.png);
+   background-repeat: no-repeat;
+   color: #7E7E7E;
+}
+
+.talk_history .private {
+   background-image: url(../pics/private.png);
+   background-repeat: repeat;
+}
+
+.talk_history .h_date,
+.talk_history .h_user {
+   font-weight: bold;
+   color:#3C5874;
+   background-repeat: no-repeat;
+   padding-left: 24px;
+   padding-top: 1px;
+   height: 22px;
+   text-transform: capitalize;
+}
+
+.talk_history .h_date {
+   background-image: url(../pics/history.png);
+}
+.talk_history .h_user {
+   background-image: url(../pics/user.png);
+}
+
+
+.talk_form {
+   width: 500px; 
+   margin: 0 auto;
+}
+
+.talk_choices li {
+   float: left;
+   width: 15%;
+   text-align: center;
+   padding: 5px 0;
+   margin-left: 3%;
+   padding-left: 15px;
+
+   cursor: pointer;
+   font-weight: bold;
+   color: #8f5a0a;
+   background-color: #ffb94b;
+
+   border-radius: 3px;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+
+   text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+   -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+   -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+   box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+
+   border: 1px solid;
+   border-color: #d69e31 #e3a037 #d5982d #e3a037;
+}
+
+.talk_choices li:hover {
+   border: 1px inset #888888;
+   background-color: #fddb6f;
+}
+
+.talk_choices li.followup {
+   background-image: url(../pics/followup_min.png);
+   background-repeat: no-repeat;
+}
+.talk_choices li.task {
+   background-image: url(../pics/task_min.png);
+   background-repeat: no-repeat;
+}
+.talk_choices li.document {
+   background-image: url(../pics/document_min.png);
+   background-repeat: no-repeat;
+}
+.talk_choices li.solution {
+   background-image: url(../pics/solution_min.png);
+   background-repeat: no-repeat;
+}
