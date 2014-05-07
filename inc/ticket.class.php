@@ -78,6 +78,17 @@ class PluginTalkTicket {
                              $CFG_GLPI["root_doc"]."/plugins/talk/ajax/viewsubitem.php", $params, "", false);
       echo str_replace("itemtype", "'+itemtype+'", $out);
       echo "};";
+      echo "function viewEditSubitem" . $ticket->fields['id'] . "$rand(itemtype, items_id) {\n";
+      $params = array('type'       => 'itemtype',
+                      'parenttype' => 'Ticket',
+                      'tickets_id' => $ticket->fields['id'],
+                      'id'         => 'items_id');
+      $out = Ajax::updateItemJsCode("viewitem" . $ticket->fields['id'] . "$rand",
+                             $CFG_GLPI["root_doc"]."/plugins/talk/ajax/viewsubitem.php", $params, "", false);
+      $out = str_replace("itemtype", "'+itemtype+'", $out);
+      $out = str_replace("items_id", "'+items_id+'", $out);
+      echo $out;
+      echo "};";
       echo "</script>\n";
       
 
@@ -97,7 +108,7 @@ class PluginTalkTicket {
       $followup_obj = new TicketFollowup;
       $followups = $followup_obj->find('tickets_id = '.$ticket->getID(), 'date DESC');
       foreach ($followups as $followups_id => $followup) {
-         $timeline[$followup['date']."_followup_".$followups_id] = array('type' => 'followup', 'item' => $followup);
+         $timeline[$followup['date']."_followup_".$followups_id] = array('type' => 'TicketFollowup', 'item' => $followup);
       }
 
 
@@ -105,7 +116,7 @@ class PluginTalkTicket {
       $task_obj = new TicketTask;
       $tasks = $task_obj->find('tickets_id = '.$ticket->getID(), 'date DESC');
       foreach ($tasks as $tasks_id => $task) {
-         $timeline[$task['date']."_task_".$tasks_id] = array('type' => 'task', 'item' => $task);
+         $timeline[$task['date']."_task_".$tasks_id] = array('type' => 'TicketTask', 'item' => $task);
       }
 
 
@@ -116,13 +127,13 @@ class PluginTalkTicket {
       foreach ($document_items as $document_item) {
          $document_obj->getFromDB($document_item['documents_id']);
          $timeline[$document_obj->fields['date_mod']."_document_".$document_item['documents_id']] 
-            = array('type' => 'document', 'item' => $document_obj->fields);
+            = array('type' => 'Document_Item', 'item' => $document_obj->fields);
       }
 
       //add existing solution
       if (!empty($ticket->fields['solution'])) {
          $timeline[$ticket->fields['solvedate']."_solution"] 
-            = array('type' => 'solution', 'item' => array('content' => $ticket->fields['solution'],
+            = array('type' => 'Solution', 'item' => array('content' => $ticket->fields['solution'],
                                                           'date'    => $ticket->fields['solvedate']));
       }
 
@@ -149,7 +160,12 @@ class PluginTalkTicket {
          echo "</div>";
       
          echo "<div class='h_right ".$item['type'].
-              ((isset($item_i['is_private']) && $item_i['is_private']) ? " private" : "")."'>";
+              ((isset($item_i['is_private']) && $item_i['is_private']) ? " private" : "").
+              "'";
+         if (in_array($item['type'], array('TicketFollowup', 'TicketTask'))) {     
+            echo " onclick='javascript:viewEditSubitem".$ticket->fields['id']."$rand(\"".$item['type']."\", ".$item_i['id'].")'";
+         }
+         echo ">";
          if (isset($item_i['requesttypes_id'])) {
             echo "<img src='$pics_url/".$followup['requesttypes_id'].".png' title='' class='h_requesttype' />";
          }
@@ -166,7 +182,7 @@ class PluginTalkTicket {
          }
          echo "</div>";
 
-         if ($item['type'] == 'document') {
+         if ($item['type'] == 'Document_Item') {
             echo "<img src='$pics_url/file.png' title='file' />&nbsp;";
             echo "<a href='".$CFG_GLPI['root_doc']."/front/document.send.php?docid=".$item_i['id']
                 ."&tickets_id=".$ticket->getID()

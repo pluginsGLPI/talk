@@ -24,6 +24,5 @@ if (($item = getItemForItemtype($_POST['type']))
       _e('Access denied');
    }
 }
-
 Html::ajaxFooter();
 ?>

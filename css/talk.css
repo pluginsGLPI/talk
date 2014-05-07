@@ -40,7 +40,7 @@
    position: relative;
 }
 
-.talk_history .followup {
+.talk_history .TicketFollowup {
    background-color: #f1f4e3;
    border-color: #7D854F;
    color: #40442A;
@@ -49,7 +49,7 @@
 }
 
 
-.talk_history .task {
+.talk_history .TicketTask {
    background-color: #F0E4B5;
    border-color: #A8A28F;
    color: #645424;
@@ -58,7 +58,7 @@
    background-repeat: no-repeat;
 }
 
-.talk_history .solution {
+.talk_history .Solution {
    background-color: #E9F1FF;
    border-color: #88A3CD;
    color: #001F4F;
@@ -66,7 +66,7 @@
    background-repeat: no-repeat;
 }
 
-.talk_history .document {
+.talk_history .Document_Item {
    border: none;
    -webkit-box-shadow:none;
    -moz-box-shadow:none;
