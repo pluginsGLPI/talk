@@ -133,7 +133,8 @@ class PluginTalkTicket {
       //add existing solution
       if (!empty($ticket->fields['solution'])) {
          $timeline[$ticket->fields['solvedate']."_solution"] 
-            = array('type' => 'Solution', 'item' => array('content' => $ticket->fields['solution'],
+            = array('type' => 'Solution', 'item' => array('id'      => 0,
+                                                          'content' => $ticket->fields['solution'],
                                                           'date'    => $ticket->fields['solvedate']));
       }
 
@@ -162,7 +163,7 @@ class PluginTalkTicket {
          echo "<div class='h_right ".$item['type'].
               ((isset($item_i['is_private']) && $item_i['is_private']) ? " private" : "").
               "'";
-         if (in_array($item['type'], array('TicketFollowup', 'TicketTask'))) {     
+         if ($item['type'] != "Document_Item") {     
             echo " onclick='javascript:viewEditSubitem".$ticket->fields['id']."$rand(\"".$item['type']."\", ".$item_i['id'].")'";
          }
          echo ">";
@@ -202,7 +203,7 @@ class PluginTalkTicket {
       } else {
          if ($item instanceof Document_Item) {
             self::showSubFormDocument_Item($params['tickets_id'], $params);
-         }
+         } 
       }
    }
 
@@ -384,6 +385,12 @@ class PluginTalkTicket {
       }
       
 
+   }
+
+   static function showSubFormSolution($ID) {
+      $ticket = new Ticket;
+      $ticket->getFromDB($ID);
+      $ticket->showSolutionForm();
    }
    
 }

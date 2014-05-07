@@ -23,6 +23,8 @@ if (($item = getItemForItemtype($_POST['type']))
    } else {
       _e('Access denied');
    }
+} else if ($_POST['type'] == "Solution") {
+   PluginTalkTicket::showSubFormSolution($_POST["tickets_id"]);
 }
 Html::ajaxFooter();
 ?>
