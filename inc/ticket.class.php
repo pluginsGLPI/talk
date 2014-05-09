@@ -185,10 +185,14 @@ class PluginTalkTicket {
          echo "</div>";
 
          if ($item['type'] == 'Document_Item') {
+            $filename = $item_i['filename'];
+            if (empty($filename)) {
+               $filename = $item_i['name'];
+            }
             echo "<img src='$pics_url/file.png' title='file' />&nbsp;";
             echo "<a href='".$CFG_GLPI['root_doc']."/front/document.send.php?docid=".$item_i['id']
                 ."&tickets_id=".$ticket->getID()
-                ."' target='_blank'>".$item_i['filename']."</a>";
+                ."' target='_blank'>$filename</a>";
          }
          echo "</div>"; //end h_right
 
