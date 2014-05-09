@@ -87,7 +87,8 @@
 
 .talk_history .h_item {
    clear: both;
-   margin-top: 8px;
+   padding-top: 8px;
+   border-top: 1px dashed #D2D2D2;
 }
 
 .talk_history .h_left {
