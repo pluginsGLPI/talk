@@ -41,8 +41,8 @@ class PluginTalkTicket {
          return;
       }
 
+      echo "<h2>"._sx('button', 'Add')." : </h2>";
       echo "<div class='talk_form'>";
-      echo _sx('button', 'Add')." : ";
       echo "<ul class='talk_choices'>";
       if ($canadd_fup) {   
          echo "<li class='followup' onclick='".
@@ -92,7 +92,7 @@ class PluginTalkTicket {
       echo "</script>\n";
       
 
-      echo "<div id='viewitem" . $ticket->fields['id'] . "$rand'></div>\n";
+      echo "<div class='ajax_box' id='viewitem" . $ticket->fields['id'] . "$rand'></div>\n";
 
    }
 
@@ -143,6 +143,7 @@ class PluginTalkTicket {
 
       //display timeline
       echo "<div class='talk_history'>";
+      echo "<h2>".__("Historical")."</h2>";
       foreach ($timeline as $item) {
          $item_i = $item['item'];
 
