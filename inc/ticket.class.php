@@ -359,7 +359,7 @@ class PluginTalkTicket {
          if (Session::haveRight('document','r')
              && ($nb > count($used))) {
             echo "<form name='document_form$rand' id='document_form$rand' method='post'
-                   action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
+                   action='".Toolbox::getItemTypeFormURL('Document')."'>";
             echo "<table class='tab_cadre_fixe'>";
             echo "<tr class='tab_bg_1'>";
             echo "<td colspan='4' class='center'>";
