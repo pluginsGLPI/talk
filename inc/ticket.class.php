@@ -48,10 +48,15 @@ class PluginTalkTicket {
       $canadd_document = Document::canCreate();
       $canadd_solution = Ticket::canUpdate();
 
-      if (!$canadd_fup && !$canadd_task && !$canadd_document && !$canadd_solution 
-         || $ticket->fields["status"] == CommonITILObject::SOLVED
-         || $ticket->fields["status"] == CommonITILObject::CLOSED) {
+      if (!$canadd_fup && !$canadd_task && !$canadd_document && !$canadd_solution ) {
          return false;
+      }
+
+      // show approbation form
+      if ($ticket->fields["status"] == CommonITILObject::SOLVED
+         || $ticket->fields["status"] == CommonITILObject::CLOSED) {
+         $fup->showApprobationForm($ticket);      
+         return true;
       }
 
       //show choices
@@ -110,7 +115,6 @@ class PluginTalkTicket {
       echo "<div class='ajax_box' id='viewitem" . $ticket->fields['id'] . "$rand'></div>\n";
 
    }
-
 
    static function showHistory(Ticket $ticket, $rand) {
       global $CFG_GLPI;
