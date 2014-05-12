@@ -163,23 +163,36 @@ class PluginTalkTicket {
 
       //add existing solution
       if (!empty($ticket->fields['solution'])) {
-         //search date of last solution (in glpi_logs if ticket is not in solved status)
+         $users_id = 0;
          $solution_date = $ticket->fields['solvedate'];
-         if (empty($solution_date)) {
-            if ($res_solution = $DB->query("SELECT MAX(date_mod) AS solution_date FROM glpi_logs
-                                        WHERE itemtype = 'Ticket' 
-                                        AND items_id = ".$ticket->getID()."
-                                        AND id_search_option = 12
-                                        AND new_value = '".CommonITILObject::SOLVED."'")) {
-               $data_solution = $DB->fetch_assoc($res_solution);
-               $solution_date = $data_solution['solution_date'];
+
+         //search date and user of last solution in glpi_logs
+         if ($res_solution = $DB->query("SELECT date_mod AS solution_date, user_name FROM glpi_logs
+                                     WHERE itemtype = 'Ticket' 
+                                     AND items_id = ".$ticket->getID()."
+                                     AND id_search_option = 12
+                                     AND new_value = '".CommonITILObject::SOLVED."'
+                                     ORDER BY id DESC
+                                     LIMIT 1")) {
+            $data_solution = $DB->fetch_assoc($res_solution);
+            if (!empty($data_solution['solution_date'])) $solution_date = $data_solution['solution_date'];
+            
+            // find user
+            if (!empty($data_solution['user_name'])) {
+               $username = addslashes(trim(preg_replace("/\([0-9]+\)/", "", $data_solution['user_name'])));
+               $found_users = $user->find("name = '$username'");
+               if (count($found_users != 0)) {
+                  $first_user = array_shift($found_users);
+                  $users_id = $first_user['id'];
+               }
             }
          }
-
+      
          $timeline[$solution_date."_solution"] 
-            = array('type' => 'Solution', 'item' => array('id'      => 0,
-                                                          'content' => $ticket->fields['solution'],
-                                                          'date'    => $solution_date));
+            = array('type' => 'Solution', 'item' => array('id'       => 0,
+                                                          'content'  => $ticket->fields['solution'],
+                                                          'date'     => $solution_date, 
+                                                          'users_id' => $users_id));
       }
 
       //reverse sort timeline items by key (date)
