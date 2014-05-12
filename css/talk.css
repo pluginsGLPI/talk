@@ -152,12 +152,17 @@
    position: relative;
 }
 
+.talk_history .h_right.talk_active {
+   border-right: 8px solid #3C5874;
+}
+
 .talk_history .TicketFollowup {
    background-color: #f1f4e3;
    border-color: #7D854F;
    color: #40442A;
    background-image: url(../pics/followup.png);
    background-repeat: no-repeat;
+   cursor: pointer;
 }
 
 
@@ -168,6 +173,7 @@
    border-width: 2px;
    background-image: url(../pics/task.png);
    background-repeat: no-repeat;
+   cursor: pointer;
 }
 
 .talk_history .Solution {
@@ -176,6 +182,7 @@
    color: #001F4F;
    background-image: url(../pics/solution.png);
    background-repeat: no-repeat;
+   cursor: pointer;
 }
 
 .talk_history .Document_Item {

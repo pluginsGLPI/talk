@@ -98,7 +98,7 @@ class PluginTalkTicket {
                              $CFG_GLPI["root_doc"]."/plugins/talk/ajax/viewsubitem.php", $params, "", false);
       echo str_replace("itemtype", "'+itemtype+'", $out);
       echo "};";
-      echo "function viewEditSubitem" . $ticket->fields['id'] . "$rand(itemtype, items_id) {\n";
+      echo "function viewEditSubitem" . $ticket->fields['id'] . "$rand(itemtype, items_id, o) {\n";
       $params = array('type'       => 'itemtype',
                       'parenttype' => 'Ticket',
                       'tickets_id' => $ticket->fields['id'],
@@ -108,7 +108,19 @@ class PluginTalkTicket {
       $out = str_replace("itemtype", "'+itemtype+'", $out);
       $out = str_replace("items_id", "'+items_id+'", $out);
       echo $out;
-      echo "};";
+
+      //scroll to edit form
+      echo "window.scrollTo(0,500);";
+
+      // add a mark to currently edited element
+      echo "var found_active = document.getElementsByClassName('talk_active');
+            i = found_active.length;
+            while(i--) {
+               var classes = found_active[i].className.replace( /(?:^|\s)talk_active(?!\S)/ , '' );
+               found_active[i].className = classes;
+            }
+            o.className = o.className + ' talk_active';
+      };";
       echo "</script>\n";
       
 
@@ -197,7 +209,7 @@ class PluginTalkTicket {
               ((isset($item_i['is_private']) && $item_i['is_private']) ? " private" : "").
               "'";
          if ($item['type'] != "Document_Item") {     
-            echo " onclick='javascript:viewEditSubitem".$ticket->fields['id']."$rand(\"".$item['type']."\", ".$item_i['id'].")'";
+            echo " onclick='javascript:viewEditSubitem".$ticket->fields['id']."$rand(\"".$item['type']."\", ".$item_i['id'].", this)'";
          }
          echo ">";
          if (isset($item_i['requesttypes_id'])) {
