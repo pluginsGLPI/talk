@@ -32,15 +32,29 @@ class PluginTalkTicket {
    static function showForm(Ticket $ticket, $rand) {
       global $CFG_GLPI;
 
-      $canadd_fup      = TicketFollowup::canCreate();
-      $canadd_task     = TicketTask::canCreate();
+      //check global rights
+      if (!Session::haveRight("observe_ticket", "1")
+          && !Session::haveRight("show_full_ticket", "1")) {
+         return false;
+      }
+
+      //check sub-items rights
+      $tmp = array('tickets_id' => $ticket->getID());
+      $fup             = new TicketFollowup;
+      $ttask           = new TicketTask;
+
+      $canadd_fup      = TicketFollowup::canCreate() && $fup->can(-1, 'w', $tmp);
+      $canadd_task     = TicketTask::canCreate() && $ttask->can(-1, 'w', $tmp);
       $canadd_document = Document::canCreate();
       $canadd_solution = Ticket::canUpdate();
 
-      if (!$canadd_fup && !$canadd_task && !$canadd_document && !$canadd_solution) {
-         return;
+      if (!$canadd_fup && !$canadd_task && !$canadd_document && !$canadd_solution 
+         || $ticket->fields["status"] == CommonITILObject::SOLVED
+         || $ticket->fields["status"] == CommonITILObject::CLOSED) {
+         return false;
       }
 
+      //show choices
       echo "<h2>"._sx('button', 'Add')." : </h2>";
       echo "<div class='talk_form'>";
       echo "<ul class='talk_choices'>";
@@ -64,10 +78,11 @@ class PluginTalkTicket {
               "javascript:viewAddSubitem".$ticket->fields['id']."$rand(\"Solution\");'>"
               .__("Solution")."</li>";
       }
-      echo "</ul>";
+      echo "</ul>"; // talk_choices
       echo "<div class='clear'>&nbsp;</div>";
       echo "</div>"; //end talk_form
 
+      // javascript function for add and edit items
       echo "<script type='text/javascript' >\n";
       echo "function viewAddSubitem" . $ticket->fields['id'] . "$rand(itemtype) {\n";
       $params = array('type'       => 'itemtype',
