@@ -163,7 +163,7 @@ class PluginTalkTicket {
                $solution_date = $data_solution['solution_date'];
             }
          }
-         
+
          $timeline[$solution_date."_solution"] 
             = array('type' => 'Solution', 'item' => array('id'      => 0,
                                                           'content' => $ticket->fields['solution'],
@@ -201,7 +201,7 @@ class PluginTalkTicket {
          }
          echo ">";
          if (isset($item_i['requesttypes_id'])) {
-            echo "<img src='$pics_url/".$followup['requesttypes_id'].".png' title='' class='h_requesttype' />";
+            echo "<img src='$pics_url/".$item_i['requesttypes_id'].".png' title='' class='h_requesttype' />";
          }
 
          if (isset($item_i['content'])) {
