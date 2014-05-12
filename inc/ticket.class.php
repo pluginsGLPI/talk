@@ -117,7 +117,7 @@ class PluginTalkTicket {
    }
 
    static function showHistory(Ticket $ticket, $rand) {
-      global $CFG_GLPI;
+      global $CFG_GLPI, $DB;
 
       $pics_url = "../plugins/talk/pics";
       $user = new User;
@@ -151,10 +151,23 @@ class PluginTalkTicket {
 
       //add existing solution
       if (!empty($ticket->fields['solution'])) {
-         $timeline[$ticket->fields['solvedate']."_solution"] 
+         //search date of last solution (in glpi_logs if ticket is not in solved status)
+         $solution_date = $ticket->fields['solvedate'];
+         if (empty($solution_date)) {
+            if ($res_solution = $DB->query("SELECT MAX(date_mod) AS solution_date FROM glpi_logs
+                                        WHERE itemtype = 'Ticket' 
+                                        AND items_id = ".$ticket->getID()."
+                                        AND id_search_option = 12
+                                        AND new_value = '".CommonITILObject::SOLVED."'")) {
+               $data_solution = $DB->fetch_assoc($res_solution);
+               $solution_date = $data_solution['solution_date'];
+            }
+         }
+         
+         $timeline[$solution_date."_solution"] 
             = array('type' => 'Solution', 'item' => array('id'      => 0,
                                                           'content' => $ticket->fields['solution'],
-                                                          'date'    => $ticket->fields['solvedate']));
+                                                          'date'    => $solution_date));
       }
 
       //reverse sort timeline items by key (date)
