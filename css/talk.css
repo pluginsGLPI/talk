@@ -35,42 +35,84 @@
 
    cursor: pointer;
    font-weight: bold;
-   color: #8f5a0a;
-   background-color: #ffb94b;
 
    border-radius: 3px;
    -moz-border-radius: 3px;
    -webkit-border-radius: 3px;
 
-   text-shadow: 0 1px 0 rgba(255,255,255,0.5);
-   -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
-   -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
-   box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
-
-   border: 1px solid;
-   border-color: #d69e31 #e3a037 #d5982d #e3a037;
-}
-
-.talk_choices li:hover {
-   border: 1px inset #888888;
-   background-color: #fddb6f;
+   text-shadow:1px 1px 0px #FFF;
 }
 
 .talk_choices li.followup {
-   background-image: url(../pics/followup_min.png);
-   background-repeat: no-repeat;
+
+   background:url(../pics/followup_min.png) no-repeat, -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f1f4e3), color-stop(1, #E2ECB3) );
+   background:url(../pics/followup_min.png) no-repeat, -moz-linear-gradient( center top, #f1f4e3 5%, #E2ECB3 100% );
+   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f1f4e3', endColorstr='#E2ECB3');
+   background-color:#f1f4e3;
+
+   border:1px solid #7d854f;
+   color:#40442a;
 }
+
+.talk_choices li.followup:hover {
+   background:url(../pics/followup_min.png) no-repeat, -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #E2ECB3), color-stop(1, #f1f4e3) );
+   background:url(../pics/followup_min.png) no-repeat, -moz-linear-gradient( center top, #E2ECB3 5%, #f1f4e3 100% );
+   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#E2ECB3', endColorstr='#f1f4e3');
+   background-color:#ebf2c9;
+}
+
 .talk_choices li.task {
-   background-image: url(../pics/task_min.png);
-   background-repeat: no-repeat;
+
+   background:url(../pics/task_min.png) no-repeat, -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f0e4b5), color-stop(1, #DED0A0) );
+   background:url(../pics/task_min.png) no-repeat, -moz-linear-gradient( center top, #f0e4b5 5%, #DED0A0 100% );
+   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f0e4b5', endColorstr='#DED0A0');
+   background-color:#f0e4b5;
+
+   border:1px solid #a8a28f;
+   color:#645424;
 }
+
+.talk_choices li.task:hover {
+   background:url(../pics/task_min.png) no-repeat, -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #DED0A0), color-stop(1, #f0e4b5) );
+   background:url(../pics/task_min.png) no-repeat, -moz-linear-gradient( center top, #DED0A0 5%, #f0e4b5 100% );
+   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#DED0A0', endColorstr='#f0e4b5');
+   background-color:#ccbf91;
+}
+
 .talk_choices li.document {
-   background-image: url(../pics/document_min.png);
-   background-repeat: no-repeat;
+
+   background:url(../pics/document_min.png) no-repeat, -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ecf5da), color-stop(1, #e0e0e0) );
+   background:url(../pics/document_min.png) no-repeat, -moz-linear-gradient( center top, #ecf5da 5%, #e0e0e0 100% );
+   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ecf5da', endColorstr='#e0e0e0');
+   background-color:#ecf5da;
+
+   border:1px solid #669900;
+   color:#669900;
 }
+
+.talk_choices li.document:hover {
+   background:url(../pics/document_min.png) no-repeat, -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #e0e0e0), color-stop(1, #ecf5da) );
+   background:url(../pics/document_min.png) no-repeat, -moz-linear-gradient( center top, #e0e0e0 5%, #ecf5da 100% );
+   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#e0e0e0', endColorstr='#ecf5da');
+   background-color:#:#e0e0e0;
+}
+
 .talk_choices li.solution {
-   background-image: url(../pics/solution_min.png);
-   background-repeat: no-repeat;
+
+   background:url(../pics/solution_min.png) no-repeat, -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #e9f1ff), color-stop(1, #D5E2F8) );
+   background:url(../pics/solution_min.png) no-repeat, -moz-linear-gradient( center top, #e9f1ff 5%, #D5E2F8 100% );
+   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#e9f1ff', endColorstr='#D5E2F8');
+   background-color:#e9f1ff;
+
+   border:1px solid #88a2cd;
+   color:#00204f;
+}
+
+.talk_choices li.solution:hover {
+   background:url(../pics/solution_min.png) no-repeat, -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #b4cdf7), color-stop(1, #e9f1ff) );
+   background:url(../pics/solution_min.png) no-repeat, -moz-linear-gradient( center top, #b4cdf7 5%, #e9f1ff 100% );
+   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#b4cdf7', endColorstr='#e9f1ff');
+   background-color:#b4cdf7;
 }
 
 .talk_box .ajax_box {
