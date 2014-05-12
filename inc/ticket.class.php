@@ -149,7 +149,7 @@ class PluginTalkTicket {
 
          $date = "";
          if (isset($item_i['date'])) $date = $item_i['date'];
-         if (isset($item_i['datemod'])) $date = $item_i['datemod'];
+         if (isset($item_i['date_mod'])) $date = $item_i['date_mod'];
          
          echo "<div class='h_item'>";
 
