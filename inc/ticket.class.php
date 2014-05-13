@@ -179,12 +179,7 @@ class PluginTalkTicket {
             
             // find user
             if (!empty($data_solution['user_name'])) {
-               $username = addslashes(trim(preg_replace("/\([0-9]+\)/", "", $data_solution['user_name'])));
-               $found_users = $user->find("name = '$username'");
-               if (count($found_users != 0)) {
-                  $first_user = array_shift($found_users);
-                  $users_id = $first_user['id'];
-               }
+               $users_id = addslashes(trim(preg_replace("/.*\(([0-9]+)\)/", "$1", $data_solution['user_name'])));
             }
          }
       
