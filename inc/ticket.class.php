@@ -210,7 +210,7 @@ class PluginTalkTicket {
                'content'   => __('Validation request answer')." : ".
                               _sx('status', ucfirst($validation['status']))."<br>".
                               $validation['comment_validation'],
-               'users_id'  => $validation['users_id'], 
+               'users_id'  => $validation['users_id_validate'], 
                'status'    => $validation['status']
             ));
          }
