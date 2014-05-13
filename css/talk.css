@@ -144,7 +144,7 @@
    border-radius: 5px;
    border:1px solid;
    padding: 5px 5px 15px 8px;
-   margin-bottom: 25px;
+   margin-bottom: 10px;
    min-height: 50px;
    box-shadow: -1px 2px 5px #B7AFA8;
    -moz-box-shadow: -1px 2px 5px #B7AFA8;
@@ -164,7 +164,6 @@
    background-repeat: no-repeat;
    cursor: pointer;
 }
-
 
 .talk_history .TicketTask {
    background-color: #F0E4B5;
@@ -192,6 +191,23 @@
    box-shadow:none;
    margin-bottom: 0;
    padding: 0;
+}
+
+.talk_history .TicketValidation {
+   background-color: #FFFFFF;
+   border-color: #BECADD;
+   color: #030F21;
+   padding: 5px 5px 5px 8px;
+   min-height: 15px;
+}
+
+.talk_history .TicketValidation.accepted {
+   background-color: #A1D7A2;
+   border-color: #385139;
+}
+.talk_history .TicketValidation.refused {
+   background-color: #D3A4A4;
+   border-color: #5E3232;
 }
 
 .talk_history .h_right img.h_requesttype {

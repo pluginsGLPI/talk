@@ -188,6 +188,34 @@ class PluginTalkTicket {
                                                           'solutiontypes_id' => $ticket->fields['solutiontypes_id']));
       }
 
+      // add ticket validation to timeline
+      $ticket_valitation_obj = new TicketValidation;
+      $ticket_validations = $ticket_valitation_obj->find('tickets_id = '.$ticket->getID());
+      foreach ($ticket_validations as $validations_id => $validation) {
+         $user->getFromDB($validation['users_id_validate']);
+         $timeline[$validation['submission_date']."_validation_".$validations_id] 
+            = array('type' => 'TicketValidation', 'item' => array(
+               'id'        => 0,
+               'date'      => $validation['submission_date'],
+               'content'   => __('Validation request')." => ".$user->getlink().
+                              "<br>".$validation['comment_submission'],
+               'users_id'  => $validation['users_id']
+            ));
+
+         if (!empty($validation['validation_date'])) {
+            $timeline[$validation['validation_date']."_validation_".$validations_id] 
+            = array('type' => 'TicketValidation', 'item' => array(
+               'id'        => 0,
+               'date'      => $validation['validation_date'],
+               'content'   => __('Validation request answer')." : ".
+                              _sx('status', ucfirst($validation['status']))."<br>".
+                              $validation['comment_validation'],
+               'users_id'  => $validation['users_id'], 
+               'status'    => $validation['status']
+            ));
+         }
+      }
+
       //reverse sort timeline items by key (date)
       krsort($timeline);
 
@@ -213,6 +241,7 @@ class PluginTalkTicket {
       
          echo "<div class='h_right ".$item['type'].
               ((isset($item_i['is_private']) && $item_i['is_private']) ? " private" : "").
+              ((isset($item_i['status'])) ? " ".$item_i['status'] : "").
               "'";
          if ($item['type'] != "Document_Item") {     
             echo " onclick='javascript:viewEditSubitem".$ticket->fields['id']."$rand(\"".$item['type']."\", ".$item_i['id'].", this)'";
