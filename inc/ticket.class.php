@@ -195,7 +195,7 @@ class PluginTalkTicket {
          $user->getFromDB($validation['users_id_validate']);
          $timeline[$validation['submission_date']."_validation_".$validations_id] 
             = array('type' => 'TicketValidation', 'item' => array(
-               'id'        => 0,
+               'id'        => $validations_id,
                'date'      => $validation['submission_date'],
                'content'   => __('Validation request')." => ".$user->getlink().
                               "<br>".$validation['comment_submission'],
@@ -205,7 +205,7 @@ class PluginTalkTicket {
          if (!empty($validation['validation_date'])) {
             $timeline[$validation['validation_date']."_validation_".$validations_id] 
             = array('type' => 'TicketValidation', 'item' => array(
-               'id'        => 0,
+               'id'        => $validations_id,
                'date'      => $validation['validation_date'],
                'content'   => __('Validation request answer')." : ".
                               _sx('status', ucfirst($validation['status']))."<br>".
