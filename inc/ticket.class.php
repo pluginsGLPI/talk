@@ -38,55 +38,6 @@ class PluginTalkTicket {
          return false;
       }
 
-      //check sub-items rights
-      $tmp = array('tickets_id' => $ticket->getID());
-      $fup             = new TicketFollowup;
-      $ttask           = new TicketTask;
-
-      $canadd_fup      = TicketFollowup::canCreate() && $fup->can(-1, 'w', $tmp);
-      $canadd_task     = TicketTask::canCreate() && $ttask->can(-1, 'w', $tmp);
-      $canadd_document = Document::canCreate();
-      $canadd_solution = Ticket::canUpdate();
-
-      if (!$canadd_fup && !$canadd_task && !$canadd_document && !$canadd_solution ) {
-         return false;
-      }
-
-      // show approbation form
-      if ($ticket->fields["status"] == CommonITILObject::SOLVED
-         || $ticket->fields["status"] == CommonITILObject::CLOSED) {
-         $fup->showApprobationForm($ticket);      
-         return true;
-      }
-
-      //show choices
-      echo "<h2>"._sx('button', 'Add')." : </h2>";
-      echo "<div class='talk_form'>";
-      echo "<ul class='talk_choices'>";
-      if ($canadd_fup) {   
-         echo "<li class='followup' onclick='".
-              "javascript:viewAddSubitem".$ticket->fields['id']."$rand(\"TicketFollowup\");'>"
-              .__("Followup")."</li>";
-      }
-      if ($canadd_task) {   
-         echo "<li class='task' onclick='".
-              "javascript:viewAddSubitem".$ticket->fields['id']."$rand(\"TicketTask\");'>"
-              .__("Task")."</li>";
-      }
-      if ($canadd_document) { 
-         echo "<li class='document' onclick='".
-              "javascript:viewAddSubitem".$ticket->fields['id']."$rand(\"Document_Item\");'>"
-              .__("Document")."</li>";
-      }
-      if ($canadd_solution) { 
-         echo "<li class='solution' onclick='".
-              "javascript:viewAddSubitem".$ticket->fields['id']."$rand(\"Solution\");'>"
-              .__("Solution")."</li>";
-      }
-      echo "</ul>"; // talk_choices
-      echo "<div class='clear'>&nbsp;</div>";
-      echo "</div>"; //end talk_form
-
       // javascript function for add and edit items
       echo "<script type='text/javascript' >\n";
       echo "function viewAddSubitem" . $ticket->fields['id'] . "$rand(itemtype) {\n";
@@ -123,6 +74,52 @@ class PluginTalkTicket {
       };";
       echo "</script>\n";
       
+      //check sub-items rights
+      $tmp = array('tickets_id' => $ticket->getID());
+      $fup             = new TicketFollowup;
+      $ttask           = new TicketTask;
+
+      $canadd_fup      = TicketFollowup::canCreate() && $fup->can(-1, 'w', $tmp);
+      $canadd_task     = TicketTask::canCreate() && $ttask->can(-1, 'w', $tmp);
+      $canadd_document = Document::canCreate();
+      $canadd_solution = Ticket::canUpdate();
+
+      if (!$canadd_fup && !$canadd_task && !$canadd_document && !$canadd_solution ) {
+         return false;
+      }
+
+      //show choices
+      if ($ticket->fields["status"] != CommonITILObject::SOLVED
+         && $ticket->fields["status"] != CommonITILObject::CLOSED) {
+         echo "<h2>"._sx('button', 'Add')." : </h2>";
+         echo "<div class='talk_form'>";
+         echo "<ul class='talk_choices'>";
+         if ($canadd_fup) {   
+            echo "<li class='followup' onclick='".
+                 "javascript:viewAddSubitem".$ticket->fields['id']."$rand(\"TicketFollowup\");'>"
+                 .__("Followup")."</li>";
+         }
+         if ($canadd_task) {   
+            echo "<li class='task' onclick='".
+                 "javascript:viewAddSubitem".$ticket->fields['id']."$rand(\"TicketTask\");'>"
+                 .__("Task")."</li>";
+         }
+         if ($canadd_document) { 
+            echo "<li class='document' onclick='".
+                 "javascript:viewAddSubitem".$ticket->fields['id']."$rand(\"Document_Item\");'>"
+                 .__("Document")."</li>";
+         }
+         if ($canadd_solution) { 
+            echo "<li class='solution' onclick='".
+                 "javascript:viewAddSubitem".$ticket->fields['id']."$rand(\"Solution\");'>"
+                 .__("Solution")."</li>";
+         }
+         echo "</ul>"; // talk_choices
+         echo "<div class='clear'>&nbsp;</div>";
+         echo "</div>"; //end talk_form      
+      } else {
+         $fup->showApprobationForm($ticket);
+      }
 
       echo "<div class='ajax_box' id='viewitem" . $ticket->fields['id'] . "$rand'></div>\n";
 
@@ -184,10 +181,11 @@ class PluginTalkTicket {
          }
       
          $timeline[$solution_date."_solution"] 
-            = array('type' => 'Solution', 'item' => array('id'       => 0,
-                                                          'content'  => $ticket->fields['solution'],
-                                                          'date'     => $solution_date, 
-                                                          'users_id' => $users_id));
+            = array('type' => 'Solution', 'item' => array('id'               => 0,
+                                                          'content'          => $ticket->fields['solution'],
+                                                          'date'             => $solution_date, 
+                                                          'users_id'         => $users_id, 
+                                                          'solutiontypes_id' => $ticket->fields['solutiontypes_id']));
       }
 
       //reverse sort timeline items by key (date)
@@ -233,6 +231,9 @@ class PluginTalkTicket {
             echo "<div class='actiontime'>";
             echo Html::timestampToString($item_i['actiontime'], false);
             echo "</div>";
+         }
+         if (isset($item_i['solutiontypes_id']) && !empty($item_i['solutiontypes_id'])) {
+            echo Dropdown::getDropdownName("glpi_solutiontypes", $item_i['solutiontypes_id']);
          }
          echo "</div>";
 
