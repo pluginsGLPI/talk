@@ -18,7 +18,7 @@ function plugin_init_talk() {
             && isset($_GET['id'])) {
 
             $PLUGIN_HOOKS['add_css']['talk'][] = 'css/talk.css';
-            //$PLUGIN_HOOKS['add_css']['talk'][] = 'css/hide_ticket_tabs.css';
+            $PLUGIN_HOOKS['add_css']['talk'][] = 'css/hide_ticket_tabs.css';
          
             $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/move_talktab.js';
          }

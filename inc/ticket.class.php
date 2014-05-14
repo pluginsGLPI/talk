@@ -2,7 +2,7 @@
 
 class PluginTalkTicket {
    static function getTypeName($nb=0) {
-      return _n("Talk", "Talks", $nb, "Talk");
+      return __("Processing ticket", "talk");
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
