@@ -11,21 +11,18 @@ function plugin_init_talk() {
        
       //if glpi is loaded
       if (Session::getLoginUserID()) {
+         Plugin::registerClass('PluginTalkTicket',
+                               array('addtabon' => array('Ticket')));
 
-         //Add tabs to natives objects
-         if ($_SESSION['glpiactiveprofile']['interface'] === 'central') {
-            Plugin::registerClass('PluginTalkTicket',
-                                  array('addtabon' => array('Ticket')));
+         if (strpos($_SERVER['REQUEST_URI'], "ticket.form.php") !== false
+            && isset($_GET['id'])) {
 
             $PLUGIN_HOOKS['add_css']['talk'][] = 'css/talk.css';
             $PLUGIN_HOOKS['add_css']['talk'][] = 'css/hide_ticket_tabs.css';
-
-            if (strpos($_SERVER['REQUEST_URI'], "ticket.form.php") !== false
-               && isset($_GET['id'])) {
-               $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/move_talktab.js';
-            }
-        
+         
+            $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/move_talktab.js';
          }
+     
       }
    }
 }
