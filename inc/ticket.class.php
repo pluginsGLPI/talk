@@ -181,8 +181,7 @@ class PluginTalkTicket {
          if ($res_solution = $DB->query("SELECT date_mod AS solution_date, user_name FROM glpi_logs
                                      WHERE itemtype = 'Ticket' 
                                      AND items_id = ".$ticket->getID()."
-                                     AND id_search_option = 12
-                                     AND new_value = '".CommonITILObject::SOLVED."'
+                                     AND id_search_option = 24
                                      ORDER BY id DESC
                                      LIMIT 1")) {
             $data_solution = $DB->fetch_assoc($res_solution);
