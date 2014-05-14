@@ -272,17 +272,34 @@ class PluginTalkTicket {
          }
 
          if (isset($item_i['content'])) {
+            echo "<div class='item_content'>";
             echo html_entity_decode(nl2br($item_i['content']));
+            echo "</div>";
          }
 
          echo "<div class='b_right'>";
-         if (isset($item_i['actiontime']) && !empty($item_i['actiontime'])) {
-            echo "<div class='actiontime'>";
-            echo Html::timestampToString($item_i['actiontime'], false);
-            echo "</div>";
-         }
          if (isset($item_i['solutiontypes_id']) && !empty($item_i['solutiontypes_id'])) {
-            echo Dropdown::getDropdownName("glpi_solutiontypes", $item_i['solutiontypes_id']);
+            echo Dropdown::getDropdownName("glpi_solutiontypes", $item_i['solutiontypes_id'])."<br>";
+         }
+         if (isset($item_i['taskcategories_id']) && !empty($item_i['taskcategories_id'])) {
+            echo Dropdown::getDropdownName("glpi_taskcategories", $item_i['taskcategories_id'])."<br>";
+         }
+         if (isset($item_i['actiontime']) && !empty($item_i['actiontime'])) {
+            echo "<span class='actiontime'>";
+            echo Html::timestampToString($item_i['actiontime'], false);
+            echo "</span>";
+         }
+         if (isset($item_i['state'])) {
+            echo "<span class='state state_".$item_i['state']."'>";
+            echo Planning::getState($item_i['state']);
+            echo "</span>";
+         }
+         if (isset($item_i['begin'])) {
+            echo "<span class='planification'>";
+            echo Html::convDateTime($item_i["begin"]);
+            echo " => ";
+            echo Html::convDateTime($item_i["end"]);
+            echo "</span>";
          }
          echo "</div>";
 
