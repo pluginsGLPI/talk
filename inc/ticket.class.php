@@ -152,6 +152,9 @@ class PluginTalkTicket {
       //add ticket followups to timeline
       $followups = $followup_obj->find("tickets_id = ".$ticket->getID()." $restrict", 'date DESC');
       foreach ($followups as $followups_id => $followup) {
+         $followup_obj->getFromDB($followups_id);
+         $can_edit = $followup_obj->canUpdateItem();
+         $followup['can_edit'] = $can_edit;
          $timeline[$followup['date']."_followup_".$followups_id] = array('type' => 'TicketFollowup', 'item' => $followup);
       }
 
@@ -159,6 +162,9 @@ class PluginTalkTicket {
       //add ticket taks to timeline
       $tasks = $task_obj->find("tickets_id = ".$ticket->getID()." $restrict", 'date DESC');
       foreach ($tasks as $tasks_id => $task) {
+         $task_obj->getFromDB($tasks_id);
+         $can_edit = $task_obj->canUpdateItem();
+         $task['can_edit'] = $can_edit;
          $timeline[$task['date']."_task_".$tasks_id] = array('type' => 'TicketTask', 'item' => $task);
       }
 
@@ -198,7 +204,8 @@ class PluginTalkTicket {
                                                           'content'          => $ticket->fields['solution'],
                                                           'date'             => $solution_date, 
                                                           'users_id'         => $users_id, 
-                                                          'solutiontypes_id' => $ticket->fields['solutiontypes_id']));
+                                                          'solutiontypes_id' => $ticket->fields['solutiontypes_id'],
+                                                          'can_edit'         => Ticket::canUpdate() && $ticket->canSolve()));
       }
 
       // add ticket validation to timeline
@@ -210,6 +217,7 @@ class PluginTalkTicket {
         
          $ticket_validations = $ticket_valitation_obj->find('tickets_id = '.$ticket->getID());
          foreach ($ticket_validations as $validations_id => $validation) {
+            $canedit = $ticket_valitation_obj->can($validations_id,'w');
             $user->getFromDB($validation['users_id_validate']);
             $timeline[$validation['submission_date']."_validation_".$validations_id] 
                = array('type' => 'TicketValidation', 'item' => array(
@@ -217,7 +225,8 @@ class PluginTalkTicket {
                   'date'      => $validation['submission_date'],
                   'content'   => __('Validation request')." => ".$user->getlink().
                                  "<br>".$validation['comment_submission'],
-                  'users_id'  => $validation['users_id']
+                  'users_id'  => $validation['users_id'], 
+                  'can_edit'  => $canedit
                ));
 
             if (!empty($validation['validation_date'])) {
@@ -229,7 +238,8 @@ class PluginTalkTicket {
                                  _sx('status', ucfirst($validation['status']))."<br>".
                                  $validation['comment_validation'],
                   'users_id'  => $validation['users_id_validate'], 
-                  'status'    => $validation['status']
+                  'status'    => $validation['status'], 
+                  'can_edit'  => $canedit
                ));
             }
          }
@@ -262,7 +272,7 @@ class PluginTalkTicket {
               ((isset($item_i['is_private']) && $item_i['is_private']) ? " private" : "").
               ((isset($item_i['status'])) ? " ".$item_i['status'] : "").
               "'";
-         if ($item['type'] != "Document_Item") {     
+         if ($item['type'] != "Document_Item" && $item_i['can_edit']) {     
             echo " onclick='javascript:viewEditSubitem".$ticket->fields['id']."$rand(\"".$item['type']."\", ".$item_i['id'].", this)'";
          }
          echo ">";
