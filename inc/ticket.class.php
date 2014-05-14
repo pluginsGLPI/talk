@@ -82,7 +82,7 @@ class PluginTalkTicket {
       $canadd_fup      = TicketFollowup::canCreate() && $fup->can(-1, 'w', $tmp);
       $canadd_task     = TicketTask::canCreate() && $ttask->can(-1, 'w', $tmp);
       $canadd_document = Document::canCreate();
-      $canadd_solution = Ticket::canUpdate();
+      $canadd_solution = Ticket::canUpdate() && $ticket->canSolve();
 
       if (!$canadd_fup && !$canadd_task && !$canadd_document && !$canadd_solution ) {
          return false;
