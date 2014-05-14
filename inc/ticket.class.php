@@ -264,7 +264,7 @@ class PluginTalkTicket {
          echo "<div class='h_date'>".Html::convDateTime($date)."</div>";
          if (isset($item_i['users_id'])) {
             $user->getFromDB($item_i['users_id']);
-            echo "<div class='h_user'>".$user->getName()."</div>";
+            echo "<div class='h_user'>".$user->getLink()."</div>";
          }
          echo "</div>";
       

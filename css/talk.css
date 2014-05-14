@@ -275,3 +275,6 @@
 .talk_history .h_user {
    background-image: url(../pics/user.png);
 }
+.talk_history .h_user a {
+   color: #3C5874;
+}
