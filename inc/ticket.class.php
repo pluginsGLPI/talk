@@ -132,24 +132,38 @@ class PluginTalkTicket {
       $user = new User;
       $timeline = array();
 
-      //add ticket followups to timeline
       $followup_obj = new TicketFollowup;
-      $followups = $followup_obj->find('tickets_id = '.$ticket->getID(), 'date DESC');
+      $task_obj = new TicketTask;
+      $document_item_obj = new Document_Item;
+      $ticket_valitation_obj = new TicketValidation;
+
+      //checks rights
+      $showpublic = Session::haveRight("observe_ticket", "1");
+      $showprivate = Session::haveRight("show_full_ticket", "1");
+      $restrict = "";
+      if (!$showprivate) {
+         $restrict = " AND (`is_private` = '0'
+                            OR `users_id` ='" . Session::getLoginUserID() . "') ";
+      }
+      if (!$showpublic) {
+         $restrict = " AND 1 = 0";
+      }
+
+      //add ticket followups to timeline
+      $followups = $followup_obj->find("tickets_id = ".$ticket->getID()." $restrict", 'date DESC');
       foreach ($followups as $followups_id => $followup) {
          $timeline[$followup['date']."_followup_".$followups_id] = array('type' => 'TicketFollowup', 'item' => $followup);
       }
 
 
       //add ticket taks to timeline
-      $task_obj = new TicketTask;
-      $tasks = $task_obj->find('tickets_id = '.$ticket->getID(), 'date DESC');
+      $tasks = $task_obj->find("tickets_id = ".$ticket->getID()." $restrict", 'date DESC');
       foreach ($tasks as $tasks_id => $task) {
          $timeline[$task['date']."_task_".$tasks_id] = array('type' => 'TicketTask', 'item' => $task);
       }
 
 
       //add ticket documents to timeline
-      $document_item_obj = new Document_Item;
       $document_obj = new Document;
       $document_items = $document_item_obj->find("itemtype = 'Ticket' AND items_id = ".$ticket->getID());
       foreach ($document_items as $document_item) {
@@ -189,30 +203,36 @@ class PluginTalkTicket {
       }
 
       // add ticket validation to timeline
-      $ticket_valitation_obj = new TicketValidation;
-      $ticket_validations = $ticket_valitation_obj->find('tickets_id = '.$ticket->getID());
-      foreach ($ticket_validations as $validations_id => $validation) {
-         $user->getFromDB($validation['users_id_validate']);
-         $timeline[$validation['submission_date']."_validation_".$validations_id] 
-            = array('type' => 'TicketValidation', 'item' => array(
-               'id'        => $validations_id,
-               'date'      => $validation['submission_date'],
-               'content'   => __('Validation request')." => ".$user->getlink().
-                              "<br>".$validation['comment_submission'],
-               'users_id'  => $validation['users_id']
-            ));
+       if ($ticket->fields['type'] == Ticket::DEMAND_TYPE && 
+            (Session::haveRight('validate_request',1) || Session::haveRight('create_request_validation',1))
+       || $ticket->fields['type'] == Ticket::INCIDENT_TYPE &&
+            (Session::haveRight('validate_incident',1)|| Session::haveRight('create_incident_validation',1)))
+          {
+        
+         $ticket_validations = $ticket_valitation_obj->find('tickets_id = '.$ticket->getID());
+         foreach ($ticket_validations as $validations_id => $validation) {
+            $user->getFromDB($validation['users_id_validate']);
+            $timeline[$validation['submission_date']."_validation_".$validations_id] 
+               = array('type' => 'TicketValidation', 'item' => array(
+                  'id'        => $validations_id,
+                  'date'      => $validation['submission_date'],
+                  'content'   => __('Validation request')." => ".$user->getlink().
+                                 "<br>".$validation['comment_submission'],
+                  'users_id'  => $validation['users_id']
+               ));
 
-         if (!empty($validation['validation_date'])) {
-            $timeline[$validation['validation_date']."_validation_".$validations_id] 
-            = array('type' => 'TicketValidation', 'item' => array(
-               'id'        => $validations_id,
-               'date'      => $validation['validation_date'],
-               'content'   => __('Validation request answer')." : ".
-                              _sx('status', ucfirst($validation['status']))."<br>".
-                              $validation['comment_validation'],
-               'users_id'  => $validation['users_id_validate'], 
-               'status'    => $validation['status']
-            ));
+            if (!empty($validation['validation_date'])) {
+               $timeline[$validation['validation_date']."_validation_".$validations_id] 
+               = array('type' => 'TicketValidation', 'item' => array(
+                  'id'        => $validations_id,
+                  'date'      => $validation['validation_date'],
+                  'content'   => __('Validation request answer')." : ".
+                                 _sx('status', ucfirst($validation['status']))."<br>".
+                                 $validation['comment_validation'],
+                  'users_id'  => $validation['users_id_validate'], 
+                  'status'    => $validation['status']
+               ));
+            }
          }
       }
 
