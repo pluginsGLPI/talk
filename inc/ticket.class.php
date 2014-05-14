@@ -266,7 +266,8 @@ class PluginTalkTicket {
             echo " onclick='javascript:viewEditSubitem".$ticket->fields['id']."$rand(\"".$item['type']."\", ".$item_i['id'].", this)'";
          }
          echo ">";
-         if (isset($item_i['requesttypes_id'])) {
+         if (isset($item_i['requesttypes_id']) 
+               && file_exists("$pics_url/".$item_i['requesttypes_id'].".png")) {
             echo "<img src='$pics_url/".$item_i['requesttypes_id'].".png' title='' class='h_requesttype' />";
          }
 
