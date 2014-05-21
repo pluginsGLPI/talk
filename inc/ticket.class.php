@@ -118,7 +118,7 @@ class PluginTalkTicket {
          echo "<div class='clear'>&nbsp;</div>";
          echo "</div>"; //end talk_form      
       } 
-      
+
       echo "<div class='ajax_box' id='viewitem" . $ticket->fields['id'] . "$rand'></div>\n";
 
    }
@@ -245,6 +245,10 @@ class PluginTalkTicket {
 
       //reverse sort timeline items by key (date)
       krsort($timeline);
+
+      if (count($timeline) == 0) {
+         return;
+      }
 
       //display timeline
       echo "<div class='talk_history'>";
