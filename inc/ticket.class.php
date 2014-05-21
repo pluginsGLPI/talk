@@ -117,10 +117,8 @@ class PluginTalkTicket {
          echo "</ul>"; // talk_choices
          echo "<div class='clear'>&nbsp;</div>";
          echo "</div>"; //end talk_form      
-      } else {
-         $fup->showApprobationForm($ticket);
-      }
-
+      } 
+      
       echo "<div class='ajax_box' id='viewitem" . $ticket->fields['id'] . "$rand'></div>\n";
 
    }
@@ -251,6 +249,7 @@ class PluginTalkTicket {
       //display timeline
       echo "<div class='talk_history'>";
       echo "<h2>".__("Historical")."</h2>";
+      $timeline_index = 0;
       foreach ($timeline as $item) {
          $item_i = $item['item'];
 
@@ -326,7 +325,13 @@ class PluginTalkTicket {
          echo "</div>"; //end h_right
 
          echo "</div>"; //end  h_item
-      }
+
+         if ($timeline_index == 0 && $item['type'] == "Solution" 
+            && $ticket->fields["status"] == CommonITILObject::SOLVED) {
+            $followup_obj->showApprobationForm($ticket);
+         }
+         $timeline_index++;
+      } // end foreach timeline
       echo "<div class='break'></div>";
       echo "</div>";
    }
