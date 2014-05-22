@@ -193,6 +193,17 @@
    padding: 0;
 }
 
+.talk_history .talk_img_preview img {
+   width: 100px;
+   border: 3px solid #659900;
+   border-radius: 3px;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+}
+.talk_history a:hover .talk_img_preview img {
+   border: 3px solid black;
+}
+
 .talk_history .TicketValidation {
    background-color: #FFFFFF;
    border-color: #BECADD;
@@ -278,3 +289,5 @@
 .talk_history .h_user a {
    color: #3C5874;
 }
+
+

@@ -318,13 +318,30 @@ class PluginTalkTicket {
 
          if ($item['type'] == 'Document_Item') {
             $filename = $item_i['filename'];
+            $ext = pathinfo($filename, PATHINFO_EXTENSION);
+            echo "<img src='";
             if (empty($filename)) {
                $filename = $item_i['name'];
             }
-            echo "<img src='$pics_url/file.png' title='file' />&nbsp;";
+            if (file_exists(GLPI_ROOT."/pics/icones/$ext-dist.png")) {
+               echo $CFG_GLPI['root_doc']."/pics/icones/$ext-dist.png";
+            } else {
+               echo "$pics_url/file.png";
+            }
+            echo "' title='file' />&nbsp;";
             echo "<a href='".$CFG_GLPI['root_doc']."/front/document.send.php?docid=".$item_i['id']
                 ."&tickets_id=".$ticket->getID()
-                ."' target='_blank'>$filename</a>";
+                ."' target='_blank'>$filename";
+            if (in_array($ext, array('jpg', 'jpeg', 'png', 'bmp'))) {
+               echo "<div class='talk_img_preview'>";
+               echo "<img src='".$CFG_GLPI['root_doc']."/front/document.send.php?docid=".$item_i['id']
+                ."&tickets_id=".$ticket->getID()
+                ."'/>";
+               echo "</div>";
+            }
+            echo "</a>";
+            if (!empty($item_i['mime'])) echo "&nbsp;(".$item_i['mime'].")";
+            
          }
          echo "</div>"; //end h_right
 
