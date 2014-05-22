@@ -260,6 +260,7 @@ class PluginTalkTicket {
       if ($first_item['type'] != 'Solution' 
          || $ticket->fields["status"] != CommonITILObject::SOLVED) {
          echo "<h2>".__("Historical")."</h2>";
+         self::filterTimeline();
       }
 
 
@@ -366,6 +367,21 @@ class PluginTalkTicket {
          $timeline_index++;
       } // end foreach timeline
       echo "<div class='break'></div>";
+      echo "</div>";
+   }
+
+   static function filterTimeline() {
+      global $CFG_GLPI;
+
+      $pics_url = $CFG_GLPI['root_doc']."/plugins/talk/pics/";
+      echo "<div class='filter_timeline'>";
+      echo "<label>".__("Search filter (if needed)")."</label>";
+      echo "<ul>";
+      echo "<li><a title='".__("Followup")."'><img src='$pics_url/followup_min.png' /></a></li>";
+      echo "<li><a title='".__("Task")."'><img src='$pics_url/task_min.png' /></a></li>";
+      echo "<li><a title='".__("Document")."'><img src='$pics_url/document_min.png' /></a></li>";
+      echo "<li><a title='".__("Solution")."'><img src='$pics_url/solution_min.png' /></a></li>";
+      echo "</ul>";
       echo "</div>";
    }
 
