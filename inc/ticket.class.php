@@ -252,7 +252,17 @@ class PluginTalkTicket {
 
       //display timeline
       echo "<div class='talk_history'>";
-      echo "<h2>".__("Historical")."</h2>";
+
+      $tmp = array_values($timeline);
+      $first_item = array_shift($tmp);
+
+      //don't display title on solution approbation
+      if ($first_item['type'] != 'Solution' 
+         || $ticket->fields["status"] != CommonITILObject::SOLVED) {
+         echo "<h2>".__("Historical")."</h2>";
+      }
+
+
       $timeline_index = 0;
       foreach ($timeline as $item) {
          $item_i = $item['item'];
@@ -350,6 +360,8 @@ class PluginTalkTicket {
          if ($timeline_index == 0 && $item['type'] == "Solution" 
             && $ticket->fields["status"] == CommonITILObject::SOLVED) {
             $followup_obj->showApprobationForm($ticket);
+            echo "<hr class='approbation_separator' />";
+            echo "<h2>".__("Historical")."</h2>";
          }
          $timeline_index++;
       } // end foreach timeline
