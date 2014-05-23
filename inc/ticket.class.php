@@ -259,8 +259,7 @@ class PluginTalkTicket {
       //don't display title on solution approbation
       if ($first_item['type'] != 'Solution' 
          || $ticket->fields["status"] != CommonITILObject::SOLVED) {
-         echo "<h2>".__("Historical")."</h2>";
-         self::filterTimeline();
+         self::showTimelineHeader();
       }
 
 
@@ -362,12 +361,17 @@ class PluginTalkTicket {
             && $ticket->fields["status"] == CommonITILObject::SOLVED) {
             $followup_obj->showApprobationForm($ticket);
             echo "<hr class='approbation_separator' />";
-            echo "<h2>".__("Historical")."</h2>";
+            self::showTimelineHeader();
          }
          $timeline_index++;
       } // end foreach timeline
       echo "<div class='break'></div>";
       echo "</div>";
+   }
+
+   static function showTimelineHeader() {
+      echo "<h2>".__("Historical")."</h2>";
+      self::filterTimeline();
    }
 
    static function filterTimeline() {
