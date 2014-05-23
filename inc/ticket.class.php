@@ -373,16 +373,59 @@ class PluginTalkTicket {
    static function filterTimeline() {
       global $CFG_GLPI;
 
-      $pics_url = $CFG_GLPI['root_doc']."/plugins/talk/pics/";
+      $pics_url = $CFG_GLPI['root_doc']."/plugins/talk/pics";
       echo "<div class='filter_timeline'>";
-      echo "<label>".__("Search filter (if needed)")."</label>";
+      echo "<label>".__("Timeline filter", "talk")." : </label>";
       echo "<ul>";
-      echo "<li><a title='".__("Followup")."'><img src='$pics_url/followup_min.png' /></a></li>";
-      echo "<li><a title='".__("Task")."'><img src='$pics_url/task_min.png' /></a></li>";
-      echo "<li><a title='".__("Document")."'><img src='$pics_url/document_min.png' /></a></li>";
-      echo "<li><a title='".__("Solution")."'><img src='$pics_url/solution_min.png' /></a></li>";
+      echo "<li><a class='reset' title=\"".__("Reset display options").
+         "\"><img src='$pics_url/reset.png' /></a></li>";
+      echo "<li><a class='Solution' title='".__("Solution").
+         "'><img src='$pics_url/solution_min.png' /></a></li>";
+      echo "<li><a class='TicketValidation' title='".__("Validation").
+         "'><img src='$pics_url/validation_min.png' /></a></li>";
+      echo "<li><a class='Document_Item' title='".__("Document").
+         "'><img src='$pics_url/document_min.png' /></a></li>";
+      echo "<li><a class='TicketTask' title='".__("Task").
+         "'><img src='$pics_url/task_min.png' /></a></li>";
+      echo "<li><a class='TicketFollowup' title='".__("Followup").
+         "'><img src='$pics_url/followup_min.png' /></a></li>";
       echo "</ul>";
       echo "</div>";
+
+      $JS = <<<JAVASCRIPT
+      Ext.onReady(function() {
+         Ext.select('.filter_timeline li a').on('click', function(ev, current_el) {
+            //show all elements in timeline
+            Ext.select('.h_item').removeClass('h_hidden');
+
+            if (this.className == 'reset') {
+               Ext.select('.filter_timeline li a img').each(function(el2) {
+                  el2.dom.src = el2.dom.src.replace('_inactive', '');
+               })
+               return;
+;            }
+
+            //activate clicked element
+            Ext.get(this.id).toggleClass('h_inactive');
+            if (current_el.src.indexOf('inactive') > 0) {
+               current_el.src = current_el.src.replace('_inactive', '');
+            } else {
+               current_el.src = current_el.src.replace(/\.(png)$/, '_inactive.$1');
+            }
+
+            //find active classname
+            inactive_classnames = [];
+            Ext.select('.filter_timeline .h_inactive').each(function(el) {
+               inactive_classnames.push(".h_right."+el.dom.className.replace(' h_inactive', ''));
+            })
+
+            Ext.select(inactive_classnames.join(', ')).each(function(el){
+               el.parent().addClass('h_hidden');
+            })
+         });
+      });
+JAVASCRIPT;
+      echo "<script type='text/javascript'>$JS</script>";
    }
 
    static function showSubForm(CommonDBTM $item, $id, $params) {

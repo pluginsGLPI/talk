@@ -139,12 +139,16 @@
 
 .talk_history .filter_timeline label {
    opacity: 0;
+   font-size: 1.2em;
+   float: left;
+   line-height: 1.6em;
+   font-weight: bold;
 }
 .talk_history .filter_timeline:hover label {
    opacity: 1;
 }
 .talk_history .filter_timeline ul li {
-   opacity: 0.3;
+   opacity: 0.2;
    cursor: pointer;
 }
 .talk_history .filter_timeline:hover ul li {
@@ -158,6 +162,10 @@
    clear: both;
    padding-top: 8px;
    border-top: 1px dashed #D2D2D2;
+}
+
+.talk_history .h_hidden {
+   display: none;
 }
 
 .talk_history .h_left {
@@ -183,7 +191,7 @@
    border-right: 8px solid #3C5874;
 }
 
-.talk_history .TicketFollowup {
+.talk_history .h_right.TicketFollowup {
    background-color: #f1f4e3;
    border-color: #7D854F;
    color: #40442A;
@@ -192,7 +200,7 @@
    cursor: pointer;
 }
 
-.talk_history .TicketTask {
+.talk_history .h_right.TicketTask {
    background-color: #F0E4B5;
    border-color: #A8A28F;
    color: #645424;
@@ -202,7 +210,7 @@
    cursor: pointer;
 }
 
-.talk_history .Solution {
+.talk_history .h_right.Solution {
    background-color: #E9F1FF;
    border-color: #88A3CD;
    color: #001F4F;
@@ -211,7 +219,7 @@
    cursor: pointer;
 }
 
-.talk_history .Document_Item {
+.talk_history .h_right.Document_Item {
    border: none;
    -webkit-box-shadow:none;
    -moz-box-shadow:none;
@@ -231,7 +239,7 @@
    border: 3px solid black;
 }
 
-.talk_history .TicketValidation {
+.talk_history .h_right.TicketValidation {
    background-color: #FFFFFF;
    border-color: #BECADD;
    color: #030F21;
@@ -239,11 +247,11 @@
    min-height: 15px;
 }
 
-.talk_history .TicketValidation.accepted {
+.talk_history .h_right.TicketValidation.accepted {
    background-color: #A1D7A2;
    border-color: #385139;
 }
-.talk_history .TicketValidation.refused {
+.talk_history .h_right.TicketValidation.refused {
    background-color: #D3A4A4;
    border-color: #5E3232;
 }
