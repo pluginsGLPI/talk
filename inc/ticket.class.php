@@ -1,13 +1,15 @@
 <?php
 
-class PluginTalkTicket {
+class PluginTalkTicket extends CommonGLPI {
    static function getTypeName($nb=0) {
       return __("Processing ticket", "talk");
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
       if ($item instanceOf Ticket) {
-         return self::getTypeName();
+         $timeline = self::geTimelineItems($item, '');
+         $nb_elements = count($timeline);
+         return self::createTabEntry(self::getTypeName(2), $nb_elements);
       }
       return '';
    }
@@ -123,16 +125,15 @@ class PluginTalkTicket {
 
    }
 
-   static function showHistory(Ticket $ticket, $rand) {
-      global $CFG_GLPI, $DB;
+   static function geTimelineItems(Ticket $ticket, $rand) {
+      global $DB;
 
-      $pics_url = "../plugins/talk/pics";
-      $user = new User;
       $timeline = array();
 
-      $followup_obj = new TicketFollowup;
-      $task_obj = new TicketTask;
-      $document_item_obj = new Document_Item;
+      $user                  = new User;
+      $followup_obj          = new TicketFollowup;
+      $task_obj              = new TicketTask;
+      $document_item_obj     = new Document_Item;
       $ticket_valitation_obj = new TicketValidation;
 
       //checks rights
@@ -245,7 +246,17 @@ class PluginTalkTicket {
 
       //reverse sort timeline items by key (date)
       krsort($timeline);
+         
+      return $timeline;
+   }
 
+   static function showHistory(Ticket $ticket, $rand) {
+      global $CFG_GLPI, $DB;
+
+      $user = new User;
+      $pics_url = "../plugins/talk/pics";
+      
+      $timeline = self::geTimelineItems($ticket, $rand);
       if (count($timeline) == 0) {
          return;
       }
@@ -259,7 +270,7 @@ class PluginTalkTicket {
       //don't display title on solution approbation
       if ($first_item['type'] != 'Solution' 
          || $ticket->fields["status"] != CommonITILObject::SOLVED) {
-         self::showTimelineHeader();
+         self::showHistoryHeader();
       }
 
 
@@ -361,7 +372,7 @@ class PluginTalkTicket {
             && $ticket->fields["status"] == CommonITILObject::SOLVED) {
             $followup_obj->showApprobationForm($ticket);
             echo "<hr class='approbation_separator' />";
-            self::showTimelineHeader();
+            self::showHistoryHeader();
          }
          $timeline_index++;
       } // end foreach timeline
@@ -369,7 +380,7 @@ class PluginTalkTicket {
       echo "</div>";
    }
 
-   static function showTimelineHeader() {
+   static function showHistoryHeader() {
       echo "<h2>".__("Actions historical", "talk")." : </h2>";
       self::filterTimeline();
    }
