@@ -8,21 +8,27 @@ function plugin_init_talk() {
    
    $plugin = new Plugin();
    if ($plugin->isInstalled('talk') && $plugin->isActivated('talk')) {
+      $PLUGIN_HOOKS['change_profile']['talk'] = array('PluginTalkProfile','changeProfile');
        
       //if glpi is loaded
       if (Session::getLoginUserID()) {
-         Plugin::registerClass('PluginTalkTicket',
-                               array('addtabon' => array('Ticket')));
 
-         if (strpos($_SERVER['REQUEST_URI'], "ticket.form.php") !== false
-            && isset($_GET['id'])) {
+         Plugin::registerClass('PluginTalkProfile',
+                               array('addtabon' => 'Profile'));
 
-            $PLUGIN_HOOKS['add_css']['talk'][] = 'css/talk.css';
-            $PLUGIN_HOOKS['add_css']['talk'][] = 'css/hide_ticket_tabs.css';
-         
-            $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/move_talktab.js';
+         if (plugin_talk_haveRight("is_active", "1")) {
+            Plugin::registerClass('PluginTalkTicket',
+                                  array('addtabon' => array('Ticket')));
+
+            if (strpos($_SERVER['REQUEST_URI'], "ticket.form.php") !== false
+               && isset($_GET['id'])) {
+
+               $PLUGIN_HOOKS['add_css']['talk'][] = 'css/talk.css';
+               $PLUGIN_HOOKS['add_css']['talk'][] = 'css/hide_ticket_tabs.css';
+            
+               $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/move_talktab.js';
+            }
          }
-     
       }
    }
 }
@@ -51,4 +57,18 @@ function plugin_talk_check_prerequisites() {
 // Uninstall process for plugin : need to return true if succeeded : may display messages or add to message after redirect
 function plugin_talk_check_config() {
    return true;
+}
+
+function plugin_talk_haveRight($module,$right) {
+   $matches=array(
+            ""  => array("","r","w"), // ne doit pas arriver normalement
+            "r" => array("r","w"),
+            "w" => array("w"),
+            "1" => array("1"),
+            "0" => array("0","1"), // ne doit pas arriver non plus
+   );
+   if (isset($_SESSION["glpi_plugin_talk_profile"][$module])
+         && in_array($_SESSION["glpi_plugin_talk_profile"][$module], $matches[$right]))
+      return true;
+   else return false;
 }
