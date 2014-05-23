@@ -38,7 +38,7 @@ function plugin_version_talk() {
    global $LANG;
 
    $author = "<a href='www.teclib.com'>TECLIB'</a>";
-   return array ('name' => "Talk",
+   return array ('name' => __("Talks", "talk"),
                  'version' => '0.84-1.0',
                  'author' => $author,
                  'homepage' => 'www.teclib.com',
