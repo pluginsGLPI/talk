@@ -370,7 +370,7 @@ class PluginTalkTicket {
    }
 
    static function showTimelineHeader() {
-      echo "<h2>".__("Historical")."</h2>";
+      echo "<h2>".__("Actions historical", "talk")." : </h2>";
       self::filterTimeline();
    }
 
