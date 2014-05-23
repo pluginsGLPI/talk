@@ -187,6 +187,11 @@
    position: relative;
 }
 
+.talk_history .private {
+   background-image: url(../pics/private.png) !important;
+   background-repeat: repeat !important;
+}
+
 .talk_history .h_right.talk_active {
    border-right: 8px solid #3C5874;
 }
@@ -291,11 +296,6 @@
 }
 .talk_history .b_right .state.state_2 {
    background-image: url(../pics/done.png);
-}
-
-.talk_history .private {
-   background-image: url(../pics/private.png);
-   background-repeat: repeat;
 }
 
 .talk_history .b_right .planification {
