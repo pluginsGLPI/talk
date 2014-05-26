@@ -354,7 +354,7 @@ class PluginTalkTicket extends CommonGLPI {
             echo "<a href='".$CFG_GLPI['root_doc']."/front/document.send.php?docid=".$item_i['id']
                 ."&tickets_id=".$ticket->getID()
                 ."' target='_blank'>$filename";
-            if (in_array($ext, array('jpg', 'jpeg', 'png', 'bmp'))) {
+            if (in_array(strtolower($ext), array('jpg', 'jpeg', 'png', 'bmp'))) {
                echo "<div class='talk_img_preview'>";
                echo "<img src='".$CFG_GLPI['root_doc']."/front/document.send.php?docid=".$item_i['id']
                 ."&tickets_id=".$ticket->getID()
