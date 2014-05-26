@@ -254,6 +254,7 @@ class PluginTalkTicket extends CommonGLPI {
       global $CFG_GLPI, $DB;
 
       $user = new User;
+      $followup_obj = new TicketFollowup;
       $pics_url = "../plugins/talk/pics";
       
       $timeline = self::geTimelineItems($ticket, $rand);
