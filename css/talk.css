@@ -17,6 +17,10 @@
    font-size: 1.4em;
 }
 
+.talk_box textarea {
+   resize: vertical;
+}
+
 /** FORM **/
 
 .talk_form {
