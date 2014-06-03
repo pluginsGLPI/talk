@@ -192,8 +192,14 @@
 }
 
 .talk_history .private {
-   background-image: url(../pics/private.png) !important;
-   background-repeat: repeat !important;
+   position: absolute;
+   left:210px;
+   width: 30px;
+   padding-top: 24px;
+   background: url(../pics/private.png) no-repeat;
+   color: #C88383;
+   font-size: 0.8em;
+   text-align: center;
 }
 
 .talk_history .h_right.talk_active {

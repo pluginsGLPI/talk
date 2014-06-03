@@ -292,9 +292,14 @@ class PluginTalkTicket extends CommonGLPI {
             echo "<div class='h_user'>".$user->getLink()."</div>";
          }
          echo "</div>";
+
+         if (isset($item_i['is_private']) && $item_i['is_private']) {
+            echo "<div class='private'>";
+            echo __('Private');
+            echo "</div>";
+         }
       
          echo "<div class='h_right ".$item['type'].
-              ((isset($item_i['is_private']) && $item_i['is_private']) ? " private" : "").
               ((isset($item_i['status'])) ? " ".$item_i['status'] : "").
               "'";
          if ($item['type'] != "Document_Item" && $item_i['can_edit']) {     
