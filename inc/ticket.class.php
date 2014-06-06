@@ -262,6 +262,9 @@ class PluginTalkTicket extends CommonGLPI {
          return;
       }
 
+      //include lib for parsing url 
+      require GLPI_ROOT."/plugins/talk/lib/urllinker.php";
+
       //display timeline
       echo "<div class='talk_history'>";
 
@@ -313,7 +316,11 @@ class PluginTalkTicket extends CommonGLPI {
 
          if (isset($item_i['content'])) {
             echo "<div class='item_content'>";
-            echo html_entity_decode(nl2br($item_i['content']));
+            $content = $item_i['content'];
+            $content = htmlEscapeAndLinkUrls($content);
+            $content = nl2br($content);
+            $content = html_entity_decode($content);
+            echo $content;
             echo "</div>";
          }
 
