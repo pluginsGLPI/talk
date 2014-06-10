@@ -317,7 +317,7 @@ class PluginTalkTicket extends CommonGLPI {
          if (isset($item_i['content'])) {
             echo "<div class='item_content'>";
             $content = $item_i['content'];
-            $content = htmlEscapeAndLinkUrls($content);
+            $content = linkUrlsInTrustedHtml($content);
             $content = nl2br($content);
             $content = html_entity_decode($content);
             echo $content;
