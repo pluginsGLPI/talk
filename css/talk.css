@@ -177,11 +177,13 @@
 }
 
 .talk_history .h_info {
-   width:25%;
    float: left;
-
 }
-.talk_history .h_right {
+.talk_history .assign .h_info {
+   float: right;
+}
+
+.talk_history .h_content {
    max-width:675px;
    float: left;
    border-radius: 5px;
@@ -193,9 +195,17 @@
    -moz-box-shadow: -1px 2px 5px #B7AFA8;
    -webkit-box-shadow: -1px 2px 5px #B7AFA8;
    position: relative;
+   margin-right: 0;
+   margin-left: 20px;
 }
 
-.talk_history .h_right:after, .talk_history .h_right:before {
+.talk_history .assign .h_content {
+   margin-left: 0;
+   margin-right: 20px;
+   float: right;
+}
+
+.talk_history .h_content:after, .talk_history .h_content:before {
    right: 100%;
    top: 45%;
    border: solid transparent;
@@ -206,71 +216,55 @@
    pointer-events: none;
 }
 
-.talk_history .TicketFollowup:after{
-   border-right-color: #f1f4e3;
+.talk_history .h_content:after {
    border-width: 15px;
    margin-top: -15px;
+   border-top-color: transparent !important; 
+   border-bottom-color: transparent !important; 
 }
-.talk_history .TicketFollowup:before {
-   border-right-color: #7D854F;
+
+.talk_history .h_content:before {
    border-width: 16px;
    margin-top: -16px;
+   border-top-color: transparent !important; 
+   border-bottom-color: transparent !important; 
 }
 
-.talk_history .TicketTask:after{
-   border-right-color: #F0E4B5;
-   border-width: 15px;
-   margin-top: -15px;
-}
-.talk_history .TicketTask:before {
-   border-right-color: #A8A28F;
-   border-width: 18px;
-   margin-top: -18px;
+.talk_history .assign .h_content:after, 
+.talk_history .assign .h_content:before {
+   left: 100%;
 }
 
-.talk_history .Solution:after{
-   border-right-color: #E9F1FF;
-   border-width: 15px;
-   margin-top: -15px;
+.talk_history .requester .h_content:after {
+   border-left-color: transparent !important; 
 }
-.talk_history .Solution:before {
-   border-right-color: #88A3CD;
-   border-width: 16px;
-   margin-top: -16px;
+.talk_history .requester .h_content:before {
+   border-left-color: transparent !important; 
 }
-
-.talk_history .TicketValidation.accepted:after{
-   border-right-color: #A1D7A2;
-   border-width: 6px;
-   margin-top: -6px;
+.talk_history .assign .h_content:after {
+   border-right-color: transparent !important; 
 }
-.talk_history .TicketValidation.accepted:before {
-   border-right-color: #385139;
-   border-width: 7px;
-   margin-top: -7px;
+.talk_history .assign .h_content:before {
+   border-right-color: transparent !important; 
 }
 
-.talk_history .TicketValidation:after{
-   border-right-color: #FFFFFF;
-   border-width: 6px;
-   margin-top: -6px;
-}
-.talk_history .TicketValidation:before {
-   border-right-color: #BECADD;
-   border-width: 7px;
-   margin-top: -7px;
-}
+.talk_history .TicketFollowup:after{ border-color: #f1f4e3;}
+.talk_history .TicketFollowup:before { border-color: #7D854F;}
 
-.talk_history .TicketValidation.rejected:after{
-   border-right-color: #D3A4A4;
-   border-width: 6px;
-   margin-top: -6px;
-}
-.talk_history .TicketValidation.rejected:before {
-   border-right-color: #5E3232;
-   border-width: 7px;
-   margin-top: -7px;
-}
+.talk_history .TicketTask:after{ border-color: #F0E4B5;}
+.talk_history .TicketTask:before { border-color: #A8A28F;}
+
+.talk_history .Solution:after{ border-color: #E9F1FF;}
+.talk_history .Solution:before { border-color: #88A3CD;}
+
+.talk_history .TicketValidation.accepted:after{ border-color: #A1D7A2;}
+.talk_history .TicketValidation.accepted:before { border-color: #385139;}
+
+.talk_history .TicketValidation:after{ border-color: #FFFFFF;}
+.talk_history .TicketValidation:before { border-color: #BECADD;}
+
+.talk_history .TicketValidation.rejected:after{ border-color: #D3A4A4;}
+.talk_history .TicketValidation.rejected:before { border-color: #5E3232;}
 
 .talk_history .private {
    position: absolute;
@@ -283,11 +277,11 @@
    text-align: center;
 }
 
-.talk_history .h_right.talk_active {
+.talk_history .h_content.talk_active {
    border-right: 8px solid #3C5874;
 }
 
-.talk_history .h_right.TicketFollowup {
+.talk_history .h_content.TicketFollowup {
    background-color: #f1f4e3;
    border-color: #7D854F;
    color: #40442A;
@@ -296,17 +290,16 @@
    cursor: pointer;
 }
 
-.talk_history .h_right.TicketTask {
+.talk_history .h_content.TicketTask {
    background-color: #F0E4B5;
    border-color: #A8A28F;
    color: #645424;
-   border-width: 2px;
    background-image: url(../pics/task.png);
    background-repeat: no-repeat;
    cursor: pointer;
 }
 
-.talk_history .h_right.Solution {
+.talk_history .h_content.Solution {
    background-color: #E9F1FF;
    border-color: #88A3CD;
    color: #001F4F;
@@ -315,7 +308,7 @@
    cursor: pointer;
 }
 
-.talk_history .h_right.Document_Item {
+.talk_history .h_content.Document_Item {
    border: none;
    -webkit-box-shadow:none;
    -moz-box-shadow:none;
@@ -335,24 +328,23 @@
    border: 3px solid black;
 }
 
-.talk_history .h_right.TicketValidation {
+.talk_history .h_content.TicketValidation {
    background-color: #FFFFFF;
    border-color: #BECADD;
    color: #030F21;
    padding: 5px 5px 5px 8px;
-   min-height: 15px;
 }
 
-.talk_history .h_right.TicketValidation.accepted {
+.talk_history .h_content.TicketValidation.accepted {
    background-color: #A1D7A2;
    border-color: #385139;
 }
-.talk_history .h_right.TicketValidation.rejected {
+.talk_history .h_content.TicketValidation.rejected {
    background-color: #D3A4A4;
    border-color: #5E3232;
 }
 
-.talk_history .h_right img.h_requesttype {
+.talk_history .h_content img.h_requesttype {
    float: right;
    height: 20px;
 }

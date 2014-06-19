@@ -290,7 +290,7 @@ class PluginTalkTicket extends CommonGLPI {
          if (isset($item_i['date_mod'])) $date = $item_i['date_mod'];
          
          // check if curent item user is assignee or requester
-         $user_assign = '';
+         $user_assign = 'requester';
          if (isset($ticket_users_keys[$item_i['users_id']]) 
             && $ticket_users_keys[$item_i['users_id']] == CommonItilActor::ASSIGN) {
             $user_assign = 'assign';
@@ -312,7 +312,7 @@ class PluginTalkTicket extends CommonGLPI {
             echo "</div>";
          }
       
-         echo "<div class='h_right ".$item['type'].
+         echo "<div class='h_content ".$item['type'].
               ((isset($item_i['status'])) ? " ".$item_i['status'] : "").
               "'";
          if ($item['type'] != "Document_Item" && $item_i['can_edit']) {     
@@ -387,7 +387,7 @@ class PluginTalkTicket extends CommonGLPI {
             if (!empty($item_i['mime'])) echo "&nbsp;(".$item_i['mime'].")";
             
          }
-         echo "</div>"; //end h_right
+         echo "</div>"; //end h_content
 
          echo "</div>"; //end  h_item
 
@@ -455,7 +455,7 @@ class PluginTalkTicket extends CommonGLPI {
             //find active classname
             inactive_classnames = [];
             Ext.select('.filter_timeline .h_inactive').each(function(el) {
-               inactive_classnames.push(".h_right."+el.dom.className.replace(' h_inactive', ''));
+               inactive_classnames.push(".h_content."+el.dom.className.replace(' h_inactive', ''));
             })
 
             Ext.select(inactive_classnames.join(', ')).each(function(el){
