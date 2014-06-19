@@ -195,9 +195,86 @@
    position: relative;
 }
 
+.talk_history .h_right:after, .talk_history .h_right:before {
+   right: 100%;
+   top: 45%;
+   border: solid transparent;
+   content: " ";
+   height: 0;
+   width: 0;
+   position: absolute;
+   pointer-events: none;
+}
+
+.talk_history .TicketFollowup:after{
+   border-right-color: #f1f4e3;
+   border-width: 15px;
+   margin-top: -15px;
+}
+.talk_history .TicketFollowup:before {
+   border-right-color: #7D854F;
+   border-width: 16px;
+   margin-top: -16px;
+}
+
+.talk_history .TicketTask:after{
+   border-right-color: #F0E4B5;
+   border-width: 15px;
+   margin-top: -15px;
+}
+.talk_history .TicketTask:before {
+   border-right-color: #A8A28F;
+   border-width: 18px;
+   margin-top: -18px;
+}
+
+.talk_history .Solution:after{
+   border-right-color: #E9F1FF;
+   border-width: 15px;
+   margin-top: -15px;
+}
+.talk_history .Solution:before {
+   border-right-color: #88A3CD;
+   border-width: 16px;
+   margin-top: -16px;
+}
+
+.talk_history .TicketValidation.accepted:after{
+   border-right-color: #A1D7A2;
+   border-width: 6px;
+   margin-top: -6px;
+}
+.talk_history .TicketValidation.accepted:before {
+   border-right-color: #385139;
+   border-width: 7px;
+   margin-top: -7px;
+}
+
+.talk_history .TicketValidation:after{
+   border-right-color: #FFFFFF;
+   border-width: 6px;
+   margin-top: -6px;
+}
+.talk_history .TicketValidation:before {
+   border-right-color: #BECADD;
+   border-width: 7px;
+   margin-top: -7px;
+}
+
+.talk_history .TicketValidation.rejected:after{
+   border-right-color: #D3A4A4;
+   border-width: 6px;
+   margin-top: -6px;
+}
+.talk_history .TicketValidation.rejected:before {
+   border-right-color: #5E3232;
+   border-width: 7px;
+   margin-top: -7px;
+}
+
 .talk_history .private {
    position: absolute;
-   left:210px;
+   left:198px;
    width: 30px;
    padding-top: 24px;
    background: url(../pics/private.png) no-repeat;
@@ -270,7 +347,7 @@
    background-color: #A1D7A2;
    border-color: #385139;
 }
-.talk_history .h_right.TicketValidation.refused {
+.talk_history .h_right.TicketValidation.rejected {
    background-color: #D3A4A4;
    border-color: #5E3232;
 }
