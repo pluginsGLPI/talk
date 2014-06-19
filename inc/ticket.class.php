@@ -253,6 +253,9 @@ class PluginTalkTicket extends CommonGLPI {
    static function showHistory(Ticket $ticket, $rand) {
       global $CFG_GLPI, $DB;
 
+      //get ticket actors
+      $ticket_users_keys = self::prepareTicketUser($ticket);
+
       $user = new User;
       $followup_obj = new TicketFollowup;
       $pics_url = "../plugins/talk/pics";
@@ -286,9 +289,16 @@ class PluginTalkTicket extends CommonGLPI {
          if (isset($item_i['date'])) $date = $item_i['date'];
          if (isset($item_i['date_mod'])) $date = $item_i['date_mod'];
          
-         echo "<div class='h_item'>";
+         // check if curent item user is assignee or requester
+         $user_assign = '';
+         if (isset($ticket_users_keys[$item_i['users_id']]) 
+            && $ticket_users_keys[$item_i['users_id']] == CommonItilActor::ASSIGN) {
+            $user_assign = 'assign';
+         }
+         
+         echo "<div class='h_item $user_assign'>";
 
-         echo "<div class='h_left'>";
+         echo "<div class='h_info'>";
          echo "<div class='h_date'>".Html::convDateTime($date)."</div>";
          if (isset($item_i['users_id'])) {
             $user->getFromDB($item_i['users_id']);
@@ -455,6 +465,18 @@ class PluginTalkTicket extends CommonGLPI {
       });
 JAVASCRIPT;
       echo "<script type='text/javascript'>$JS</script>";
+   }
+
+   static function prepareTicketUser(Ticket $ticket) {
+      $ticket_user = new Ticket_User;
+      $found_tu = $ticket_user->find("type != ".CommonItilActor::OBSERVER.
+                                     " AND tickets_id = ".$ticket->fields['id'], 
+                                     " type ASC");
+      $ticket_users_keys = array();
+      foreach ($found_tu as $current_tu) {
+         $ticket_users_keys[$current_tu['users_id']] = $current_tu['type'];
+      }
+      return $ticket_users_keys;
    }
 
    static function showSubForm(CommonDBTM $item, $id, $params) {
