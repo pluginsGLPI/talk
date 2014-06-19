@@ -182,8 +182,8 @@
 
 }
 .talk_history .h_right {
-   width:73%;
-   float: right;
+   max-width:675px;
+   float: left;
    border-radius: 5px;
    border:1px solid;
    padding: 5px 5px 5px 8px;
