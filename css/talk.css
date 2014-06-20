@@ -184,7 +184,7 @@
 }
 
 .talk_history .h_content {
-   max-width:675px;
+   max-width:600px;
    float: left;
    border-radius: 5px;
    border:1px solid;
@@ -207,7 +207,7 @@
 
 .talk_history .h_content:after, .talk_history .h_content:before {
    right: 100%;
-   top: 45%;
+   top: 32px;
    border: solid transparent;
    content: " ";
    height: 0;
