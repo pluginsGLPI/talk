@@ -179,7 +179,7 @@
 .talk_history .h_info {
    float: left;
 }
-.talk_history .assign .h_info {
+.talk_history .right .h_info {
    float: right;
 }
 
@@ -199,10 +199,11 @@
    margin-left: 20px;
 }
 
-.talk_history .assign .h_content {
+.talk_history .right .h_content {
    margin-left: 0;
    margin-right: 20px;
    float: right;
+   text-align: left;
 }
 
 .talk_history .h_content:after, .talk_history .h_content:before {
@@ -230,21 +231,21 @@
    border-bottom-color: transparent !important; 
 }
 
-.talk_history .assign .h_content:after, 
-.talk_history .assign .h_content:before {
+.talk_history .right .h_content:after, 
+.talk_history .right .h_content:before {
    left: 100%;
 }
 
-.talk_history .requester .h_content:after {
+.talk_history .left .h_content:after {
    border-left-color: transparent !important; 
 }
-.talk_history .requester .h_content:before {
+.talk_history .left .h_content:before {
    border-left-color: transparent !important; 
 }
-.talk_history .assign .h_content:after {
+.talk_history .right .h_content:after {
    border-right-color: transparent !important; 
 }
-.talk_history .assign .h_content:before {
+.talk_history .right .h_content:before {
    border-right-color: transparent !important; 
 }
 
@@ -267,14 +268,16 @@
 .talk_history .TicketValidation.rejected:before { border-color: #5E3232;}
 
 .talk_history .private {
-   position: absolute;
-   left:198px;
    width: 30px;
+   float: right;
    padding-top: 24px;
    background: url(../pics/private.png) no-repeat;
    color: #C88383;
    font-size: 0.8em;
    text-align: center;
+}
+.talk_history .right .private {
+   float: left;
 }
 
 .talk_history .h_content.talk_active {

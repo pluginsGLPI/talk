@@ -295,13 +295,13 @@ class PluginTalkTicket extends CommonGLPI {
          if (isset($item_i['date_mod'])) $date = $item_i['date_mod'];
          
          // check if curent item user is assignee or requester
-         $user_assign = 'requester';
+         $user_position = 'left';
          if (isset($ticket_users_keys[$item_i['users_id']]) 
             && $ticket_users_keys[$item_i['users_id']] == CommonItilActor::ASSIGN) {
-            $user_assign = 'assign';
+            $user_position = 'right';
          }
          
-         echo "<div class='h_item $user_assign'>";
+         echo "<div class='h_item $user_position'>";
 
          echo "<div class='h_info'>";
          echo "<div class='h_date'>".Html::convDateTime($date)."</div>";
@@ -311,12 +311,6 @@ class PluginTalkTicket extends CommonGLPI {
          }
          echo "</div>";
 
-         if (isset($item_i['is_private']) && $item_i['is_private']) {
-            echo "<div class='private'>";
-            echo __('Private');
-            echo "</div>";
-         }
-      
          echo "<div class='h_content ".$item['type'].
               ((isset($item_i['status'])) ? " ".$item_i['status'] : "").
               "'";
@@ -363,6 +357,14 @@ class PluginTalkTicket extends CommonGLPI {
             echo Html::convDateTime($item_i["end"]);
             echo "</span>";
          }
+
+         // show "is_private" icon
+         if (isset($item_i['is_private']) && $item_i['is_private']) {
+            echo "<div class='private'>";
+            echo __('Private');
+            echo "</div>";
+         }
+      
          echo "</div>";
 
          if ($item['type'] == 'Document_Item') {
