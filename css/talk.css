@@ -262,8 +262,8 @@
 }
 
 .talk_history .h_content:before {
-   border-width: 16px;
-   margin-top: -16px;
+   border-width: 17px;
+   margin-top: -17px;
    border-top-color: transparent !important; 
    border-bottom-color: transparent !important; 
 }
