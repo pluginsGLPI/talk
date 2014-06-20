@@ -183,8 +183,13 @@
    float: right;
 }
 
+.talk_history .right .h_user,
+.talk_history .right .h_date {
+   text-align: left;
+}
+
 .talk_history .h_content {
-   max-width:600px;
+   max-width:50%;
    float: left;
    border-radius: 5px;
    border:1px solid;
