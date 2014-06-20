@@ -178,14 +178,46 @@
 
 .talk_history .h_info {
    float: left;
+   width: 15%
 }
 .talk_history .right .h_info {
    float: right;
 }
 
+
+.talk_history .h_date,
+.talk_history .h_user {
+   font-weight: bold;
+   color:#3C5874;
+   background-repeat: no-repeat;
+   padding-left: 24px;
+   padding-top: 1px;
+   height: 22px;
+   text-transform: capitalize;
+}
+
+.talk_history .h_date {
+   background-image: url(../pics/history.png);
+}
+.talk_history .h_user {
+   background-image: url(../pics/user.png);
+}
+.talk_history .h_user a {
+   color: #3C5874;
+}
+
 .talk_history .right .h_user,
 .talk_history .right .h_date {
    text-align: left;
+}
+
+.talk_history .left .h_user,
+.talk_history .left .h_date {
+   text-align: right;
+   background-position: 100%;
+   padding-right: 24px;
+   padding-left: 0;
+   padding-top: 2px;
 }
 
 .talk_history .h_content {
@@ -285,8 +317,11 @@
    float: left;
 }
 
-.talk_history .h_content.talk_active {
+.talk_history .left .h_content.talk_active {
    border-right: 8px solid #3C5874;
+}
+.talk_history .right .h_content.talk_active {
+   border-left: 8px solid #3C5874;
 }
 
 .talk_history .h_content.TicketFollowup {
@@ -394,26 +429,6 @@
    background-repeat: no-repeat;
 }
 
-.talk_history .h_date,
-.talk_history .h_user {
-   font-weight: bold;
-   color:#3C5874;
-   background-repeat: no-repeat;
-   padding-left: 24px;
-   padding-top: 1px;
-   height: 22px;
-   text-transform: capitalize;
-}
-
-.talk_history .h_date {
-   background-image: url(../pics/history.png);
-}
-.talk_history .h_user {
-   background-image: url(../pics/user.png);
-}
-.talk_history .h_user a {
-   color: #3C5874;
-}
 
 .talk_history .approbation_separator {
    margin-bottom: 55px;
