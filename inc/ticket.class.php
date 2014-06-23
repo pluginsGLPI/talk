@@ -475,14 +475,46 @@ JAVASCRIPT;
    }
 
    static function prepareTicketUser(Ticket $ticket) {
-      $ticket_user = new Ticket_User;
-      $found_tu = $ticket_user->find("type != ".CommonItilActor::OBSERVER.
-                                     " AND tickets_id = ".$ticket->fields['id'], 
-                                     " type ASC");
+      global $DB;
+
+      $query = "SELECT
+            DISTINCT users_id, type
+         FROM (
+            SELECT usr.id as users_id, tu.type as type
+            FROM `glpi_tickets_users` tu
+            LEFT JOIN glpi_users usr
+               ON tu.users_id = usr.id
+            WHERE tu.`tickets_id` = ".$ticket->getId()."
+            
+            UNION 
+            
+            SELECT usr.id as users_id, gt.type as type
+            FROM glpi_groups_tickets gt
+            LEFT JOIN glpi_groups_users gu
+               ON gu.groups_id = gt.groups_id
+            LEFT JOIN glpi_users usr
+               ON gu.users_id = usr.id
+            WHERE gt.tickets_id = ".$ticket->getId()."
+            
+            UNION 
+            
+            SELECT usr.id as users_id, '2' as type
+            FROM glpi_profiles prof
+            LEFT JOIN glpi_profiles_users pu
+               ON pu.profiles_id = prof.id
+            LEFT JOIN glpi_users usr
+               ON usr.id = pu.users_id
+            WHERE prof.own_ticket = 1
+         ) AS allactors
+         WHERE type != ".CommonItilActor::OBSERVER."
+         GROUP BY users_id
+         ORDER BY type DESC";
+      $res = $DB->query($query);
       $ticket_users_keys = array();
-      foreach ($found_tu as $current_tu) {
+      while ($current_tu = $DB->fetch_assoc($res)) {
          $ticket_users_keys[$current_tu['users_id']] = $current_tu['type'];
       }
+
       return $ticket_users_keys;
    }
 
