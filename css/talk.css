@@ -234,6 +234,7 @@
    position: relative;
    margin-right: 0;
    margin-left: 20px;
+   word-wrap: break-word;
 }
 
 .talk_history .right .h_content {
