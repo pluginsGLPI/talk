@@ -300,6 +300,12 @@ class PluginTalkTicket extends CommonGLPI {
             && $ticket_users_keys[$item_i['users_id']] == CommonItilActor::ASSIGN) {
             $user_position = 'right';
          }
+
+         //display solution in middle
+         if ($timeline_index == 0 && $item['type'] == "Solution" 
+            && $ticket->fields["status"] == CommonITILObject::SOLVED) {
+            $user_position = 'right middle';
+         }
          
          echo "<div class='h_item $user_position'>";
 
