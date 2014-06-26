@@ -527,13 +527,50 @@ JAVASCRIPT;
    }
 
    static function showSubForm(CommonDBTM $item, $id, $params) {
-      if (method_exists($item, "showForm")) {
+      if ($item instanceof Document_Item) {
+         self::showSubFormDocument_Item($params['tickets_id'], $params);
+
+      } else if ($item instanceof TicketFollowup) {
+         self::showSubFormTicketFollowup($item, $id, $params);
+
+      } else if (method_exists($item, "showForm")) {
          $item->showForm($id, $params);
-      } else {
-         if ($item instanceof Document_Item) {
-            self::showSubFormDocument_Item($params['tickets_id'], $params);
-         } 
+
       }
+   }
+
+   static function showSubFormTicketFollowup($item, $id, $params) {
+      ob_start();
+
+      //get html of followup form
+      $item->showForm($id, $params);
+      $fup_form_html = ob_get_contents();
+      ob_clean();
+
+      //get html of document form
+      $params['no_form'] = true;
+      self::showSubFormDocument_Item($params['tickets_id'], $params);
+      $doc_form_html = ob_get_contents();
+      ob_end_clean();
+
+      //replace action param to redirect to talk controller (only for add)
+      if (strpos($fup_form_html, "<input type='submit' name='update'") === false) {
+         $fup_form_html = str_replace("front/ticketfollowup.form.php", 
+                                      "plugins/talk/front/item.form.php?fup=1", 
+                                      $fup_form_html);
+      }
+
+      $endformtag = "<tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add' value=\"Ajouter\" class='submit'></td></tr>";
+      $endformtag_pos = strpos($fup_form_html, $endformtag);
+
+      //echo new form
+      echo substr($fup_form_html, 0, $endformtag_pos);
+
+      //don't display document form on update
+      if (strpos($fup_form_html, "<input type='submit' name='update'") === false) {
+         echo $doc_form_html;
+      }
+      echo substr($fup_form_html, $endformtag_pos);
    }
 
    static function showSubFormDocument_Item($ID, $params) {
@@ -651,20 +688,25 @@ JAVASCRIPT;
             $used[$ID] = $ID;
          }
 
-         echo "<div class='firstbloc'>";
-         echo "<form name='documentitem_form$rand' id='documentitem_form$rand' method='post'
-                action='".Toolbox::getItemTypeFormURL('Document')."'  enctype=\"multipart/form-data\">";
-
-         echo "<table class='tab_cadre_fixe'>";
+         if (!isset($params['no_form']) || $params['no_form'] == false) {
+            echo "<div class='firstbloc'>";
+            echo "<form name='documentitem_form$rand' id='documentitem_form$rand' method='post'
+                   action='".Toolbox::getItemTypeFormURL('Document')."'  enctype=\"multipart/form-data\">";
+            echo "<table class='tab_cadre_fixe'>";
+         }
          echo "<tr class='tab_bg_2'><th colspan='5'>".__('Add a document')."</th></tr>";
          echo "<tr class='tab_bg_1'>";
 
-         echo "<td class='center'>";
-         _e('Heading');
-         echo '</td><td>';
-         DocumentCategory::dropdown(array('entity' => $entities));
-         echo "</td>";
-         echo "<td class='right'>";
+         if (!isset($params['no_form']) || $params['no_form'] == false) {
+            echo "<td class='center'>";
+            _e('Heading');
+            echo "</td><td>";
+            DocumentCategory::dropdown(array('entity' => $entities));
+            echo "</td>";
+            echo "<td class='right'>";
+         } else {
+            echo "<td class='right' colspan=2>";
+         }
          echo "<input type='hidden' name='entities_id' value='$entity'>";
          echo "<input type='hidden' name='is_recursive' value='$is_recursive'>";
 
@@ -677,15 +719,21 @@ JAVASCRIPT;
          echo "</td><td class='left'>";
          echo "(".Document::getMaxUploadSize().")&nbsp;";
          echo "</td>";
-         echo "<td class='center' width='20%'>";
-         echo "<input type='submit' name='add' value=\""._sx('button', 'Add a new file')."\"
-                class='submit'>";
-         echo "</td></tr>";
-         echo "</table>";
-         Html::closeForm();
 
-         if (Session::haveRight('document','r')
-             && ($nb > count($used))) {
+         if (!isset($params['no_form']) || $params['no_form'] == false) {
+            echo "<td class='center' width='20%'>";
+            echo "<input type='submit' name='add' value=\""._sx('button', 'Add a new file')."\"
+                   class='submit'></td>";
+         }
+         echo "</tr>";
+
+         if (!isset($params['no_form']) || $params['no_form'] == false) {
+            echo "</table>";
+            Html::closeForm();
+         }
+
+         if (Session::haveRight('document','r') && $nb > count($used) &&
+            (!isset($params['no_form']) || $params['no_form'] == false)) {
             echo "<form name='document_form$rand' id='document_form$rand' method='post'
                    action='".Toolbox::getItemTypeFormURL('Document')."'>";
             echo "<table class='tab_cadre_fixe'>";
@@ -701,7 +749,8 @@ JAVASCRIPT;
 
             Document::dropdown(array('entity' => $entities ,
                                      'used'   => $used));
-            echo "</td><td class='center' width='20%'>";
+            echo "</td>";
+            echo "<td class='center' width='20%'>";
             echo "<input type='submit' name='add' value=\"".
                      _sx('button', 'Associate an existing document')."\" class='submit'>";
             echo "</td>";
