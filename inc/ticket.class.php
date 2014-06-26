@@ -693,8 +693,8 @@ JAVASCRIPT;
             echo "<form name='documentitem_form$rand' id='documentitem_form$rand' method='post'
                    action='".Toolbox::getItemTypeFormURL('Document')."'  enctype=\"multipart/form-data\">";
             echo "<table class='tab_cadre_fixe'>";
+            echo "<tr class='tab_bg_2'><th colspan='5'>".__('Add a document')."</th></tr>";
          }
-         echo "<tr class='tab_bg_2'><th colspan='5'>".__('Add a document')."</th></tr>";
          echo "<tr class='tab_bg_1'>";
 
          if (!isset($params['no_form']) || $params['no_form'] == false) {
@@ -705,7 +705,8 @@ JAVASCRIPT;
             echo "</td>";
             echo "<td class='right'>";
          } else {
-            echo "<td class='right' colspan=2>";
+            echo "<td class='center'>".__('Add a document')."</td>";
+            echo "<td style='padding-left:50px'>";
          }
          echo "<input type='hidden' name='entities_id' value='$entity'>";
          echo "<input type='hidden' name='is_recursive' value='$is_recursive'>";
