@@ -244,13 +244,9 @@
    text-align: left;
 }
 
-.talk_history .right.middle .h_content {
-   margin-left: 0;
-   margin-right: 20px;
+.talk_history .middle .h_content {
    max-width: 80%;
    width: 100%;
-   float: right;
-   text-align: left;
 }
 
 .talk_history .h_content:after, .talk_history .h_content:before {
