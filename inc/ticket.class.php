@@ -476,6 +476,11 @@ class PluginTalkTicket extends CommonGLPI {
             Ext.select(active_classnames.join(', ')).each(function(el){
                el.parent().removeClass('h_hidden');
             })
+
+            //show all items when no active filter 
+            if (active_classnames.length == 0) {
+               Ext.select('.h_item').removeClass('h_hidden');
+            }
          });
       });
 JAVASCRIPT;
