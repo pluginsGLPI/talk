@@ -330,12 +330,26 @@ class PluginTalkTicket extends CommonGLPI {
          }
 
          if (isset($item_i['content'])) {
-            echo "<div class='item_content'>";
             $content = $item_i['content'];
             $content = linkUrlsInTrustedHtml($content);
             $content = nl2br($content);
             $content = html_entity_decode($content);
+
+            $long_text = "";
+            if(substr_count($content, "<br") > 30) {
+               $long_text = "long_text";
+            }
+
+            echo "<div class='item_content $long_text'>";
+            echo "<p>";
             echo $content;
+            echo "</p>";
+            if (!empty($long_text)) {
+               echo "<p class='read_more'>";
+               echo "<a class='button'>".
+                    _sx('button', 'Show')."</a>";
+               echo "</p>";
+            }
             echo "</div>";
          }
 
