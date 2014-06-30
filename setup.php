@@ -27,6 +27,7 @@ function plugin_init_talk() {
                $PLUGIN_HOOKS['add_css']['talk'][] = 'css/hide_ticket_tabs.css';
             
                $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/move_talktab.js';
+               $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/filter_timeline.js';
                $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/read_more.js';
             }
          }

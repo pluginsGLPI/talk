@@ -1,12 +1,7 @@
-Ext.onReady(function () {
-/*   Ext.select(".long_text .button").on('click', function() {
-
+read_more = function() {
+   Ext.select(".long_text .read_more a").on('click', function(event, target, options) {
+      Ext.get(this.id).parent('.long_text').removeClass('long_text');
+      Ext.get(this.id).parent('.read_more').remove();
+      return false;
    });
-*/
-   Ext.getBody().on('click', function(event, target){
-      console.log(this);
-      alert('test');
-    }, null, {
-        delegate: '.long_text .read_more a'
-    });
-});
+}
