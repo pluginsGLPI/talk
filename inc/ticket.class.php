@@ -347,8 +347,7 @@ class PluginTalkTicket extends CommonGLPI {
             echo "</p>";
             if (!empty($long_text)) {
                echo "<p class='read_more'>";
-               echo "<a class='read_more_button'>".
-                    _sx('button', 'Show')."</a>";
+               echo "<a class='read_more_button'>.....</a>";
                echo "</p>";
             }
             echo "</div>";
