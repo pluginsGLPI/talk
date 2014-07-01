@@ -540,7 +540,7 @@ class PluginTalkTicket extends CommonGLPI {
                                       "plugins/talk/front/item.form.php?fup=1", 
                                       $fup_form_html);
 
-      
+         //add multipart attribute to permit doc upload
          $fup_form_html = str_replace("<form ", 
                                       "<form enctype='multipart/form-data'", 
                                       $fup_form_html);            
