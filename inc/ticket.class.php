@@ -51,8 +51,9 @@ class PluginTalkTicket extends CommonGLPI {
                              $CFG_GLPI["root_doc"]."/plugins/talk/ajax/viewsubitem.php", $params, "", false);
       echo str_replace("itemtype", "'+itemtype+'", $out);
       echo "};";
-      echo "function viewEditSubitem" . $ticket->fields['id'] . "$rand(itemtype, items_id, o) {\n";
-      echo "if (event.target.className == 'read_more_button') return;";
+      echo "function viewEditSubitem" . $ticket->fields['id'] . "$rand(e, itemtype, items_id, o) {\n";
+      echo "var e = window.event || e;";
+      echo "if (e.target.className == 'read_more_button') return;";
       $params = array('type'       => 'itemtype',
                       'parenttype' => 'Ticket',
                       'tickets_id' => $ticket->fields['id'],
@@ -322,7 +323,7 @@ class PluginTalkTicket extends CommonGLPI {
               ((isset($item_i['status'])) ? " ".$item_i['status'] : "").
               "'";
          if ($item['type'] != "Document_Item" && $item_i['can_edit']) {     
-            echo " onclick='javascript:viewEditSubitem".$ticket->fields['id']."$rand(\"".$item['type']."\", ".$item_i['id'].", this)'";
+            echo " onclick='javascript:viewEditSubitem".$ticket->fields['id']."$rand(event, \"".$item['type']."\", ".$item_i['id'].", this)'";
          }
          echo ">";
          if (isset($item_i['requesttypes_id']) 
