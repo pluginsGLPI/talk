@@ -539,6 +539,11 @@ class PluginTalkTicket extends CommonGLPI {
          $fup_form_html = str_replace("front/ticketfollowup.form.php", 
                                       "plugins/talk/front/item.form.php?fup=1", 
                                       $fup_form_html);
+
+      
+         $fup_form_html = str_replace("<form ", 
+                                      "<form enctype='multipart/form-data'", 
+                                      $fup_form_html);            
       }
 
       $endformtag = "<tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add' value=\"Ajouter\" class='submit'></td></tr>";

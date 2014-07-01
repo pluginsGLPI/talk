@@ -20,7 +20,7 @@ if (isset($_REQUEST['fup'])) {
 
 //add document
 if (isset($_REQUEST['filename']) && !empty($_REQUEST['filename'])) {
-   $doc          = new Document();
+   $doc = new Document();
    if (isset($_POST["add"])) {
       $doc->check(-1,'w',$_POST);
 
