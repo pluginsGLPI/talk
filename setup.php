@@ -16,20 +16,30 @@ function plugin_init_talk() {
          Plugin::registerClass('PluginTalkProfile',
                                array('addtabon' => 'Profile'));
 
-         if (plugin_talk_haveRight("is_active", "1")) {
-            Plugin::registerClass('PluginTalkTicket',
-                                  array('addtabon' => array('Ticket')));
+         Plugin::registerClass('PluginTalkUserpref',
+                               array('addtabon' => array('User', 'Preference')));
 
+         if (plugin_talk_haveRight("is_active", "1")) {
             if (strpos($_SERVER['REQUEST_URI'], "ticket.form.php") !== false
                && isset($_GET['id'])) {
 
-               $PLUGIN_HOOKS['add_css']['talk'][] = 'css/talk.css';
-               $PLUGIN_HOOKS['add_css']['talk'][] = 'css/hide_ticket_tabs.css';
-               //$PLUGIN_HOOKS['add_css']['talk'][] = 'css/split_ticket_view.css';
+               if (PluginTalkUserpref::isFunctionEnabled("talk_tab"))  {
+                  Plugin::registerClass('PluginTalkTicket',
+                                  array('addtabon' => array('Ticket')));
+
+                  $PLUGIN_HOOKS['add_css']['talk'][] = 'css/talk.css';
+                  $PLUGIN_HOOKS['add_css']['talk'][] = 'css/hide_ticket_tabs.css';
+
+                  $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/move_talktab.js';
+                  $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/filter_timeline.js';
+                  $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/read_more.js';
+               }
+
+               if (PluginTalkUserpref::isFunctionEnabled("split_view"))  {
+                  $PLUGIN_HOOKS['add_css']['talk'][] = 'css/split_ticket_view.css';
+               }
             
-               $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/move_talktab.js';
-               $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/filter_timeline.js';
-               $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/read_more.js';
+
             }
          }
       }

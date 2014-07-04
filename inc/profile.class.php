@@ -110,6 +110,9 @@ class PluginTalkProfile extends CommonDBTM {
       $prof = new self();
       if ($prof->getFromDBByProfile($_SESSION['glpiactiveprofile']['id'])) {
          $_SESSION["glpi_plugin_talk_profile"] = $prof->fields;
+
+         //get User preferences
+         PluginTalkUserpref::loadInSession();
       } else {
          unset($_SESSION["glpi_plugin_talk_profile"]);
       }
