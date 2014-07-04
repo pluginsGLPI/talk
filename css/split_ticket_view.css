@@ -44,6 +44,10 @@
    .talk_history .approbation_form textarea {
       width: 100% !important;
    }
+
+   .h_date { 
+      padding-bottom: 8px;
+   }
 }
 
 @media screen and (min-width: 1400px) {
@@ -59,5 +63,9 @@
    #tabcontent {
       width: 60%;
       float: right;
+   }
+
+   .h_date { 
+      padding-bottom: 0;
    }
 }
