@@ -51,7 +51,7 @@ class PluginTalkUserpref extends CommonDBTM {
       if($self->getFromDB(Session::getLoginUserID())) {
          $_SESSION['talk_userprefs'] = $self->fields;
       } else {
-         $this->add(array('users_id' => $ID));
+         $self->add(array('users_id' => Session::getLoginUserID()));
          $self->getFromDB(Session::getLoginUserID());
          $_SESSION['talk_userprefs'] = $self->fields;
       }
