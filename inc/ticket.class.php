@@ -422,7 +422,9 @@ class PluginTalkTicket extends CommonGLPI {
          if ($timeline_index == 0 && $item['type'] == "Solution" 
             && $ticket->fields["status"] == CommonITILObject::SOLVED) {
             echo "<div class='break'></div>";
+            echo "<div class='approbation_form'>";
             $followup_obj->showApprobationForm($ticket);
+            echo "</div>";
             echo "<hr class='approbation_separator' />";
             self::showHistoryHeader();
          }

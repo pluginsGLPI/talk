@@ -1,0 +1,63 @@
+@media screen and (min-width: 1200px) {
+   html, body {
+      height:100%;
+      overflow: hidden;
+   }
+
+   #page {
+      height: 84%;
+      padding: 0;
+   }
+
+   form[name=form_ticket] {
+      width: 48%;
+      float: left;
+      margin: 0;
+      overflow-y: auto;
+      height: 94%;
+   }
+
+   .tab_cadre_fixe, 
+   .tab_cadre_pager {
+      width: 100% !important;
+      margin: 0;
+   }
+
+   #tabspanel {
+      width: 52% !important;
+      float: right;
+   }
+
+   #tabcontent {
+      width: 52% !important;
+      float: left;
+      height: 94%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      margin: 0;
+      box-sizing:border-box;
+     -moz-box-sizing:border-box;
+     -webkit-box-sizing:border-box;
+      border-left: 1px solid #D0D0D0;
+   }
+
+   .talk_history .approbation_form textarea {
+      width: 100% !important;
+   }
+}
+
+@media screen and (min-width: 1400px) {
+   form[name=form_ticket] {
+      width: 40%;
+   }
+
+   #tabspanel {
+      width: 60%;
+      float: right;
+   }
+
+   #tabcontent {
+      width: 60%;
+      float: right;
+   }
+}

@@ -245,7 +245,7 @@
 }
 
 .talk_history .middle .h_content {
-   max-width: 80%;
+   max-width: 78%;
    width: 100%;
 }
 
@@ -481,7 +481,6 @@
    background-image: url(../pics/planification.png);
    background-repeat: no-repeat;
 }
-
 
 .talk_history .approbation_separator {
    margin-bottom: 55px;
