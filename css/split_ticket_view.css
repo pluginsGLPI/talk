@@ -52,16 +52,16 @@
 
 @media screen and (min-width: 1400px) {
    form[name=form_ticket] {
-      width: 40%;
+      width: 40% !important;
    }
 
    #tabspanel {
-      width: 60%;
+      width: 60% !important;
       float: right;
    }
 
    #tabcontent {
-      width: 60%;
+      width: 60% !important;
       float: right;
    }
 
