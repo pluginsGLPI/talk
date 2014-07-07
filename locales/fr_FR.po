@@ -27,3 +27,9 @@ msgstr "Filtrer l'historique"
 
 msgid "Actions historical"
 msgstr "Historique des actions"
+
+msgid "Enable Talk Tab"
+msgstr "Activer l'onglet 'Traitement du ticket'"
+
+msgid "Enable horizontal split view"
+msgstr "Activer la vue horizontale sur les tickets"
