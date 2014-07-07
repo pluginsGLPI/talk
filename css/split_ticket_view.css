@@ -50,22 +50,3 @@
    }
 }
 
-@media screen and (min-width: 1400px) {
-   form[name=form_ticket] {
-      width: 40% !important;
-   }
-
-   #tabspanel {
-      width: 60% !important;
-      float: right;
-   }
-
-   #tabcontent {
-      width: 60% !important;
-      float: right;
-   }
-
-   .h_date { 
-      padding-bottom: 0;
-   }
-}
