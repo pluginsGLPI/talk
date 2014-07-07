@@ -89,8 +89,6 @@ class PluginTalkUserpref extends CommonDBTM {
    }
 
    function showForm ($ID, $options=array()) {
-      if (!Session::haveRight("profile","r")) return false;
-
       if (!$this->getFromDB($ID)) {
          $this->add(array('users_id' => $ID));
       }
