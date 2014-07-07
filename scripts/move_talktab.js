@@ -11,4 +11,4 @@ window.setTimeout(function() {
       tabpanel.setActiveTab('PluginTalkTicket$1');
    }
 
-}, 250)
+}, 500)
