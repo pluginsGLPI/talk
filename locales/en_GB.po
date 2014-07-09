@@ -17,19 +17,19 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 msgid "Talks"
-msgstr "Discussions"
+msgstr "Talks"
 
 msgid "Processing ticket"
-msgstr "Traitement du ticket"
+msgstr "Processing ticke"
 
 msgid "Timeline filter"
-msgstr "Filtrer l'historique"
+msgstr "Timeline filter"
 
 msgid "Actions historical"
-msgstr "Historique des actions"
+msgstr "Actions historical"
 
 msgid "Enable Talk Tab"
-msgstr "Activer l'onglet Traitement du ticket"
+msgstr "Enable Talk Tab"
 
 msgid "Enable horizontal split view"
-msgstr "Activer la vue horizontale sur les tickets"
+msgstr "Enable horizontal split view"
