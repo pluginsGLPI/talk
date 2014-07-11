@@ -42,6 +42,10 @@
       border-left: 1px solid #D0D0D0;
    }
 
+   #tabcontent .talk_box{
+      margin-top: -15px;
+   }
+
    .talk_history .approbation_form textarea {
       width: 100% !important;
    }
