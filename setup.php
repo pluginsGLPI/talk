@@ -20,7 +20,7 @@ function plugin_init_talk() {
                                array('addtabon' => array('User', 'Preference')));
 
          if (plugin_talk_haveRight("is_active", "1")) {
-            if (strpos($_SERVER['REQUEST_URI'], "ticket.form.php") !== false
+            if (strpos($_SERVER['REQUEST_URI'], "/ticket.form.php") !== false
                && isset($_GET['id'])) {
 
                if (PluginTalkUserpref::isFunctionEnabled("talk_tab"))  {
