@@ -365,6 +365,14 @@
    margin-bottom: 0;
    padding: 0;
 }
+.talk_history .h_content.Document_Item:hover .delete_document{
+   opacity: 1;
+}
+
+.delete_document {
+   opacity: 0.1;
+   vertical-align: middle;
+}
 
 .talk_history .talk_img_preview img {
    width: 100px;

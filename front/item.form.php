@@ -31,4 +31,15 @@ if (isset($_REQUEST['filename']) && !empty($_REQUEST['filename'])) {
    }
 }
 
+//delete document
+if (isset($_REQUEST['delete_document'])) {
+   $document_item = new Document_Item;
+   $found_document_items = $document_item->find("itemtype = 'Ticket' ".
+                                                " AND items_id = ".intval($_REQUEST['tickets_id']).
+                                                " AND documents_id = ".intval($_REQUEST['documents_id']));
+   foreach ($found_document_items  as $item) {
+      $document_item->delete($item, true);
+   }
+}
+
 Html::back();
