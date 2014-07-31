@@ -203,7 +203,7 @@ class PluginTalkTicket extends CommonGLPI {
       
          $timeline[$solution_date."_solution"] 
             = array('type' => 'Solution', 'item' => array('id'               => 0,
-                                                          'content'          => $ticket->fields['solution'],
+                                                          'content'          => Html::clean(html_entity_decode($ticket->fields['solution'])),
                                                           'date'             => $solution_date, 
                                                           'users_id'         => $users_id, 
                                                           'solutiontypes_id' => $ticket->fields['solutiontypes_id'],
