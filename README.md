@@ -1,8 +1,8 @@
 Talk
 ====
 
-This glpi plugin alter the ticket form interface.
-It merge in one tab the followings : 
+This glpi plugin alters the ticket form interface.
+It merges in one tab the followings : 
 
  * Followups
  * Task
