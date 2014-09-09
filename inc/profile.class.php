@@ -1,5 +1,4 @@
 <?php
-
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
@@ -13,7 +12,7 @@ class PluginTalkProfile extends CommonDBTM {
             `id` int(11) NOT NULL auto_increment,
             `profiles_id` int(11) NOT NULL default '0',
             `is_active` char(1) collate utf8_unicode_ci default NULL,
-            PRIMARY KEY  (`id`),
+            PRIMARY KEY (`id`),
             KEY `profiles_id` (`profiles_id`)
       ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci")) {
          return false;
@@ -24,24 +23,24 @@ class PluginTalkProfile extends CommonDBTM {
 
    static function uninstall() {
       global $DB;
-
       return $DB->query("DROP TABLE IF EXISTS `glpi_plugin_talk_profiles`");
    }
     
    static function getTypeName($nb=0) {
-      return __('Talks', 'talk');
+      global $LANG;
+      return $LANG['plugin_talk']["title"][7];
    }
     
-   static function canCreate() {
+   function canCreate() {
       return Session::haveRight('profile', 'w');
    }
 
-   static function canView() {
+   function canView() {
       return Session::haveRight('profile', 'r');
    }
     
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      if ($item->getType()=='Profile') {
+      if ($item->getType() == 'Profile') {
          return self::getTypeName(2);
       }
       return '';
@@ -51,7 +50,7 @@ class PluginTalkProfile extends CommonDBTM {
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
       global $CFG_GLPI;
 
-      if ($item->getType()=='Profile') {
+      if ($item->getType() == 'Profile') {
          $ID = $item->getField('id');
          $prof = new self();
           
@@ -92,16 +91,13 @@ class PluginTalkProfile extends CommonDBTM {
 
       $myProf = new self();
       if (!$myProf->getFromDBByProfile($ID)) {
-
          $myProf->add(array(
                   'profiles_id' => $ID,
                   'is_active' => '1'));
-
       }
    }
 
    function createAccess($ID) {
-
       $this->add(array(
                'profiles_id' => $ID));
    }
@@ -119,6 +115,7 @@ class PluginTalkProfile extends CommonDBTM {
    }
     
    function showForm ($ID, $options=array()) {
+      global $LANG;
       if (!Session::haveRight("profile","r")) return false;
 
       $prof = new Profile();
@@ -130,7 +127,7 @@ class PluginTalkProfile extends CommonDBTM {
       $this->showFormHeader($options);
 
       echo "<tr class='tab_bg_2'>";
-      echo "<td width='10%'>" ._sx('button', 'Enable')."</td>";
+      echo "<td width='10%'>" . $LANG['buttons'][41] . "</td>";
       echo "<td style='text-align:left;'>";
       Dropdown::showYesNo("is_active",$this->fields["is_active"]);
       echo "</td>";
@@ -142,5 +139,3 @@ class PluginTalkProfile extends CommonDBTM {
       $this->showFormButtons($options);
    }
 }
-
-?>

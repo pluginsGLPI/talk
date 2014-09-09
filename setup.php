@@ -1,16 +1,15 @@
 <?php
-
 // Init the hooks of the plugins -Needed
 function plugin_init_talk() {
-   global $PLUGIN_HOOKS,$CFG_GLPI,$LANG;
+   global $PLUGIN_HOOKS, $CFG_GLPI, $LANG;
     
    $PLUGIN_HOOKS['csrf_compliant']['talk'] = true;
    
    $plugin = new Plugin();
    if ($plugin->isInstalled('talk') && $plugin->isActivated('talk')) {
-      $PLUGIN_HOOKS['change_profile']['talk'] = array('PluginTalkProfile','changeProfile');
+      $PLUGIN_HOOKS['change_profile']['talk'] = array('PluginTalkProfile', 'changeProfile');
        
-      //if glpi is loaded
+      //If GLPI is loaded
       if (Session::getLoginUserID()) {
 
          Plugin::registerClass('PluginTalkProfile',
@@ -27,19 +26,18 @@ function plugin_init_talk() {
                   Plugin::registerClass('PluginTalkTicket',
                                   array('addtabon' => array('Ticket')));
 
-                  $PLUGIN_HOOKS['add_css']['talk'][] = 'css/talk.css';
-                  $PLUGIN_HOOKS['add_css']['talk'][] = 'css/hide_ticket_tabs.css';
-
                   $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/move_talktab.js';
                   $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/filter_timeline.js';
                   $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/read_more.js';
+                  
+                  $PLUGIN_HOOKS['add_css']['talk'][] = 'css/talk.css';
+                  $PLUGIN_HOOKS['add_css']['talk'][] = 'css/hide_ticket_tabs.css';
                }
 
                if (PluginTalkUserpref::isFunctionEnabled("split_view"))  {
                   $PLUGIN_HOOKS['add_css']['talk'][] = 'css/split_ticket_view.css';
                }
             
-
             }
          }
       }
@@ -50,18 +48,17 @@ function plugin_init_talk() {
 function plugin_version_talk() {
    global $LANG;
 
-   $author = "<a href='www.teclib.com'>TECLIB'</a>";
-   return array ('name' => __("Talks", "talk"),
-                 'version' => '0.84-1.0',
-                 'author' => $author,
+   return array ('name' => $LANG['plugin_talk']["title"][7],
+                 'version' => '0.83',
+                 'author' => "<a href='http://www.teclib.com'>TECLIB'</a>",
                  'homepage' => 'www.teclib.com',
-                 'minGlpiVersion' => '0.84');
+                 'minGlpiVersion' => '0.83');
 }
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_talk_check_prerequisites() {
-   if (version_compare(GLPI_VERSION,'0.84','lt') || version_compare(GLPI_VERSION,'0.85','ge')) {
-      echo "This plugin requires GLPI 0.84+";
+   if (version_compare(GLPI_VERSION,'0.83','lt') || version_compare(GLPI_VERSION,'0.84','ge')) {
+      echo "This plugin requires GLPI 0.83";
       return false;
    }
    return true;
@@ -72,16 +69,14 @@ function plugin_talk_check_config() {
    return true;
 }
 
-function plugin_talk_haveRight($module,$right) {
-   $matches=array(
+function plugin_talk_haveRight($module, $right) {
+   $matches = array(
             ""  => array("","r","w"), // ne doit pas arriver normalement
             "r" => array("r","w"),
             "w" => array("w"),
             "1" => array("1"),
             "0" => array("0","1"), // ne doit pas arriver non plus
    );
-   if (isset($_SESSION["glpi_plugin_talk_profile"][$module])
-         && in_array($_SESSION["glpi_plugin_talk_profile"][$module], $matches[$right]))
-      return true;
-   else return false;
+   return (isset($_SESSION["glpi_plugin_talk_profile"][$module])
+         && in_array($_SESSION["glpi_plugin_talk_profile"][$module], $matches[$right]));
 }

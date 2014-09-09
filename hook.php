@@ -1,5 +1,4 @@
 <?php
-
 function plugin_talk_install() {
    $version = plugin_version_talk();
    $migration = new Migration($version['version']);
@@ -16,7 +15,7 @@ function plugin_talk_install() {
          }
       }
    }
-   return true ;
+   return true;
 }   
 
 function plugin_talk_uninstall() {
@@ -32,5 +31,5 @@ function plugin_talk_uninstall() {
          }
       }
    }
-   return true ;
+   return true;
 }

@@ -1,8 +1,8 @@
 <?php
-
 class PluginTalkTicket extends CommonGLPI {
    static function getTypeName($nb=0) {
-      return __("Processing ticket", "talk");
+      global $LANG;
+      return $LANG['plugin_talk']["title"][2];
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
@@ -13,7 +13,6 @@ class PluginTalkTicket extends CommonGLPI {
       }
       return '';
    }
-
 
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
       if ($item instanceof Ticket) {
@@ -32,7 +31,7 @@ class PluginTalkTicket extends CommonGLPI {
    }
 
    static function showForm(Ticket $ticket, $rand) {
-      global $CFG_GLPI;
+      global $LANG, $CFG_GLPI;
 
       //check global rights
       if (!Session::haveRight("observe_ticket", "1")
@@ -41,14 +40,17 @@ class PluginTalkTicket extends CommonGLPI {
       }
 
       // javascript function for add and edit items
-      echo "<script type='text/javascript' >\n";
+      echo "<script type='text/javascript'>\n";
       echo "function viewAddSubitem" . $ticket->fields['id'] . "$rand(itemtype) {\n";
       $params = array('type'       => 'itemtype',
                       'parenttype' => 'Ticket',
                       'tickets_id' => $ticket->fields['id'],
                       'id'         => -1);
-      $out = Ajax::updateItemJsCode("viewitem" . $ticket->fields['id'] . "$rand",
+      ob_start();
+      Ajax::updateItemJsCode("viewitem" . $ticket->fields['id'] . "$rand",
                              $CFG_GLPI["root_doc"]."/plugins/talk/ajax/viewsubitem.php", $params, "", false);
+      $out = ob_get_contents();
+      ob_get_clean();
       echo str_replace("itemtype", "'+itemtype+'", $out);
       echo "};";
       echo "function viewEditSubitem" . $ticket->fields['id'] . "$rand(e, itemtype, items_id, o) {\n";
@@ -59,12 +61,15 @@ class PluginTalkTicket extends CommonGLPI {
                       'parenttype' => 'Ticket',
                       'tickets_id' => $ticket->fields['id'],
                       'id'         => 'items_id');
-      $out = Ajax::updateItemJsCode("viewitem" . $ticket->fields['id'] . "$rand",
-                             $CFG_GLPI["root_doc"]."/plugins/talk/ajax/viewsubitem.php", $params, "", false);
+      ob_start();
+      Ajax::updateItemJsCode("viewitem" . $ticket->fields['id'] . "$rand",
+            $CFG_GLPI["root_doc"]."/plugins/talk/ajax/viewsubitem.php", $params, "");
+      $out = ob_get_contents();
+      ob_get_clean();
+      
       $out = str_replace("itemtype", "'+itemtype+'", $out);
       $out = str_replace("items_id", "'+items_id+'", $out);
       echo $out;
-
       //scroll to edit form
       echo "window.scrollTo(0,500);";
 
@@ -81,63 +86,63 @@ class PluginTalkTicket extends CommonGLPI {
       
       //check sub-items rights
       $tmp = array('tickets_id' => $ticket->getID());
-      $fup             = new TicketFollowup;
-      $ttask           = new TicketTask;
-
-      $canadd_fup      = TicketFollowup::canCreate() && $fup->can(-1, 'w', $tmp);
-      $canadd_task     = TicketTask::canCreate() && $ttask->can(-1, 'w', $tmp);
-      $canadd_document = Document::canCreate();
-      $canadd_solution = Ticket::canUpdate() && $ticket->canSolve();
+      $fup             = new TicketFollowup();
+      $ttask           = new TicketTask();
+      $doc             = new Document();
+      
+      $canadd_fup      = $fup->canCreate() && $fup->can(-1, 'w', $tmp);
+      $canadd_task     = $ttask->canCreate() && $ttask->can(-1, 'w', $tmp);
+      $canadd_document = $doc->canCreate();
+      $canadd_solution = $ticket->canUpdate() && $ticket->canSolve();
 
       if (!$canadd_fup && !$canadd_task && !$canadd_document && !$canadd_solution ) {
          return false;
       }
 
       //show choices
-      if ($ticket->fields["status"] != CommonITILObject::SOLVED
-         && $ticket->fields["status"] != CommonITILObject::CLOSED) {
-         echo "<h2>"._sx('button', 'Add')." : </h2>";
+      if ($ticket->fields["status"] != 'solved'
+         && $ticket->fields["status"] != 'closed') {
+         echo "<h2>" . $LANG['buttons'][8] . "</h2>";
          echo "<div class='talk_form'>";
          echo "<ul class='talk_choices'>";
          if ($canadd_fup) {   
             echo "<li class='followup' onclick='".
                  "javascript:viewAddSubitem".$ticket->fields['id']."$rand(\"TicketFollowup\");'>"
-                 .__("Followup")."</li>";
+                 .$LANG['mailing'][141]."</li>";
          }
          if ($canadd_task) {   
             echo "<li class='task' onclick='".
                  "javascript:viewAddSubitem".$ticket->fields['id']."$rand(\"TicketTask\");'>"
-                 .__("Task")."</li>";
+                 .$LANG['job'][7]."</li>";
          }
          if ($canadd_document) { 
             echo "<li class='document' onclick='".
                  "javascript:viewAddSubitem".$ticket->fields['id']."$rand(\"Document_Item\");'>"
-                 .__("Document")."</li>";
+                 .$LANG['document'][18]."</li>";
          }
          if ($canadd_solution) { 
             echo "<li class='solution' onclick='".
                  "javascript:viewAddSubitem".$ticket->fields['id']."$rand(\"Solution\");'>"
-                 .__("Solution")."</li>";
+                 .$LANG['jobresolution'][1]."</li>";
          }
          echo "</ul>"; // talk_choices
          echo "<div class='clear'>&nbsp;</div>";
          echo "</div>"; //end talk_form      
-      } 
+      }
 
       echo "<div class='ajax_box' id='viewitem" . $ticket->fields['id'] . "$rand'></div>\n";
-
    }
 
    static function geTimelineItems(Ticket $ticket, $rand) {
-      global $DB;
+      global $DB, $LANG;
 
       $timeline = array();
 
-      $user                  = new User;
-      $followup_obj          = new TicketFollowup;
-      $task_obj              = new TicketTask;
-      $document_item_obj     = new Document_Item;
-      $ticket_valitation_obj = new TicketValidation;
+      $user                  = new User();
+      $followup_obj          = new TicketFollowup();
+      $task_obj              = new TicketTask();
+      $document_item_obj     = new Document_Item();
+      $ticket_valitation_obj = new TicketValidation();
 
       //checks rights
       $showpublic = Session::haveRight("observe_ticket", "1");
@@ -172,7 +177,7 @@ class PluginTalkTicket extends CommonGLPI {
 
 
       //add ticket documents to timeline
-      $document_obj = new Document;
+      $document_obj = new Document();
       $document_items = $document_item_obj->find("itemtype = 'Ticket' AND items_id = ".$ticket->getID());
       foreach ($document_items as $document_item) {
          $document_obj->getFromDB($document_item['documents_id']);
@@ -207,15 +212,11 @@ class PluginTalkTicket extends CommonGLPI {
                                                           'date'             => $solution_date, 
                                                           'users_id'         => $users_id, 
                                                           'solutiontypes_id' => $ticket->fields['solutiontypes_id'],
-                                                          'can_edit'         => Ticket::canUpdate() && $ticket->canSolve()));
+                                                          'can_edit'         => $ticket->canUpdate() && $ticket->canSolve()));
       }
 
       // add ticket validation to timeline
-       if ($ticket->fields['type'] == Ticket::DEMAND_TYPE && 
-            (Session::haveRight('validate_request',1) || Session::haveRight('create_request_validation',1))
-       || $ticket->fields['type'] == Ticket::INCIDENT_TYPE &&
-            (Session::haveRight('validate_incident',1)|| Session::haveRight('create_incident_validation',1)))
-          {
+       if (Session::haveRight('validate_ticket',1)) {
         
          $ticket_validations = $ticket_valitation_obj->find('tickets_id = '.$ticket->getID());
          foreach ($ticket_validations as $validations_id => $validation) {
@@ -225,19 +226,24 @@ class PluginTalkTicket extends CommonGLPI {
                = array('type' => 'TicketValidation', 'item' => array(
                   'id'        => $validations_id,
                   'date'      => $validation['submission_date'],
-                  'content'   => __('Validation request')." => ".$user->getlink().
+                  'content'   => $LANG['plugin_talk']['old'][1]." => ".$user->getlink().
                                  "<br>".$validation['comment_submission'],
                   'users_id'  => $validation['users_id'], 
                   'can_edit'  => $canedit
                ));
 
             if (!empty($validation['validation_date'])) {
+               //TODO
+               $tab_status = Ticket::getAllStatusArray();
+               $tab_status = TicketValidation::getAllStatusArray();
+               $name = $validation['status'];
+               $str = ucfirst($tab_status[$name]);
+               
                $timeline[$validation['validation_date']."_validation_".$validations_id] 
                = array('type' => 'TicketValidation', 'item' => array(
                   'id'        => $validations_id,
                   'date'      => $validation['validation_date'],
-                  'content'   => __('Validation request answer')." : ".
-                                 _sx('status', ucfirst($validation['status']))."<br>".
+                  'content'   => $LANG['plugin_talk']['old'][2]." : ".$str."<br>".
                                  $validation['comment_validation'],
                   'users_id'  => $validation['users_id_validate'], 
                   'status'    => $validation['status'], 
@@ -249,18 +255,18 @@ class PluginTalkTicket extends CommonGLPI {
 
       //reverse sort timeline items by key (date)
       krsort($timeline);
-         
+      
       return $timeline;
    }
 
    static function showHistory(Ticket $ticket, $rand) {
-      global $CFG_GLPI, $DB;
+      global $LANG, $DB, $CFG_GLPI;
 
       //get ticket actors
       $ticket_users_keys = self::prepareTicketUser($ticket);
 
-      $user = new User;
-      $followup_obj = new TicketFollowup;
+      $user = new User();
+      $followup_obj = new TicketFollowup();
       $pics_url = "../plugins/talk/pics";
       
       $timeline = self::geTimelineItems($ticket, $rand);
@@ -279,10 +285,9 @@ class PluginTalkTicket extends CommonGLPI {
 
       //don't display title on solution approbation
       if ($first_item['type'] != 'Solution' 
-         || $ticket->fields["status"] != CommonITILObject::SOLVED) {
+         || $ticket->fields["status"] != 'solved') {
          self::showHistoryHeader();
       }
-
 
       $timeline_index = 0;
       foreach ($timeline as $item) {
@@ -294,19 +299,19 @@ class PluginTalkTicket extends CommonGLPI {
          }
 
          $date = "";
-         if (isset($item_i['date'])) $date = $item_i['date'];
+         if (isset($item_i['date']))     $date = $item_i['date'];
          if (isset($item_i['date_mod'])) $date = $item_i['date_mod'];
          
          // check if curent item user is assignee or requester
          $user_position = 'left';
          if (isset($ticket_users_keys[$item_i['users_id']]) 
-            && $ticket_users_keys[$item_i['users_id']] == CommonItilActor::ASSIGN) {
+            && $ticket_users_keys[$item_i['users_id']] == Ticket::ASSIGN) {
             $user_position = 'right';
          }
 
          //display solution in middle
          if ($timeline_index == 0 && $item['type'] == "Solution" 
-            && $ticket->fields["status"] == CommonITILObject::SOLVED) {
+            && $ticket->fields["status"] == 'solved') {
             $user_position.= ' middle';
          }
          
@@ -318,7 +323,7 @@ class PluginTalkTicket extends CommonGLPI {
          if (isset($item_i['users_id']) && $item_i['users_id'] != 0) {
             $user->getFromDB($item_i['users_id']);
             echo $user->getLink();
-         } else echo __("Requester");
+         } else echo $LANG['job'][4];
          echo "</div>";
          echo "</div>";
 
@@ -335,9 +340,7 @@ class PluginTalkTicket extends CommonGLPI {
          }
 
          if (isset($item_i['content'])) {
-            $content = $item_i['content'];
-            $content = linkUrlsInTrustedHtml($content);
-            $content = nl2br($content);
+            $content = nl2br(linkUrlsInTrustedHtml($item_i['content']));
             $content = html_entity_decode($content);
 
             $long_text = "";
@@ -385,7 +388,7 @@ class PluginTalkTicket extends CommonGLPI {
          // show "is_private" icon
          if (isset($item_i['is_private']) && $item_i['is_private']) {
             echo "<div class='private'>";
-            echo __('Private');
+            echo $LANG['common'][77];
             echo "</div>";
          }
       
@@ -428,7 +431,7 @@ class PluginTalkTicket extends CommonGLPI {
          echo "</div>"; //end  h_item
 
          if ($timeline_index == 0 && $item['type'] == "Solution" 
-            && $ticket->fields["status"] == CommonITILObject::SOLVED) {
+            && $ticket->fields["status"] == 'solved') {
             echo "<div class='break'></div>";
             echo "<div class='approbation_form'>";
             $followup_obj->showApprobationForm($ticket);
@@ -445,35 +448,42 @@ class PluginTalkTicket extends CommonGLPI {
    }
 
    static function showHistoryHeader() {
-      echo "<h2>".__("Actions historical", "talk")." : </h2>";
+      global $LANG;
+      echo "<h2>" . $LANG['plugin_talk']["title"][3] . " : </h2>";
       self::filterTimeline();
    }
 
    static function filterTimeline() {
-      global $CFG_GLPI;
+      global $LANG, $CFG_GLPI;
 
       $pics_url = $CFG_GLPI['root_doc']."/plugins/talk/pics";
       echo "<div class='filter_timeline'>";
-      echo "<label>".__("Timeline filter", "talk")." : </label>";
+      echo "<label>" . $LANG['plugin_talk']["title"][4] . " : </label>";
       echo "<ul>";
-      echo "<li><a class='reset' title=\"".__("Reset display options").
-         "\"><img src='$pics_url/reset.png' /></a></li>";
-      echo "<li><a class='Solution' title='".__("Solution").
-         "'><img src='$pics_url/solution_min.png' /></a></li>";
-      echo "<li><a class='TicketValidation' title='".__("Validation").
-         "'><img src='$pics_url/validation_min.png' /></a></li>";
-      echo "<li><a class='Document_Item' title='".__("Document").
-         "'><img src='$pics_url/document_min.png' /></a></li>";
-      echo "<li><a class='TicketTask' title='".__("Task").
-         "'><img src='$pics_url/task_min.png' /></a></li>";
-      echo "<li><a class='TicketFollowup' title='".__("Followup").
-         "'><img src='$pics_url/followup_min.png' /></a></li>";
+      
+      echo "<li><a class='reset' title=\"".$LANG['plugin_talk']["oldglpi"][1].
+      "\"><img src='$pics_url/reset.png' /></a></li>";
+      echo "<li><a class='Solution' title='".$LANG['stats'][9].
+      "'><img src='$pics_url/solution_min.png' /></a></li>";
+      echo "<li><a class='TicketValidation' title='".$LANG['rulesengine'][41].
+      "'><img src='$pics_url/validation_min.png' /></a></li>";
+      echo "<li><a class='Document_Item' title='".$LANG['document'][18].
+      "'><img src='$pics_url/document_min.png' /></a></li>";
+      echo "<li><a class='TicketTask' title='".$LANG['job'][7].
+      "'><img src='$pics_url/task_min.png' /></a></li>";
+      echo "<li><a class='TicketFollowup' title='".$LANG['mailing'][141].
+      "'><img src='$pics_url/followup_min.png' /></a></li>";
       echo "</ul>";
       echo "</div>";
 
       echo "<script type='text/javascript'>filter_timeline();</script>";
    }
 
+   /**
+    * 
+    * @param Ticket $ticket
+    * @return array
+    */
    static function prepareTicketUser(Ticket $ticket) {
       global $DB;
 
@@ -506,7 +516,7 @@ class PluginTalkTicket extends CommonGLPI {
                ON usr.id = pu.users_id
             WHERE prof.own_ticket = 1
          ) AS allactors
-         WHERE type != ".CommonItilActor::OBSERVER."
+         WHERE type != ".Ticket::OBSERVER."
          GROUP BY users_id
          ORDER BY type DESC";
       $res = $DB->query($query);
@@ -519,6 +529,8 @@ class PluginTalkTicket extends CommonGLPI {
    }
 
    static function showSubForm(CommonDBTM $item, $id, $params) {
+      global $DB;
+      
       if ($item instanceof Document_Item) {
          self::showSubFormDocument_Item($params['tickets_id'], $params);
 
@@ -532,8 +544,9 @@ class PluginTalkTicket extends CommonGLPI {
    }
 
    static function showSubFormTicketFollowup($item, $id, $params) {
+      global $DB;
       ob_start();
-
+      
       //get html of followup form
       $item->showForm($id, $params);
       $fup_form_html = ob_get_contents();
@@ -557,23 +570,20 @@ class PluginTalkTicket extends CommonGLPI {
                                       $fup_form_html);            
       }
 
-      $endformtag = "<tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add' value=\"Ajouter\" class='submit'></td></tr>";
-      $endformtag_pos = strpos($fup_form_html, $endformtag);
-
-      //echo new form
-      echo substr($fup_form_html, 0, $endformtag_pos);
-
       //don't display document form on update
       if (strpos($fup_form_html, "<input type='submit' name='update'") === false) {
-         echo $doc_form_html;
+         //echo str_replace("class='submit'></td></tr>", "class='submit'></td></tr><tr><td>".$doc_form_html."</td></tr>", $fup_form_html);
+         echo str_replace("<tr><td class='tab_bg_2 center' colspan='4'><input type='submit' name='add'", "<tr><td>".$doc_form_html."</td></tr><tr><td class='tab_bg_2 center' colspan='4'><input type='submit' name='add'", $fup_form_html);
+      } else {
+         echo $fup_form_html;
       }
-      echo substr($fup_form_html, $endformtag_pos);
+
    }
 
    static function showSubFormDocument_Item($ID, $params) {
-      global $DB, $CFG_GLPI;
+      global $DB, $CFG_GLPI, $LANG;
 
-      $item = new Ticket;
+      $item = new Ticket();
       $item->getFromDB($ID);
 
       if (empty($withtemplate)) {
@@ -585,18 +595,19 @@ class PluginTalkTicket extends CommonGLPI {
          $linkparam = "&amp;tickets_id=".$item->fields['id'];
       }
 
-      $canedit       =  $item->canAddItem('Document') && Document::canView();
+      $document      = new Document();
+      $canedit       = $item->canAddItem('Document') && $document->canView();
       $rand          = mt_rand();
       $is_recursive  = $item->isRecursive();
       $order = "DESC";
-      $sort = "`assocdate`";
+      //$sort = "`assocdate`";
       
-      $query = "SELECT `glpi_documents_items`.`id` AS assocID,
-                       `glpi_documents_items`.`date_mod` AS assocdate,
-                       `glpi_entities`.`id` AS entityID,
-                       `glpi_entities`.`completename` AS entity,
-                       `glpi_documentcategories`.`completename` AS headings,
-                       `glpi_documents`.*
+      $query = "SELECT `glpi_documents_items`.`id` AS assocID,".
+                       //`glpi_documents_items`.`date_mod` AS assocdate,
+                       "`glpi_entities`.`id` AS entityID,
+                       `glpi_entities`.`completename` AS entity,".
+                       //`glpi_documentcategories`.`completename` AS headings,
+                       "`glpi_documents`.*
                 FROM `glpi_documents_items`
                 LEFT JOIN `glpi_documents`
                           ON (`glpi_documents_items`.`documents_id`=`glpi_documents`.`id`)
@@ -616,12 +627,12 @@ class PluginTalkTicket extends CommonGLPI {
       // Document : search links in both order using union
       if ($item->getType() == 'Document') {
          $query .= "UNION
-                    SELECT `glpi_documents_items`.`id` AS assocID,
-                           `glpi_documents_items`.`date_mod` AS assocdate,
-                           `glpi_entities`.`id` AS entityID,
-                           `glpi_entities`.`completename` AS entity,
-                           `glpi_documentcategories`.`completename` AS headings,
-                           `glpi_documents`.*
+                    SELECT `glpi_documents_items`.`id` AS assocID,".
+                           //`glpi_documents_items`.`date_mod` AS assocdate,
+                           "`glpi_entities`.`id` AS entityID,
+                           `glpi_entities`.`completename` AS entity,".
+                           //`glpi_documentcategories`.`completename` AS headings,
+                           "`glpi_documents`.*
                     FROM `glpi_documents_items`
                     LEFT JOIN `glpi_documents`
                               ON (`glpi_documents_items`.`items_id`=`glpi_documents`.`id`)
@@ -639,7 +650,7 @@ class PluginTalkTicket extends CommonGLPI {
             $query .= " AND `glpi_documents`.`entities_id`='0' ";
          }
       }
-      $query .= " ORDER BY $sort $order ";
+      //$query .= " ORDER BY $sort $order ";
 
       $result = $DB->query($query);
       $number = $DB->numrows($result);
@@ -661,7 +672,7 @@ class PluginTalkTicket extends CommonGLPI {
 
          if ($item->isEntityAssign()) {
             /// Case of personal items : entity = -1 : create on active entity (Reminder case))
-            if ($item->getEntityID() >=0 ) {
+            if ($item->getEntityID() >= 0) {
                $entity = $item->getEntityID();
             }
 
@@ -690,19 +701,19 @@ class PluginTalkTicket extends CommonGLPI {
             echo "<form name='documentitem_form$rand' id='documentitem_form$rand' method='post'
                    action='".Toolbox::getItemTypeFormURL('Document')."'  enctype=\"multipart/form-data\">";
             echo "<table class='tab_cadre_fixe'>";
-            echo "<tr class='tab_bg_2'><th colspan='5'>".__('Add a document')."</th></tr>";
+            echo "<tr class='tab_bg_2'><th colspan='5'>". $LANG['document'][16] ."</th></tr>";
          }
          echo "<tr class='tab_bg_1'>";
 
          if (!isset($params['no_form']) || $params['no_form'] == false) {
             echo "<td class='center'>";
-            _e('Heading');
+            echo $LANG['log'][44];
             echo "</td><td>";
-            DocumentCategory::dropdown(array('entity' => $entities));
+            Dropdown::show('DocumentCategory', array('entity' => $entities));
             echo "</td>";
             echo "<td class='right'>";
          } else {
-            echo "<td class='center'>".__('Add a document')."</td>";
+            echo "<td class='center'>". $LANG['document'][16] ."</td>";
             echo "<td style='padding-left:50px'>";
          }
          echo "<input type='hidden' name='entities_id' value='$entity'>";
@@ -720,7 +731,7 @@ class PluginTalkTicket extends CommonGLPI {
 
          if (!isset($params['no_form']) || $params['no_form'] == false) {
             echo "<td class='center' width='20%'>";
-            echo "<input type='submit' name='add' value=\""._sx('button', 'Add a new file')."\"
+            echo "<input type='submit' name='add' value=\"". $LANG['document'][6] . "\"
                    class='submit'></td>";
          }
          echo "</tr>";
@@ -745,12 +756,12 @@ class PluginTalkTicket extends CommonGLPI {
                       $CFG_GLPI["documentcategories_id_forticket"]."'>";
             }
 
-            Document::dropdown(array('entity' => $entities ,
+            Document::dropdown(array('entity' => $entities,
                                      'used'   => $used));
             echo "</td>";
             echo "<td class='center' width='20%'>";
             echo "<input type='submit' name='add' value=\"".
-                     _sx('button', 'Associate an existing document')."\" class='submit'>";
+                  $LANG['document'][5]."\" class='submit'>";
             echo "</td>";
             echo "</tr>";
             echo "</table>";
@@ -764,7 +775,7 @@ class PluginTalkTicket extends CommonGLPI {
    }
 
    static function showSubFormSolution($ID) {
-      $ticket = new Ticket;
+      $ticket = new Ticket();
       $ticket->getFromDB($ID);
       $ticket->showSolutionForm();
    }

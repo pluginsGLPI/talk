@@ -1,5 +1,4 @@
 <?php
-
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
@@ -7,18 +6,19 @@ if (!defined('GLPI_ROOT')) {
 class PluginTalkUserpref extends CommonDBTM {
 
    static function getTypeName($nb=0) {
-      return __('Talks', 'talk');
+      global $LANG;
+      return $LANG['plugin_talk']["title"][7];
    }
     
-   static function getIndexName() {
+   function getIndexName() {
       return "users_id";
    }
 
-   static function canCreate() {
+   function canCreate() {
       return true;
    }
 
-   static function canView() {
+   function canView() {
       return true;
    }
     
@@ -41,29 +41,27 @@ class PluginTalkUserpref extends CommonDBTM {
 
    static function uninstall() {
       global $DB;
-
       return $DB->query("DROP TABLE IF EXISTS `glpi_plugin_talk_userprefs`");
    }
 
    static function loadInSession() {
       unset($_SESSION['talk_userprefs']);
-      $self = new self;
-      if($self->getFromDB(Session::getLoginUserID())) {
-         $_SESSION['talk_userprefs'] = $self->fields;
-      } else {
+      $self = new self();
+      if (! $self->getFromDB(Session::getLoginUserID())) {
          $self->add(array('users_id' => Session::getLoginUserID()));
          $self->getFromDB(Session::getLoginUserID());
-         $_SESSION['talk_userprefs'] = $self->fields;
       }
+      $_SESSION['talk_userprefs'] = $self->fields;
    }
 
+   /**
+    * 
+    * @param unknown $function
+    * @return boolean
+    */
    static function isFunctionEnabled($function) {
-      if (isset($_SESSION['talk_userprefs'][$function])
-         && $_SESSION['talk_userprefs'][$function] == 1) {
-         return true;
-      }
-
-      return false;
+      return (isset($_SESSION['talk_userprefs'][$function])
+         && $_SESSION['talk_userprefs'][$function] == 1);
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
@@ -73,6 +71,13 @@ class PluginTalkUserpref extends CommonDBTM {
       return '';
    }
 
+   /**
+    * 
+    * @param CommonGLPI $item
+    * @param number $tabnum
+    * @param number $withtemplate
+    * @return boolean true
+    */
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
       global $CFG_GLPI;
 
@@ -82,27 +87,30 @@ class PluginTalkUserpref extends CommonDBTM {
          $ID = Session::getLoginUserID();
       }
 
-      $self = new self;
+      $self = new self();
       $self->showForm($ID);
       
       return true;
    }
 
-   function showForm ($ID, $options=array()) {
+   function showForm($ID, $options=array()) {
+      global $LANG;
+      
       if (!$this->getFromDB($ID)) {
          $this->add(array('users_id' => $ID));
+         $this->getFromDB($ID);
       }
 
-      $this->initForm($ID, $options);
+      //$this->initForm($ID, $options);
       $this->showFormHeader($options);
 
       echo "<tr class='tab_bg_2'>";
-      echo "<td width='10%'>" .__("Enable Talk Tab", 'talk')."</td>";
+      echo "<td width='10%'>".$LANG['plugin_talk']["title"][5]."</td>";
       echo "<td style='text-align:left;'>";
       Dropdown::showYesNo("talk_tab", $this->fields["talk_tab"]);
       echo "</td>";
 
-      echo "<td width='10%'>" .__("Enable horizontal split view", 'talk')."</td>";
+      echo "<td width='10%'>".$LANG['plugin_talk']["title"][6]."</td>";
       echo "<td style='text-align:left;'>";
       Dropdown::showYesNo("split_view", $this->fields["split_view"]);
       echo "</td>";
