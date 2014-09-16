@@ -21,6 +21,15 @@
    resize: vertical;
 }
 
+#page div.box {
+   min-width: 10%;
+   max-width: 20%;
+   position: absolute;
+   top: 50px;
+   right: 15px;
+   z-index: 150;
+}
+
 /** FORM **/
 
 .talk_form {
