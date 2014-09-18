@@ -557,7 +557,7 @@ class PluginTalkTicket extends CommonGLPI {
                                       $fup_form_html);            
       }
 
-      $endformtag = "<tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add' value=\"" . __("Add") . ""\" class='submit'></td></tr>";
+      $endformtag = "<tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add' value='". __("Add") ."' class='submit'></td></tr>";
       $endformtag_pos = strpos($fup_form_html, $endformtag);
 
       //echo new form
