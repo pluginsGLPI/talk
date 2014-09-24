@@ -305,7 +305,8 @@ class PluginTalkTicket extends CommonGLPI {
          // check if curent item user is assignee or requester
          $user_position = 'left';
          if (isset($ticket_users_keys[$item_i['users_id']]) 
-            && $ticket_users_keys[$item_i['users_id']] == Ticket::ASSIGN) {
+            && $ticket_users_keys[$item_i['users_id']] == Ticket::ASSIGN
+            || $item['type'] == "Solution") {
             $user_position = 'right';
          }
 
@@ -323,6 +324,8 @@ class PluginTalkTicket extends CommonGLPI {
          if (isset($item_i['users_id']) && $item_i['users_id'] != 0) {
             $user->getFromDB($item_i['users_id']);
             echo $user->getLink();
+         } elseif($item['type'] == "Solution") {
+            echo $LANG['job'][6];
          } else echo $LANG['job'][4];
          echo "</div>";
          echo "</div>";
