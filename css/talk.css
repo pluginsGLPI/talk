@@ -30,6 +30,12 @@
    z-index: 150;
 }
 
+#page div.box a, 
+#page div.box h3 {
+   color: blue !important;
+}
+
+
 /** FORM **/
 
 .talk_form {
