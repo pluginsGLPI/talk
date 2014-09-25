@@ -1,6 +1,6 @@
-ul.x-tab-strip > li[id*=TicketFollowup],
-ul.x-tab-strip > li[id*=TicketTask],
-ul.x-tab-strip > li[id*=Document_Item],
+ul.x-tab-strip > li[id*="TicketFollowup\$1"],
+ul.x-tab-strip > li[id*="TicketTask\$1"],
+ul.x-tab-strip > li[id*="Document\$1"],
 ul.x-tab-strip > li[id*="Ticket\$2"]
 {
    display: none;
