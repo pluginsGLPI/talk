@@ -418,10 +418,14 @@ class PluginTalkTicket extends CommonGLPI {
             echo "</a>";
             if (!empty($item_i['mime'])) echo "&nbsp;(".$item_i['mime'].")";
             echo "<a href='".$CFG_GLPI['root_doc'].
+                 "/front/document.form.php?id=".$item_i['id']."' class='edit_document' title='".
+                 _sx("button", "Update")."'>";
+            echo "<img src='../plugins/talk/pics/edit.png' /></a>";
+            echo "<a href='".$CFG_GLPI['root_doc'].
                  "/plugins/talk/front/item.form.php?delete_document&documents_id=".$item_i['id'].
-                 "&tickets_id=".$ticket->getID()."' class='delete_document'>";
-            echo "<img src='../plugins/talk/pics/delete.png' /></a>";
-            
+                 "&tickets_id=".$ticket->getID()."' class='delete_document' title='".
+                 _sx("button", "Delete permanently")."'>";
+            echo "<img src='../plugins/talk/pics/delete.png' /></a>";            
          }
          echo "</div>"; //end h_content
 
