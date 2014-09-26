@@ -200,10 +200,15 @@ class PluginTalkTicket extends CommonGLPI {
                $users_id = addslashes(trim(preg_replace("/.*\(([0-9]+)\)/", "$1", $data_solution['user_name'])));
             }
          }
+
+         // fix trouble with html_entity_decode who skip accented characters (on windows browser)
+         $solution_content = preg_replace_callback("/(&#[0-9]+;)/", function($m) { 
+            return mb_convert_encoding($m[1], "UTF-8", "HTML-ENTITIES"); 
+         }, $ticket->fields['solution']);
       
          $timeline[$solution_date."_solution"] 
             = array('type' => 'Solution', 'item' => array('id'               => 0,
-                                                          'content'          => Html::clean(html_entity_decode($ticket->fields['solution'])),
+                                                          'content'          => Html::clean(html_entity_decode($solution_content)),
                                                           'date'             => $solution_date, 
                                                           'users_id'         => $users_id, 
                                                           'solutiontypes_id' => $ticket->fields['solutiontypes_id'],
