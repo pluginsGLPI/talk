@@ -568,7 +568,6 @@ class PluginTalkTicket extends CommonGLPI {
 
       //don't display document form on update
       if (strpos($fup_form_html, "<input type='submit' name='update'") === false) {
-         //echo $doc_form_html;
          echo str_replace("<tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add'", 
                           "<tr><td>".$doc_form_html."</td></tr><tr class='tab_bg_2'><td class= colspan='4'><input type='submit' name='add'", 
                           $fup_form_html);
