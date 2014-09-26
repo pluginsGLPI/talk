@@ -566,17 +566,15 @@ class PluginTalkTicket extends CommonGLPI {
                                       $fup_form_html);            
       }
 
-      $endformtag = "<tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add' value='". __("Add") ."' class='submit'></td></tr>";
-      $endformtag_pos = strpos($fup_form_html, $endformtag);
-
-      //echo new form
-      echo substr($fup_form_html, 0, $endformtag_pos);
-
       //don't display document form on update
       if (strpos($fup_form_html, "<input type='submit' name='update'") === false) {
-         echo $doc_form_html;
+         //echo $doc_form_html;
+         echo str_replace("<tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add'", 
+                          "<tr><td>".$doc_form_html."</td></tr><tr class='tab_bg_2'><td class= colspan='4'><input type='submit' name='add'", 
+                          $fup_form_html);
+      } else {
+         echo $fup_form_html;
       }
-      echo substr($fup_form_html, $endformtag_pos);
    }
 
    static function showSubFormDocument_Item($ID, $params) {
