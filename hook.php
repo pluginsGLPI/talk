@@ -34,3 +34,87 @@ function plugin_talk_uninstall() {
    }
    return true ;
 }
+
+
+function plugin_talk_getAddSearchOptions($itemtype) {
+   $sopt = array();
+   if ($itemtype == 'Profile') {
+         $sopt[63976]['table']      = 'glpi_plugin_talk_profiles';
+         $sopt[63976]['field']      = 'is_active';
+         $sopt[63976]['name']       = __('Talks', 'talk')." - ".__('Active');
+         $sopt[63976]['joinparams'] = array('jointype' => "child");
+   }
+   return $sopt;
+}
+
+function plugin_talk_giveItem($type,$ID,$data,$num) {
+   $searchopt = &Search::getOptions($type);
+   $table = $searchopt[$ID]["table"];
+   $field = $searchopt[$ID]["field"];
+
+   switch ($table.'.'.$field) {
+      case "glpi_plugin_talk_profiles.is_active" :
+         $out = Dropdown::getYesNo($data["ITEM_$num"]);
+         return $out;
+   }
+   return "";
+}
+
+
+function plugin_talk_MassiveActions($type) {
+   switch ($type) {
+      case 'Profile' :
+         return array("plugin_talk_edit_profile" => __("Talks", 'talk'));
+   }
+   return array();
+}
+
+function plugin_talk_MassiveActionsDisplay($options=array()) {
+   switch ($options['itemtype']) {
+      case 'Profile' :
+         switch ($options['action']) {
+            case "plugin_talk_edit_profile" :
+               echo _sx('button', 'Enable')." : ";
+               Dropdown::showYesNo("is_active", 1);
+               echo "&nbsp;<input type='submit' name='massiveaction' class='submit' value='".
+                      __s('Post')."'>";
+            break;
+         }
+         break;
+   }
+   return "";
+}
+
+function plugin_talk_MassiveActionsProcess($data) {
+
+   $ok      = 0;
+   $ko      = 0;
+   $noright = 0;
+
+   switch ($data['action']) {
+      case 'plugin_talk_edit_profile' :
+         if ($data['itemtype'] == 'Profile') {
+            $talk_profile = new PluginTalkProfile;
+            foreach ($data['item'] as $profiles_id => $val) {
+               if ($val == 1) {
+                  if (!$id = $talk_profile->getFromDBByProfile($profiles_id)) {
+                     PluginTalkProfile::createFirstAccess($profiles_id, $data['is_active']);
+                     $ok++;
+                  } else {
+                     if ($talk_profile->update(array('id'        => $id, 
+                                                     'is_active' => $data['is_active']))) 
+                        $ok++;
+                     else 
+                        $ko++;
+                  }
+               }
+            }
+         }
+         break;
+
+   }
+   return array('ok'      => $ok,
+                'ko'      => $ko,
+                'noright' => $noright);
+
+}

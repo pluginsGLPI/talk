@@ -19,6 +19,8 @@ function plugin_init_talk() {
          Plugin::registerClass('PluginTalkUserpref',
                                array('addtabon' => array('User', 'Preference')));
 
+         $PLUGIN_HOOKS['use_massive_action']['talk'] = 1;
+
          if (plugin_talk_haveRight("is_active", "1")) {
             if (strpos($_SERVER['REQUEST_URI'], "/ticket.form.php") !== false
                && isset($_GET['id'])) {

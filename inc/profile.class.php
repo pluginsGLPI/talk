@@ -69,7 +69,7 @@ class PluginTalkProfile extends CommonDBTM {
       $plugprof->deleteByCriteria(array('profiles_id' => $prof->getField("id")));
    }
     
-   private function getFromDBByProfile($profiles_id) {
+   function getFromDBByProfile($profiles_id) {
       global $DB;
 
       $query = "SELECT * FROM `".$this->getTable()."`
@@ -80,7 +80,7 @@ class PluginTalkProfile extends CommonDBTM {
          }
          $this->fields = $DB->fetch_assoc($result);
          if (is_array($this->fields) && count($this->fields)) {
-            return true;
+            return $this->fields['id'];
          } else {
             return false;
          }
@@ -88,14 +88,14 @@ class PluginTalkProfile extends CommonDBTM {
       return false;
    }
 
-   static function createFirstAccess($ID) {
+   static function createFirstAccess($profiles_id, $is_active = 1) {
 
       $myProf = new self();
-      if (!$myProf->getFromDBByProfile($ID)) {
+      if (!$myProf->getFromDBByProfile($profiles_id)) {
 
          $myProf->add(array(
-                  'profiles_id' => $ID,
-                  'is_active' => '1'));
+                  'profiles_id' => $profiles_id,
+                  'is_active' => $is_active));
 
       }
    }
