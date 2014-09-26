@@ -1,7 +1,7 @@
-#ext-comp-1002__TicketFollowup\$1,
-#ext-comp-1002__TicketTask\$1,
-#ext-comp-1002__Document_Item\$1,
-#ext-comp-1002__Ticket\$2 /* Solution */
+ul.x-tab-strip > li[id*="TicketFollowup\$1"],
+ul.x-tab-strip > li[id*="TicketTask\$1"],
+ul.x-tab-strip > li[id*="Document_Item\$1"],
+ul.x-tab-strip > li[id*="Ticket\$2"]
 {
    display: none;
 }
