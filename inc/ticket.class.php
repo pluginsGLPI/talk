@@ -331,7 +331,7 @@ class PluginTalkTicket extends CommonGLPI {
               ((isset($item_i['status'])) ? " ".$item_i['status'] : "").
               "'";
          if ($item['type'] != "Document_Item" && $item_i['can_edit']) {     
-            echo " onclick='javascript:viewEditSubitem".$ticket->fields['id']."$rand(event, \"".$item['type']."\", ".$item_i['id'].", this)'";
+            echo " ondblclick='javascript:viewEditSubitem".$ticket->fields['id']."$rand(event, \"".$item['type']."\", ".$item_i['id'].", this)'";
          }
          echo ">";
          if (isset($item_i['requesttypes_id']) 
