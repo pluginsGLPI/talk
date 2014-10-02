@@ -567,9 +567,13 @@ class PluginTalkTicket extends CommonGLPI {
 
          //insert document upload                                           
          $fup_form_html = str_replace("<tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add'", 
-                                      "<tr><td>".$doc_form_html."</td></tr><tr class='tab_bg_2'><td class= colspan='4'><input type='submit' name='add'", 
+                                      "<tr><td>".$doc_form_html."</td></tr><tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add'", 
                                       $fup_form_html);
 
+         //replace submit button by a splitted button who can change ticket status
+         $fup_form_html = preg_replace("/<input type='submit'.*>/U", // ungreedy
+                                       self::getSubmitButtonHtml($params['tickets_id']), 
+                                       $fup_form_html);
       }
 
       echo $fup_form_html;
@@ -772,6 +776,34 @@ class PluginTalkTicket extends CommonGLPI {
       $ticket = new Ticket;
       $ticket->getFromDB($ID);
       $ticket->showSolutionForm();
+   }
+
+   static function getSubmitButtonHtml($tickets_id, $action = "add") {
+      $locale = _sx('button', 'Add');
+      $ticket = new Ticket;
+      $ticket->getFromDB($tickets_id);
+      $all_status = Ticket::getAllowedStatusArray($ticket->fields['status']);
+
+      $html = "<div class='x-split-button' id='x-split-button'>
+      <input type='submit' value='$locale' name='$action' class='x-button x-button-main'>
+         <span class='x-button x-button-drop'>&nbsp;</span>
+         <ul class='x-button-drop-menu'>";
+      foreach ($all_status as $status_key => $status_label) {
+         $checked = "";
+         if ($status_key == $ticket->fields['status']) {
+            $checked = "checked='checked'";
+         }
+         $html.= "<li><input type='radio' id='status_radio_$status_key' name='status' $checked value='$status_key'>";
+         $html.= "<label for='status_radio_$status_key'>";
+         $html.= $status_label;
+         $html.= "</label>";
+         $html.= "</li>";
+      }
+      $html.= "</ul>
+      </div>";
+
+      $html.= "<script type='text/javascript'>split_button();</script>";
+      return $html;
    }
    
 }

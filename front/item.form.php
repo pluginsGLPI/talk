@@ -31,6 +31,13 @@ if (isset($_REQUEST['filename']) && !empty($_REQUEST['filename'])) {
    }
 }
 
+//change ticket status
+if (isset($_REQUEST['status']) && !empty($_REQUEST['status'])) {
+   $ticket = new Ticket;
+   $ticket->update(array('id'     => intval($_REQUEST['tickets_id']), 
+                         'status' => intval($_REQUEST['status'])));
+}
+
 //delete document
 if (isset($_REQUEST['delete_document'])) {
    $document_item = new Document_Item;

@@ -35,6 +35,7 @@ function plugin_init_talk() {
                   $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/move_talktab.js';
                   $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/filter_timeline.js';
                   $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/read_more.js';
+                  $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/split_button.js';
                }
 
                if (PluginTalkUserpref::isFunctionEnabled("split_view"))  {

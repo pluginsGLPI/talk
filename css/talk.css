@@ -516,3 +516,120 @@
    margin-bottom: 55px;
 }
 
+
+.x-split-button {
+  position: relative;
+  width: 250px;
+  left: 40%;
+}
+
+.x-button {
+   position: relative;
+   margin: 0;
+   float: left;
+   outline: none;
+   padding: 5px;
+   cursor:pointer;
+   font: bold 12px Arial, Helvetica;
+   color: #8f5a0a;
+   background-color: #ffb94b;
+   background-image: -webkit-gradient(linear, left top, left bottom, from(#fddb6f), to(#ffb94b));
+   background-image: -webkit-linear-gradient(top, #fddb6f, #ffb94b);
+   background-image: -moz-linear-gradient(top, #fddb6f, #ffb94b);
+   background-image: -ms-linear-gradient(top, #fddb6f, #ffb94b);
+   background-image: -o-linear-gradient(top, #fddb6f, #ffb94b);
+   background-image: linear-gradient(top, #fddb6f, #ffb94b);
+   
+   /* For Internet Explorer 5.5 - 7 */
+   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#fddb6f, endColorstr=#ffb94b);
+   /* For Internet Explorer 8 */
+   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#fddb6f, endColorstr=#ffb94b)";
+   text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+   -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+   -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+   box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;    
+   border-width: 1px;
+   border-style: solid;
+   border-color: #d69e31 #e3a037 #d5982d #e3a037
+}
+
+.x-button:hover {
+  cursor: pointer;
+   border: 1px inset #888888;
+   background-color: #fddb6f;
+   background-image: -webkit-gradient(linear, left top, left bottom, from(#ffb94b), to(#fddb6f));
+   background-image: -webkit-linear-gradient(top, #ffb94b, #fddb6f);
+   background-image: -moz-linear-gradient(top, #ffb94b, #fddb6f);
+   background-image: -ms-linear-gradient(top, #ffb94b, #fddb6f);
+   background-image: -o-linear-gradient(top, #ffb94b, #fddb6f);
+   background-image: linear-gradient(top, #ffb94b, #fddb6f);
+}
+
+.x-button.x-button-main {
+   width: 100px;
+   border-radius: 3px 0 0 3px;
+   -moz-border-radius: 3px 0 0 3px;
+   -webkit-border-radius: 3px 0 0 3px;
+   height: 26px;
+}
+
+.x-button.x-button-drop {
+   border-left: 0;
+   border-radius: 0 3px 3px 0;
+   -moz-border-radius: 0 3px 3px 0;
+   -webkit-border-radius: 0 3px 3px 0;
+   width: 15px;
+}
+
+.x-button.x-button-drop:after {
+   content: '\25BC';
+}
+.open .x-button.x-button-drop:after {
+   content: '\25B2';
+}
+
+.open > .x-button-drop-menu {
+   display: block;
+}
+
+.x-button-drop-menu {
+   position: absolute;
+   top: 27px;
+   left: 0;
+   z-index: 1000;
+   display: none;
+   float: left;
+   min-width: 136px;
+   list-style: none;
+   border-width: 1px;
+   border-style: solid;
+   border-color: #d69e31 #e3a037 #d5982d #e3a037;
+   box-shadow: 1px 1px 2px #E0E0E0;
+   border-radius: 3px;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+   text-align: left;
+}
+
+.x-button-drop-menu li input[type="radio"]:not(:checked),  
+.x-button-drop-menu li input[type="radio"]:checked {  
+  position: absolute;  
+  left: -9999px;  
+}  
+
+.x-button-drop-menu li label {
+   background-color: #fddb6f;
+   padding: 4px;
+   color: #8f5a0a;
+   cursor: pointer;
+   display: block;
+   font-weight: bold;
+}
+
+.x-button-drop-menu li:hover label {
+   background-color: #ffb94b !important;
+}
+.x-button-drop-menu li input[type="radio"]:checked + label{  
+   background-color: #EADA8A;
+   border: 2px inset #8F5A0A;
+} 
