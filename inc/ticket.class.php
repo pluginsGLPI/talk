@@ -563,7 +563,9 @@ class PluginTalkTicket extends CommonGLPI {
          //add multipart attribute to permit doc upload
          $fup_form_html = str_replace("<form ", 
                                       "<form enctype='multipart/form-data'", 
-                                      $fup_form_html);            
+                                      $fup_form_html);        
+
+         //insert document upload                                           
          $fup_form_html = str_replace("<tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add'", 
                                       "<tr><td>".$doc_form_html."</td></tr><tr class='tab_bg_2'><td class= colspan='4'><input type='submit' name='add'", 
                                       $fup_form_html);
