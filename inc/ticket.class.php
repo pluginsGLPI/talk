@@ -554,8 +554,8 @@ class PluginTalkTicket extends CommonGLPI {
       $doc_form_html = ob_get_contents();
       ob_end_clean();
 
-      //replace action param to redirect to talk controller (only for add)
       if (strpos($fup_form_html, "<input type='submit' name='update'") === false) {
+         //replace action param to redirect to talk controller (only for add)
          $fup_form_html = str_replace("front/ticketfollowup.form.php", 
                                       "plugins/talk/front/item.form.php?fup=1", 
                                       $fup_form_html);
@@ -569,6 +569,7 @@ class PluginTalkTicket extends CommonGLPI {
          $fup_form_html = str_replace("<tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add'", 
                                       "<tr><td>".$doc_form_html."</td></tr><tr class='tab_bg_2'><td class= colspan='4'><input type='submit' name='add'", 
                                       $fup_form_html);
+
       }
 
       echo $fup_form_html;
