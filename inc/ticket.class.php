@@ -534,6 +534,9 @@ class PluginTalkTicket extends CommonGLPI {
       } else if ($item instanceof TicketFollowup) {
          self::showSubFormTicketFollowup($item, $id, $params);
 
+      } else if ($item instanceof TicketTask) {
+         self::showSubFormTicketTask($item, $id, $params);
+
       } else if (method_exists($item, "showForm")) {
          $item->showForm($id, $params);
 
@@ -558,6 +561,45 @@ class PluginTalkTicket extends CommonGLPI {
          //replace action param to redirect to talk controller (only for add)
          $fup_form_html = str_replace("front/ticketfollowup.form.php", 
                                       "plugins/talk/front/item.form.php?fup=1", 
+                                      $fup_form_html);
+
+         //add multipart attribute to permit doc upload
+         $fup_form_html = str_replace("<form ", 
+                                      "<form enctype='multipart/form-data'", 
+                                      $fup_form_html);        
+
+         //insert document upload                                           
+         $fup_form_html = str_replace("<tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add'", 
+                                      "<tr><td>".$doc_form_html."</td></tr><tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add'", 
+                                      $fup_form_html);
+
+         //replace submit button by a splitted button who can change ticket status
+         $fup_form_html = preg_replace("/<input type='submit'.*>/U", // ungreedy
+                                       self::getSubmitButtonHtml($params['tickets_id']), 
+                                       $fup_form_html);
+      }
+
+      echo $fup_form_html;
+   }
+
+   static function showSubFormTicketTask($item, $id, $params) {
+      ob_start();
+
+      //get html of followup form
+      $item->showForm($id, $params);
+      $fup_form_html = ob_get_contents();
+      ob_clean();
+
+      //get html of document form
+      $params['no_form'] = true;
+      self::showSubFormDocument_Item($params['tickets_id'], $params);
+      $doc_form_html = ob_get_contents();
+      ob_end_clean();
+
+      if (strpos($fup_form_html, "<input type='submit' name='update'") === false) {
+         //replace action param to redirect to talk controller (only for add)
+         $fup_form_html = str_replace("front/tickettask.form.php", 
+                                      "plugins/talk/front/item.form.php?ttask=1", 
                                       $fup_form_html);
 
          //add multipart attribute to permit doc upload

@@ -18,6 +18,21 @@ if (isset($_REQUEST['fup'])) {
    }
 }
 
+//add task
+if (isset($_REQUEST['ttask'])) {
+   $ttask = new TicketTask();
+   if (isset($_POST["add"])) {
+
+      $ttask->check(-1,'w',$_POST);
+      $ttask->add($_POST);
+
+      Event::log($ttask->getField('tickets_id'), "ticket", 4, "tracking",
+                 //TRANS: %s is the user login
+                 sprintf(__('%s adds a task'), $_SESSION["glpiname"]));
+
+   }
+}
+
 //add document
 if (isset($_REQUEST['filename']) && !empty($_REQUEST['filename'])) {
    $doc = new Document();
