@@ -1,6 +1,8 @@
 Talk
 ====
 
+Download : https://github.com/TECLIB/talk/releases
+
 This glpi plugin alters the ticket form interface.
 It merges in one tab the followings : 
 
