@@ -837,6 +837,7 @@ class PluginTalkTicket extends CommonGLPI {
          }
          $html.= "<li><input type='radio' id='status_radio_$status_key' name='status' $checked value='$status_key'>";
          $html.= "<label for='status_radio_$status_key'>";
+         $html.= "<img src='".Ticket::getStatusIconURL($status_key)."' />&nbsp;";
          $html.= $status_label;
          $html.= "</label>";
          $html.= "</li>";
