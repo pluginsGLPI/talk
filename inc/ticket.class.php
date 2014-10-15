@@ -574,9 +574,12 @@ class PluginTalkTicket extends CommonGLPI {
                                       $fup_form_html);
 
          //replace submit button by a splitted button who can change ticket status
-         $fup_form_html = preg_replace("/<input type='submit'.*>/U", // ungreedy
-                                       self::getSubmitButtonHtml($params['tickets_id']), 
-                                       $fup_form_html);
+         if (isset($_SESSION["glpiactiveprofile"])
+          	 && $_SESSION["glpiactiveprofile"]["interface"] == "central") {
+          	$fup_form_html = preg_replace("/<input type='submit'.*>/U", // ungreedy
+                                       	self::getSubmitButtonHtml($params['tickets_id']), 
+                                       	$fup_form_html);
+         }
       }
 
       echo $fup_form_html;
@@ -613,9 +616,12 @@ class PluginTalkTicket extends CommonGLPI {
                                       $fup_form_html);
 
          //replace submit button by a splitted button who can change ticket status
-         $fup_form_html = preg_replace("/<input type='submit'.*>/U", // ungreedy
-                                       self::getSubmitButtonHtml($params['tickets_id']), 
-                                       $fup_form_html);
+         if (isset($_SESSION["glpiactiveprofile"])
+          	 && $_SESSION["glpiactiveprofile"]["interface"] == "central") {
+	         $fup_form_html = preg_replace("/<input type='submit'.*>/U", // ungreedy
+	                                       self::getSubmitButtonHtml($params['tickets_id']), 
+	                                       $fup_form_html);
+	     	}
       }
 
       echo $fup_form_html;
