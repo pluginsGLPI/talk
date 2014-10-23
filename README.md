@@ -1,7 +1,7 @@
 Talk
 ====
 
-Download : https://github.com/TECLIB/talk/releases
+Download : https://github.com/TECLIB/talk/releases  
 FR Documentation : https://github.com/TECLIB/talk/blob/master/documentation/talk.fr_FR.asciidoc 
 
 This glpi plugin alters the ticket form interface.
