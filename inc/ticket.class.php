@@ -343,7 +343,6 @@ class PluginTalkTicket extends CommonGLPI {
             $content = $item_i['content'];
             $content = linkUrlsInTrustedHtml($content);
             $content = nl2br($content);
-            $content = html_entity_decode($content);
 
             $long_text = "";
             if(substr_count($content, "<br") > 30 || strlen($content) > 2000) {
