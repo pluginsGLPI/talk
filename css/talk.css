@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'talkinconsolata';
+  src: url(Inconsolata-Regular.ttf) format('truetype');
+}
+
 .talk_box {
    padding-top: 5px;
    text-align: left;
@@ -250,8 +255,9 @@
    margin-right: 0;
    margin-left: 20px;
    word-wrap: break-word;
-   font-family: "Lucida Console", Monaco, monospace; 
-   font-size: 11px;
+   font-family: talkinconsolata; 
+   font-size: 12px;
+   white-space: pre-wrap;
 }
 
 .talk_history .right .h_content {
