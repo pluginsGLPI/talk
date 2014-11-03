@@ -250,6 +250,8 @@
    margin-right: 0;
    margin-left: 20px;
    word-wrap: break-word;
+   font-family: "Lucida Console", Monaco, monospace; 
+   font-size: 11px;
 }
 
 .talk_history .right .h_content {
