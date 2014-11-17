@@ -58,13 +58,13 @@ function plugin_version_talk() {
                  'version' => '0.84-1.0',
                  'author' => $author,
                  'homepage' => 'www.teclib.com',
-                 'minGlpiVersion' => '0.84');
+                 'minGlpiVersion' => '0.85');
 }
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_talk_check_prerequisites() {
-   if (version_compare(GLPI_VERSION,'0.84','lt') || version_compare(GLPI_VERSION,'0.85','ge')) {
-      echo "This plugin requires GLPI 0.84+";
+   if (version_compare(GLPI_VERSION,'0.85','lt') || version_compare(GLPI_VERSION,'0.86','ge')) {
+      echo "This plugin requires GLPI 0.85+";
       return false;
    }
    return true;
