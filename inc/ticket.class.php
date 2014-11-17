@@ -62,7 +62,7 @@ class PluginTalkTicket extends CommonGLPI {
                       'id'         => -1);
       $out = Ajax::updateItemJsCode("viewitem" . $ticket->fields['id'] . "$rand",
                              $CFG_GLPI["root_doc"]."/plugins/talk/ajax/viewsubitem.php", $params, "", false);
-      echo str_replace("itemtype", "'+itemtype+'", $out);
+      echo str_replace("\"itemtype\"", "itemtype", $out);
       echo "};";
       echo "function viewEditSubitem" . $ticket->fields['id'] . "$rand(e, itemtype, items_id, o) {\n";
       echo "var e = window.event || e; console.log(e);";
@@ -74,8 +74,8 @@ class PluginTalkTicket extends CommonGLPI {
                       'id'         => 'items_id');
       $out = Ajax::updateItemJsCode("viewitem" . $ticket->fields['id'] . "$rand",
                              $CFG_GLPI["root_doc"]."/plugins/talk/ajax/viewsubitem.php", $params, "", false);
-      $out = str_replace("itemtype", "'+itemtype+'", $out);
-      $out = str_replace("items_id", "'+items_id+'", $out);
+      echo str_replace("\"itemtype\"", "itemtype", $out);
+      echo str_replace("\"items_id\"", "items_id", $out);
       echo $out;
 
       //scroll to edit form
