@@ -191,7 +191,7 @@ class PluginTalkProfile extends Profile {
       $profile->getFromDB($profiles_id);
 
       echo "<div class='firstbloc'>";
-      if (($canedit = Session::haveRightsOr(self::$rightname, array(CREATE, UPDATE, PURGE)))
+      if (($canedit = Session::haveRightsOr("followup", array(CREATE, UPDATE, PURGE)))
           && $openform) {
          echo "<form method='post' action='".$profile->getFormURL()."'>";
       }

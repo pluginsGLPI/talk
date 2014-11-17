@@ -47,8 +47,9 @@ class PluginTalkTicket extends CommonGLPI {
       global $CFG_GLPI;
 
       //check global rights
-      if (!Session::haveRight("observe_ticket", "1")
-          && !Session::haveRight("show_full_ticket", "1")) {
+      if (!Session::haveRight("ticket", Ticket::READMY)
+       && !Session::haveRightsOr("followup", array(TicketFollowup::SEEPUBLIC, 
+                                                   TicketFollowup::SEEPRIVATE))) {
          return false;
       }
 
@@ -152,8 +153,12 @@ class PluginTalkTicket extends CommonGLPI {
       $ticket_valitation_obj = new TicketValidation;
 
       //checks rights
-      $showpublic = Session::haveRight("observe_ticket", "1");
-      $showprivate = Session::haveRight("show_full_ticket", "1");
+      $showpublic = Session::haveRightsOr("followup", array(TicketFollowup::SEEPUBLIC, 
+                                                            TicketFollowup::SEEPRIVATE))
+                 && Session::haveRightsOr("task",     array(TicketTask::SEEPUBLIC, 
+                                                            TicketTask::SEEPRIVATE));
+      $showprivate = Session::haveRight("ticket", Ticket::READMY);
+
       $restrict = "";
       if (!$showprivate) {
          $restrict = " AND (`is_private` = '0'
@@ -229,10 +234,12 @@ class PluginTalkTicket extends CommonGLPI {
 
       // add ticket validation to timeline
        if ($ticket->fields['type'] == Ticket::DEMAND_TYPE && 
-            (Session::haveRight('validate_request',1) || Session::haveRight('create_request_validation',1))
+            (Session::haveRight('ticketvalidation', TicketValidation::VALIDATEREQUEST) 
+          || Session::haveRight('ticketvalidation', TicketValidation::CREATEREQUEST))
        || $ticket->fields['type'] == Ticket::INCIDENT_TYPE &&
-            (Session::haveRight('validate_incident',1)|| Session::haveRight('create_incident_validation',1)))
-          {
+            (Session::haveRight('ticketvalidation', TicketValidation::VALIDATEINCIDENT)
+          || Session::haveRight('ticketvalidation', TicketValidation::CREATEINCIDENT))
+          ) {
         
          $ticket_validations = $ticket_valitation_obj->find('tickets_id = '.$ticket->getID());
          foreach ($ticket_validations as $validations_id => $validation) {
@@ -524,7 +531,10 @@ class PluginTalkTicket extends CommonGLPI {
                ON pu.profiles_id = prof.id
             LEFT JOIN glpi_users usr
                ON usr.id = pu.users_id
-            WHERE prof.own_ticket = 1
+            LEFT JOIN glpi_profilerights pr
+               ON pr.profiles_id = prof.id
+            WHERE pr.name = 'ticket'
+               AND pr.rights & ".Ticket::OWN." = ".Ticket::OWN."
          ) AS allactors
          WHERE type != ".CommonItilActor::OBSERVER."
          GROUP BY users_id
@@ -798,7 +808,7 @@ class PluginTalkTicket extends CommonGLPI {
             Html::closeForm();
          }
 
-         if (Session::haveRight('document','r') && $nb > count($used) &&
+         if (Session::haveRight('document', READ) && $nb > count($used) &&
             (!isset($params['no_form']) || $params['no_form'] == false)) {
             echo "<form name='document_form$rand' id='document_form$rand' method='post'
                    action='".Toolbox::getItemTypeFormURL('Document')."'>";
