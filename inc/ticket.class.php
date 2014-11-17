@@ -1,6 +1,9 @@
 <?php
 
 class PluginTalkTicket extends CommonGLPI {
+   static $rightname = "plugin_talk_is_active";
+   const ACTIVE = 1024;
+
    static function getTypeName($nb=0) {
       return __("Processing ticket", "talk");
    }
@@ -14,7 +17,16 @@ class PluginTalkTicket extends CommonGLPI {
       return '';
    }
 
-
+   /**
+    * @since version 0.85
+    *
+    * @see commonDBTM::getRights()
+   **/
+   function getRights($interface='central') {
+      $values = array(self::ACTIVE => "");
+      return $values;
+   }
+   
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
       if ($item instanceof Ticket) {
          return self::showForTicket($item, $withtemplate);

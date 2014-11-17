@@ -4,7 +4,8 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
-class PluginTalkProfile extends CommonDBTM {
+class PluginTalkProfile extends Profile {
+   static $rightname = "profile";
 
    static function install(Migration $migration) {
       global $DB;
@@ -19,27 +20,96 @@ class PluginTalkProfile extends CommonDBTM {
          return false;
       }
 
-      self::createFirstAccess($_SESSION['glpiactiveprofile']['id']);     
+      //Migrate profiles to the new system
+      require_once "ticket.class.php";
+      self::initProfile();
+      self::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
    }
 
    static function uninstall() {
       global $DB;
 
-      return $DB->query("DROP TABLE IF EXISTS `glpi_plugin_talk_profiles`");
+      //delete profiles
+      return 
+         $DB->query("DELETE FROM glpi_profilerights WHERE name LIKE 'plugin_talk%'")
+         && $DB->query("DROP TABLE IF EXISTS `glpi_plugin_talk_profiles`");
    }
-    
+
+   function getAllRights($all = false) {
+      $rights = array();
+
+      if ($all) {
+         $rights[] = array('itemtype' => 'PluginTalkTicket',
+                           'label'    =>  _sx('button', 'Enable'),
+                           'field'    => 'plugin_talk_is_active');
+      }
+      
+      return $rights;
+   }
+
    static function getTypeName($nb=0) {
       return __('Talks', 'talk');
    }
+   
+   /**
+   * Initialize profiles, and migrate it necessary
+   */
+   static function initProfile() {
+      global $DB;
+      $profile = new self();
+
+      //Add new rights in glpi_profilerights table
+      foreach ($profile->getAllRights(true) as $data) {
+         if (countElementsInTable("glpi_profilerights", "`name` = '".$data['field']."'") == 0) {
+            ProfileRight::addProfileRights(array($data['field']));
+            $_SESSION['glpiactiveprofile'][$data['field']] = 0;
+         }
+      }
+      
+      //Migration old rights in new ones
+      foreach ($DB->request("SELECT `id` FROM `glpi_profiles`") as $prof) {
+         self::migrateOneProfile($prof['id']);
+      }
+   }
     
-   static function canCreate() {
-      return Session::haveRight('profile', 'w');
+   /**
+   * @since 0.85
+   * Migration rights from old system to the new one for one profile
+   * @param $profiles_id the profile ID
+   */
+   static function migrateOneProfile($profiles_id) {
+      global $DB;
+      
+      foreach ($DB->request('glpi_plugin_talk_profiles', "`profiles_id`='$profiles_id'") as $profile_data) {
+         $matching = array('is_active' => 'plugin_talk_is_active');
+         $current_rights = ProfileRight::getProfileRights($profiles_id, array_values($matching));
+         foreach ($matching as $old => $new) {
+            if (!isset($current_rights[$old])) {
+               $query = "UPDATE `glpi_profilerights` 
+                         SET `rights`='".self::translateARight($profile_data[$old])."' 
+                         WHERE `name`='$new' AND `profiles_id`='$profiles_id'";
+               $DB->query($query);
+            }
+         }
+      }
    }
 
-   static function canView() {
-      return Session::haveRight('profile', 'r');
+   public static function createFirstAccess($ID) {
+      $talk_profile = new self();
+      $profile = new Profile;
+      $dataprofile = array('id' => $ID);
+      $profile->getFromDB($ID);
+
+      foreach ($talk_profile->getAllRights(true) as $talk_r) {   
+         $g_rights = $profile->getRightsFor($talk_r['itemtype']);
+
+         foreach ($g_rights as $g_right => $label) {
+            $dataprofile['_'.$talk_r['field']][$g_right."_0"] = 1;
+         }
+      }
+      $profile->update($dataprofile);
    }
-    
+
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
       if ($item->getType()=='Profile') {
          return self::getTypeName(2);
@@ -55,14 +125,12 @@ class PluginTalkProfile extends CommonDBTM {
          $ID = $item->getField('id');
          $prof = new self();
           
-         if (!$prof->getFromDBByProfile($item->getField('id'))) {
-            $prof->createAccess($item->getField('id'));
-         }
          $prof->showForm($item->getField('id'), array('target' =>
                   $CFG_GLPI["root_doc"]."/plugins/talk/front/profile.form.php"));
       }
       return true;
    }
+    
     
    static function purgeProfiles(Profile $prof) {
       $plugprof = new self();
@@ -88,24 +156,24 @@ class PluginTalkProfile extends CommonDBTM {
       return false;
    }
 
-   static function createFirstAccess($profiles_id, $is_active = 1) {
-
-      $myProf = new self();
-      if (!$myProf->getFromDBByProfile($profiles_id)) {
-
-         $myProf->add(array(
-                  'profiles_id' => $profiles_id,
-                  'is_active' => $is_active));
-
+   static function translateARight($old_right) {
+      switch ($old_right) {
+         case '': 
+            return 0;
+         case 'r' :
+            return READ;
+         case 'w':
+            return ALLSTANDARDRIGHT;
+         case '0':
+         case '1':
+            return $old_right;
+            
+         default :
+            return 0;
       }
    }
 
-   function createAccess($ID) {
-
-      $this->add(array(
-               'profiles_id' => $ID));
-   }
-
+   
    static function changeProfile() {
       $prof = new self();
       if ($prof->getFromDBByProfile($_SESSION['glpiactiveprofile']['id'])) {
@@ -118,28 +186,32 @@ class PluginTalkProfile extends CommonDBTM {
       }
    }
     
-   function showForm ($ID, $options=array()) {
-      if (!Session::haveRight("profile","r")) return false;
+   function showForm($profiles_id=0, $openform=TRUE, $closeform=TRUE) {
+      $profile = new Profile();
+      $profile->getFromDB($profiles_id);
 
-      $prof = new Profile();
-      if ($ID) {
-         $this->getFromDBByProfile($ID);
-         $prof->getFromDB($ID);
+      echo "<div class='firstbloc'>";
+      if (($canedit = Session::haveRightsOr(self::$rightname, array(CREATE, UPDATE, PURGE)))
+          && $openform) {
+         echo "<form method='post' action='".$profile->getFormURL()."'>";
       }
 
-      $this->showFormHeader($options);
+      $rights = $this->getAllRights(true);
+      $profile->displayRightsChoiceMatrix($rights, array('canedit'       => $canedit,
+                                                      'default_class' => 'tab_bg_2',
+                                                      'title'         => ""));
 
-      echo "<tr class='tab_bg_2'>";
-      echo "<td width='10%'>" ._sx('button', 'Enable')."</td>";
-      echo "<td style='text-align:left;'>";
-      Dropdown::showYesNo("is_active",$this->fields["is_active"]);
-      echo "</td>";
-      echo "</tr>";
+      if ($canedit
+          && $closeform) {
+         echo "<div class='center'>";
+         echo Html::hidden('id', array('value' => $profiles_id));
+         echo Html::submit(_sx('button', 'Save'), array('name' => 'update'));
+         echo "</div>\n";
+         Html::closeForm();
+      }
+      echo "</div>";
 
-      echo "<input type='hidden' name='id' value=".$this->fields["id"].">";
-
-      $options['candel'] = false;
-      $this->showFormButtons($options);
+      $this->showLegend();
    }
 }
 

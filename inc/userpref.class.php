@@ -5,6 +5,7 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginTalkUserpref extends CommonDBTM {
+   static $rightname = "plugin_talk_is_active";
 
    static function getTypeName($nb=0) {
       return __('Talks', 'talk');
@@ -14,12 +15,18 @@ class PluginTalkUserpref extends CommonDBTM {
       return "users_id";
    }
 
-   static function canCreate() {
-      return true;
+   static function canUpdate() {
+
+      if (static::$rightname) {
+         return Session::haveRight(static::$rightname, PluginTalkTicket::ACTIVE);
+      }
    }
 
    static function canView() {
-      return true;
+      if (static::$rightname) {
+         return Session::haveRight(static::$rightname, PluginTalkTicket::ACTIVE);
+      }
+      return false;
    }
     
    static function install(Migration $migration) {
