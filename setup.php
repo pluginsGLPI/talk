@@ -38,9 +38,9 @@ function plugin_init_talk() {
                   $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/split_button.js';
                }
 
-               if (PluginTalkUserpref::isFunctionEnabled("split_view"))  {
-                  $PLUGIN_HOOKS['add_css']['talk'][] = 'css/split_ticket_view.css';
-               }
+               // if (PluginTalkUserpref::isFunctionEnabled("split_view"))  {
+               //    $PLUGIN_HOOKS['add_css']['talk'][] = 'css/split_ticket_view.css';
+               // }
             
 
             }

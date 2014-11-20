@@ -109,10 +109,11 @@ class PluginTalkUserpref extends CommonDBTM {
       Dropdown::showYesNo("talk_tab", $this->fields["talk_tab"]);
       echo "</td>";
 
-      echo "<td width='10%'>" .__("Enable horizontal split view", 'talk')."</td>";
-      echo "<td style='text-align:left;'>";
-      Dropdown::showYesNo("split_view", $this->fields["split_view"]);
-      echo "</td>";
+      // echo "<td width='10%'>" .__("Enable horizontal split view", 'talk')."</td>";
+      // echo "<td style='text-align:left;'>";
+      // Dropdown::showYesNo("split_view", $this->fields["split_view"]);
+      // echo "</td>";
+      
       echo "</tr>";
 
       echo "<input type='hidden' name='id' value=".$this->fields["id"].">";
