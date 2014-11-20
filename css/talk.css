@@ -146,7 +146,7 @@
 /** TIMELINE **/
 
 .talk_history {
-   clear: both;
+   /*clear: both;*/
    border-top: 1px dashed #3C5874;
 }
 
@@ -182,7 +182,7 @@
 }
 
 .talk_history .h_item {
-   clear: both;
+   clear: right;
    padding-top: 8px;
    border-top: 1px dashed #D2D2D2;
 }

@@ -140,8 +140,10 @@ class PluginTalkProfile extends Profile {
    function getFromDBByProfile($profiles_id) {
       global $DB;
 
-      $query = "SELECT * FROM `".$this->getTable()."`
-               WHERE `profiles_id` = '" . $profiles_id . "' ";
+      $query = "SELECT * FROM `glpi_profilerights`
+               WHERE `profiles_id` = '" . $profiles_id . "' 
+               AND name = 'plugin_talk_is_active' 
+               AND rights = ".PluginTalkTicket::ACTIVE;
       if ($result = $DB->query($query)) {
          if ($DB->numrows($result) != 1) {
             return false;
