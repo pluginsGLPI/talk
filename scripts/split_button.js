@@ -1,37 +1,39 @@
 split_button = function() {
-   var splitBtn = Ext.get('x-split-button');
+   var splitBtn = $('#x-split-button');
 
-   Ext.select('.x-button-drop').on('click', function(event, target, options) {
+   // unfold status list
+   $(document).on("click", '.x-button-drop', function(event) {
       splitBtn.toggleClass('open');
    });
 
-   Ext.select('.x-split-button').on('click', function(event, target, options) {
+   $(document).on("click", '.x-split-button', function(event) {
       event.stopPropagation();
    });
 
-   Ext.select('.x-button-drop-menu li').on('click', function(event, target, options) {
-      if (target.children.length) {
+   //click on an element of status list
+   $(document).on("click", '.x-button-drop-menu li', function(event) {
+      if (event.target.children.length) {
          //clean old status class
-         current_class = Ext.select('.x-button-drop').elements[0].className;
+         current_class = $('.x-button-drop').attr('class');
          current_class = current_class.replace('x-button x-button-drop', ''); // don't remove native classes
          current_class_arr = current_class.split(" ");
-         Ext.select('.x-button-drop').removeClass(current_class_arr);
+         $('.x-button-drop').removeClass(current_class_arr);
 
          //find status
-         match = target.children[0].src.match(/.*\/(.*)\.png/);
+         match = event.target.children[0].src.match(/.*\/(.*)\.png/);
          status = match[1];
 
          //add status to dropdown button
-         Ext.select('.x-button-drop').addClass(status);
+         $('.x-button-drop').addClass(status);
 
          //fold status list
          splitBtn.removeClass('open');
       }
    });
 
-   Ext.select('html').on('click', function(event, target, options) {
+   //fold status list on click on document
+   $(document).on("click", function(event) {
       if (splitBtn.hasClass('open')) {
-         //fold status list
          splitBtn.removeClass('open');
       }
    });

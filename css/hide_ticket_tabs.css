@@ -1,7 +1,11 @@
-ul.x-tab-strip > li[id*="TicketFollowup\$1"],
+/*ul.x-tab-strip > li[id*="TicketFollowup\$1"],
 ul.x-tab-strip > li[id*="TicketTask\$1"],
 ul.x-tab-strip > li[id*="Document_Item\$1"],
-ul.x-tab-strip > li[id*="Ticket\$2"]
+ul.x-tab-strip > li[id*="Ticket\$2"]*/
+#tabspanel + div.ui-tabs li[aria-labelledby=ui-id-5],
+#tabspanel + div.ui-tabs li[aria-labelledby=ui-id-7],
+#tabspanel + div.ui-tabs li[aria-labelledby=ui-id-8],
+#tabspanel + div.ui-tabs li[aria-labelledby=ui-id-11]
 {
    display: none;
 }

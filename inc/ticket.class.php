@@ -552,19 +552,16 @@ class PluginTalkTicket extends CommonGLPI {
       if ($item instanceof Document_Item) {
          self::showSubFormDocument_Item($params['tickets_id'], $params);
 
-      } else if ($item instanceof TicketFollowup) {
-         self::showSubFormTicketFollowup($item, $id, $params);
-
-      } else if ($item instanceof TicketTask) {
-         self::showSubFormTicketTask($item, $id, $params);
-
+      } else if ($item instanceof TicketFollowup || $item instanceof TicketTask) {
+         self::showMultipartForm($item, $id, $params);
       } else if (method_exists($item, "showForm")) {
          $item->showForm($id, $params);
 
       }
    }
 
-   static function showSubFormTicketFollowup($item, $id, $params) {
+   static function showMultipartForm($item, $id, $params)  {
+      $classname = get_class($item);
       ob_start();
 
       //get html of followup form
@@ -580,7 +577,7 @@ class PluginTalkTicket extends CommonGLPI {
 
       if (strpos($fup_form_html, "<input type='submit' name='update'") === false) {
          //replace action param to redirect to talk controller (only for add)
-         $fup_form_html = str_replace("front/ticketfollowup.form.php", 
+         $fup_form_html = str_replace("front/".strtolower($classname).".form.php", 
                                       "plugins/talk/front/item.form.php?fup=1", 
                                       $fup_form_html);
 
@@ -596,53 +593,11 @@ class PluginTalkTicket extends CommonGLPI {
 
          //replace submit button by a splitted button who can change ticket status
          if (isset($_SESSION["glpiactiveprofile"])
-          	 && $_SESSION["glpiactiveprofile"]["interface"] == "central") {
-          	$fup_form_html = preg_replace("/<input type='submit'.*>/U", // ungreedy
-                                       	self::getSubmitButtonHtml($params['tickets_id']), 
-                                       	$fup_form_html);
+             && $_SESSION["glpiactiveprofile"]["interface"] == "central") {
+            $fup_form_html = preg_replace("/<input type=['\"]submit['\"].*>/U", // ungreedy
+                                          self::getSplittedSubmitButtonHtml($params['tickets_id']), 
+                                          $fup_form_html);
          }
-      }
-
-      echo $fup_form_html;
-   }
-
-   static function showSubFormTicketTask($item, $id, $params) {
-      ob_start();
-
-      //get html of followup form
-      $item->showForm($id, $params);
-      $fup_form_html = ob_get_contents();
-      ob_clean();
-
-      //get html of document form
-      $params['no_form'] = true;
-      self::showSubFormDocument_Item($params['tickets_id'], $params);
-      $doc_form_html = ob_get_contents();
-      ob_end_clean();
-
-      if (strpos($fup_form_html, "<input type='submit' name='update'") === false) {
-         //replace action param to redirect to talk controller (only for add)
-         $fup_form_html = str_replace("front/tickettask.form.php", 
-                                      "plugins/talk/front/item.form.php?ttask=1", 
-                                      $fup_form_html);
-
-         //add multipart attribute to permit doc upload
-         $fup_form_html = str_replace("<form ", 
-                                      "<form enctype='multipart/form-data'", 
-                                      $fup_form_html);        
-
-         //insert document upload                                           
-         $fup_form_html = str_replace("<tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add'", 
-                                      "<tr><td>".$doc_form_html."</td></tr><tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add'", 
-                                      $fup_form_html);
-
-         //replace submit button by a splitted button who can change ticket status
-         if (isset($_SESSION["glpiactiveprofile"])
-          	 && $_SESSION["glpiactiveprofile"]["interface"] == "central") {
-	         $fup_form_html = preg_replace("/<input type='submit'.*>/U", // ungreedy
-	                                       self::getSubmitButtonHtml($params['tickets_id']), 
-	                                       $fup_form_html);
-	     	}
       }
 
       echo $fup_form_html;
@@ -847,7 +802,7 @@ class PluginTalkTicket extends CommonGLPI {
       $ticket->showSolutionForm();
    }
 
-   static function getSubmitButtonHtml($tickets_id, $action = "add") {
+   static function getSplittedSubmitButtonHtml($tickets_id, $action = "add") {
       $locale = _sx('button', 'Add');
       $ticket = new Ticket;
       $ticket->getFromDB($tickets_id);
