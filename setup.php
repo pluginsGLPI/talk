@@ -26,18 +26,20 @@ function plugin_init_talk() {
                && isset($_GET['id'])) {
 
                if (PluginTalkUserpref::isFunctionEnabled("talk_tab"))  {
-                  Plugin::registerClass('PluginTalkTicket',
-                                  array('addtabon' => array('Ticket')));
+                  // Plugin::registerClass('PluginTalkTicket',
+                  //                  array('addtabon' => array('Ticket')));
 
                   $PLUGIN_HOOKS['add_css']['talk'][] = 'css/talk.css';
                   $PLUGIN_HOOKS['add_css']['talk'][] = 'css/hide_ticket_tabs.css';
 
-                  $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/move_talktab.js';
+                  $_SESSION['plugin_talk_lasttickets_id'] = $_REQUEST['id'];
+                  $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/insert_talktab.js.php';
                   $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/filter_timeline.js';
                   $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/read_more.js';
                   $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/split_button.js';
                }
 
+               /* disabled for 0.85 */
                // if (PluginTalkUserpref::isFunctionEnabled("split_view"))  {
                //    $PLUGIN_HOOKS['add_css']['talk'][] = 'css/split_ticket_view.css';
                // }
