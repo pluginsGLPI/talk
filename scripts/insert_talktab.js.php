@@ -20,16 +20,25 @@ $JS = <<<JAVASCRIPT
 $(document).ready(function() {
    //need a timeout for execute code after tabpanel initialization
    window.setTimeout(function() {
-      //function for move tab
+      //function for insert tab
       this.inserTab = function() {
          tabpanel = $('#tabspanel + div.ui-tabs');
-         tabpanel.children("ul").append(
+         //insert in second position
+         tabpanel.find('ul li').first().after(
             "<li title='$tab_title'><a href='$tab_url'>$tab_title</a></li>"
          );
          tabpanel.tabs("refresh");
+
+         // active talk tab when followup/task/solution tabs was selected
+         var activeTabHref = tabpanel.find('.ui-tabs-active').children().attr('href');
+         if (activeTabHref.indexOf('TicketFollowup') > 0
+             || activeTabHref.indexOf('TicketTask') > 0
+             || activeTabHref.indexOf('Document_Item') > 0) {
+            tabpanel.tabs( "option", "active", 1 ); 
+         }
       }
 
-      this.inserTab();;
+      this.inserTab();
    }, 250)
 });
 
