@@ -65,9 +65,9 @@ class PluginTalkTicket extends CommonGLPI {
       echo str_replace("\"itemtype\"", "itemtype", $out);
       echo "};";
       echo "function viewEditSubitem" . $ticket->fields['id'] . "$rand(e, itemtype, items_id, o) {\n";
-      echo "var e = window.event || e; console.log(e);";
-      echo "if (e.target.localName == 'a') return;";
-      echo "if (e.target.className == 'read_more_button') return;";
+      echo "var target = e ? e.target : window.event.srcElement;";
+      echo "if (target.localName == 'a') return;";
+      echo "if (target.className == 'read_more_button') return;";
       $params = array('type'       => 'itemtype',
                       'parenttype' => 'Ticket',
                       'tickets_id' => $ticket->fields['id'],
