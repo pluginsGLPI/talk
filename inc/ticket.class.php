@@ -834,7 +834,10 @@ class PluginTalkTicket extends CommonGLPI {
 
       $all_status = Ticket::getAllowedStatusArray($ticket->fields['status']);
 
-      if ($actor_type == CommonITILActor::REQUESTER) {
+      if ($actor_type == CommonITILActor::REQUESTER
+         && in_array($ticket->fields['status'], array(CommonITILObject::WAITING, 
+                                                      CommonITILObject::SOLVED, 
+                                                      CommonITILObject::CLOSED))) {
          $ticket->fields['status'] = CommonITILObject::ASSIGNED;
       }
 
