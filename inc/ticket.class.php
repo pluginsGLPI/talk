@@ -806,7 +806,14 @@ class PluginTalkTicket extends CommonGLPI {
       $locale = _sx('button', 'Add');
       $ticket = new Ticket;
       $ticket->getFromDB($tickets_id);
+      $ticket_users = self::prepareTicketUser($ticket);
+      $actor_type = $ticket_users[Session::getLoginUserID()];
+
       $all_status = Ticket::getAllowedStatusArray($ticket->fields['status']);
+
+      if ($actor_type == CommonITILActor::REQUESTER) {
+         $ticket->fields['status'] = CommonITILObject::ASSIGNED;
+      }
 
       $html = "<div class='x-split-button' id='x-split-button'>
       <input type='submit' value='$locale' name='$action' class='x-button x-button-main'>
