@@ -578,6 +578,11 @@ class PluginTalkTicket extends CommonGLPI {
           	$fup_form_html = preg_replace("/<input type='submit'.*>/U", // ungreedy
                                        	self::getSubmitButtonHtml($params['tickets_id']), 
                                        	$fup_form_html);
+         } else if (in_array($ticket->fields['status'], array(CommonITILObject::WAITING, 
+                                                              CommonITILObject::SOLVED, 
+                                                              CommonITILObject::CLOSED))) {
+            $fup_form_html.= "<input type='hidden' name='status' value='".CommonITILObject::ASSIGNED."'>";
+            
          }
       }
 
@@ -620,7 +625,12 @@ class PluginTalkTicket extends CommonGLPI {
 	         $fup_form_html = preg_replace("/<input type='submit'.*>/U", // ungreedy
 	                                       self::getSubmitButtonHtml($params['tickets_id']), 
 	                                       $fup_form_html);
-	     	}
+	     	} else if (in_array($ticket->fields['status'], array(CommonITILObject::WAITING, 
+                                                              CommonITILObject::SOLVED, 
+                                                              CommonITILObject::CLOSED))) {
+            $fup_form_html.= "<input type='hidden' name='status' value='".CommonITILObject::ASSIGNED."'>";
+            
+         }
       }
 
       echo $fup_form_html;
