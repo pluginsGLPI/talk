@@ -4,7 +4,7 @@ Session::checkLoginUser();
 
 
 //add followup
-if (isset($_REQUEST['fup'])) {
+if (isset($_REQUEST['tfollowup'])) {
    $fup = new TicketFollowup();
    if (isset($_POST["add"])) {
 

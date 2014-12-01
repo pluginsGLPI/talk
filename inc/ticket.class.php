@@ -543,53 +543,18 @@ class PluginTalkTicket extends CommonGLPI {
    }
 
    static function showSubFormTicketFollowup($item, $id, $params) {
-      ob_start();
-
-      //get html of followup form
-      $item->showForm($id, $params);
-      $fup_form_html = ob_get_contents();
-      ob_clean();
-
-      //get html of document form
-      $params['no_form'] = true;
-      self::showSubFormDocument_Item($params['tickets_id'], $params);
-      $doc_form_html = ob_get_contents();
-      ob_end_clean();
-
-      if (strpos($fup_form_html, "<input type='submit' name='update'") === false) {
-         //replace action param to redirect to talk controller (only for add)
-         $fup_form_html = str_replace("front/ticketfollowup.form.php", 
-                                      "plugins/talk/front/item.form.php?fup=1", 
-                                      $fup_form_html);
-
-         //add multipart attribute to permit doc upload
-         $fup_form_html = str_replace("<form ", 
-                                      "<form enctype='multipart/form-data'", 
-                                      $fup_form_html);        
-
-         //insert document upload                                           
-         $fup_form_html = str_replace("<tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add'", 
-                                      "<tr><td>".$doc_form_html."</td></tr><tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add'", 
-                                      $fup_form_html);
-
-         //replace submit button by a splitted button who can change ticket status
-         if (isset($_SESSION["glpiactiveprofile"])
-          	 && $_SESSION["glpiactiveprofile"]["interface"] == "central") {
-          	$fup_form_html = preg_replace("/<input type='submit'.*>/U", // ungreedy
-                                       	self::getSubmitButtonHtml($params['tickets_id']), 
-                                       	$fup_form_html);
-         } else if (in_array($ticket->fields['status'], array(CommonITILObject::WAITING, 
-                                                              CommonITILObject::SOLVED, 
-                                                              CommonITILObject::CLOSED))) {
-            $fup_form_html.= "<input type='hidden' name='status' value='".CommonITILObject::ASSIGNED."'>";
-            
-         }
-      }
-
-      echo $fup_form_html;
+      $params['answer_type'] = 'followup';
+      self::showSubFormTicketAnswer($item, $id, $params);
    }
 
    static function showSubFormTicketTask($item, $id, $params) {
+      $params['answer_type'] = 'task';
+      self::showSubFormTicketAnswer($item, $id, $params);
+   }
+
+   static function showSubFormTicketAnswer($item, $id, $params) {
+      $answer_type = $params['answer_type'];
+
       ob_start();
 
       //get html of followup form
@@ -605,8 +570,8 @@ class PluginTalkTicket extends CommonGLPI {
 
       if (strpos($fup_form_html, "<input type='submit' name='update'") === false) {
          //replace action param to redirect to talk controller (only for add)
-         $fup_form_html = str_replace("front/tickettask.form.php", 
-                                      "plugins/talk/front/item.form.php?ttask=1", 
+         $fup_form_html = str_replace("front/ticket$answer_type.form.php", 
+                                      "plugins/talk/front/item.form.php?t$answer_type=1", 
                                       $fup_form_html);
 
          //add multipart attribute to permit doc upload
@@ -616,16 +581,17 @@ class PluginTalkTicket extends CommonGLPI {
 
          //insert document upload                                           
          $fup_form_html = str_replace("<tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add'", 
-                                      "<tr><td>".$doc_form_html."</td></tr><tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add'", 
+                                      "<tr><td>".$doc_form_html."</td></tr><tr class='tab_bg_2'><td class='center' colspan='4'>".
+                                      "<input type='submit' name='add'", 
                                       $fup_form_html);
 
          //replace submit button by a splitted button who can change ticket status
          if (isset($_SESSION["glpiactiveprofile"])
-          	 && $_SESSION["glpiactiveprofile"]["interface"] == "central") {
-	         $fup_form_html = preg_replace("/<input type='submit'.*>/U", // ungreedy
-	                                       self::getSubmitButtonHtml($params['tickets_id']), 
-	                                       $fup_form_html);
-	     	} else if (in_array($ticket->fields['status'], array(CommonITILObject::WAITING, 
+             && $_SESSION["glpiactiveprofile"]["interface"] == "central") {
+            $fup_form_html = preg_replace("/<input type='submit'.*>/U", // ungreedy
+                                          self::getSubmitButtonHtml($params['tickets_id']), 
+                                          $fup_form_html);
+         } else if (in_array($ticket->fields['status'], array(CommonITILObject::WAITING, 
                                                               CommonITILObject::SOLVED, 
                                                               CommonITILObject::CLOSED))) {
             $fup_form_html.= "<input type='hidden' name='status' value='".CommonITILObject::ASSIGNED."'>";
