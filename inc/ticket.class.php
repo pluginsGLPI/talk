@@ -578,7 +578,7 @@ class PluginTalkTicket extends CommonGLPI {
       if (strpos($fup_form_html, "<input type='submit' name='update'") === false) {
          //replace action param to redirect to talk controller (only for add)
          $fup_form_html = str_replace("front/".strtolower($classname).".form.php", 
-                                      "plugins/talk/front/item.form.php?fup=1", 
+                                      "plugins/talk/front/item.form.php?".strtolower($classname)."=1", 
                                       $fup_form_html);
 
          //add multipart attribute to permit doc upload

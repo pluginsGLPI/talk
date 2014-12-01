@@ -4,7 +4,7 @@ Session::checkLoginUser();
 
 
 //add followup
-if (isset($_REQUEST['fup'])) {
+if (isset($_REQUEST['ticketfollowup'])) {
    $fup = new TicketFollowup();
    if (isset($_POST["add"])) {
 
@@ -19,7 +19,7 @@ if (isset($_REQUEST['fup'])) {
 }
 
 //add task
-if (isset($_REQUEST['ttask'])) {
+if (isset($_REQUEST['tickettask'])) {
    $ttask = new TicketTask();
    if (isset($_POST["add"])) {
 
