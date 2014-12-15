@@ -129,11 +129,12 @@ class PluginTalkTicket extends CommonGLPI {
    }
 
    static function geTimelineItems(Ticket $ticket, $rand) {
-      global $DB;
+      global $DB, $CFG_GLPI;
 
       $timeline = array();
 
       $user                  = new User;
+      $group                 = new Group;
       $followup_obj          = new TicketFollowup;
       $task_obj              = new TicketTask;
       $document_item_obj     = new Document_Item;
@@ -178,6 +179,38 @@ class PluginTalkTicket extends CommonGLPI {
          $document_obj->getFromDB($document_item['documents_id']);
          $timeline[$document_obj->fields['date_mod']."_document_".$document_item['documents_id']] 
             = array('type' => 'Document_Item', 'item' => $document_obj->fields);
+      }
+
+      //add assign changes
+      $log_obj = new Log;
+      $gassign_items = $log_obj->find("itemtype = 'Ticket' AND items_id = ".$ticket->getID()." 
+                                       AND itemtype_link = 'Group' AND linked_action = '15'");
+
+      foreach ($gassign_items as $logs_id => $gassign) {
+         //find group
+         $group_name = preg_replace("#(.*)\s\([0-9]*\)#", "$1", $gassign['new_value']);
+         $groups = $group->find("name = '$group_name'");
+         $first_group = array_shift($groups);
+         $group->getFromDB($first_group['id']);
+         $content = __("Assigned to")." : ".
+                    "<img src='".$CFG_GLPI['root_doc']."/plugins/talk/pics/group.png' class='group_assign' />".
+                    "&nbsp;<strong>".$group->getLink()."</strong>";
+
+         //find user
+         $user_name = preg_replace("#(.*)\s\([0-9]*\)#", "$1", $gassign['user_name']);
+         $users = $user->find("CONCAT(firstname, ' ', realname) = '$user_name'");
+         $first_user = array_shift($users);
+         if ($first_user == NULL) {
+            $first_user['id'] = false;
+         }
+
+         $timeline[$gassign['date_mod']."_assign_".$logs_id] = array('type' => 'Assign', 
+                                                                     'item' => array(
+                                                                        'date'     => $gassign['date_mod'],
+                                                                        'content'  => $content,
+                                                                        'can_edit' => false,
+                                                                        'users_id' => $first_user['id']
+                                                                     ));
       }
 
       //add existing solution
@@ -305,7 +338,8 @@ class PluginTalkTicket extends CommonGLPI {
          // check if curent item user is assignee or requester
          $user_position = 'left';
          if (isset($ticket_users_keys[$item_i['users_id']]) 
-            && $ticket_users_keys[$item_i['users_id']] == CommonItilActor::ASSIGN) {
+            && $ticket_users_keys[$item_i['users_id']] == CommonItilActor::ASSIGN
+            || $item['type'] == 'Assign') {
             $user_position = 'right';
          }
 
@@ -319,18 +353,20 @@ class PluginTalkTicket extends CommonGLPI {
 
          echo "<div class='h_info'>";
          echo "<div class='h_date'>".Html::convDateTime($date)."</div>";
-         echo "<div class='h_user'>";
-         if (isset($item_i['users_id']) && $item_i['users_id'] != 0) {
-            $user->getFromDB($item_i['users_id']);
-            echo $user->getLink();
-         } else echo __("Requester");
-         echo "</div>";
+         if ($item_i['users_id'] !== false) {
+            echo "<div class='h_user'>";
+            if (isset($item_i['users_id']) && $item_i['users_id'] != 0) {
+               $user->getFromDB($item_i['users_id']);
+               echo $user->getLink();
+            } else echo __("Requester");
+            echo "</div>";
+         }
          echo "</div>";
 
          echo "<div class='h_content ".$item['type'].
               ((isset($item_i['status'])) ? " ".$item_i['status'] : "").
               "'";
-         if ($item['type'] != "Document_Item" && $item_i['can_edit']) {     
+         if (!in_array($item['type'], array('Document_Item', 'Assign')) && $item_i['can_edit']) {     
             echo " ondblclick='javascript:viewEditSubitem".$ticket->fields['id']."$rand(event, \"".$item['type']."\", ".$item_i['id'].", this)'";
          }
          echo ">";
