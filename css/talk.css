@@ -229,7 +229,8 @@
 .talk_history .left .h_user,
 .talk_history .left .h_date {
    text-align: right;
-   background-position: 100%;
+   background-position-x: 100%;
+   background-position-y: 0%;
    padding-right: 24px;
    padding-left: 0;
    padding-top: 2px;
@@ -373,7 +374,8 @@
    cursor: pointer;
 }
 
-.talk_history .h_content.Document_Item {
+.talk_history .h_content.Document_Item,
+.talk_history .h_content.Assign {
    border: none;
    -webkit-box-shadow:none;
    -moz-box-shadow:none;
