@@ -236,6 +236,10 @@
    padding-top: 2px;
 }
 
+.talk_history img.group_assign {
+   vertical-align: bottom;
+}
+
 .talk_history .h_content {
    max-width:50%;
    float: left;
