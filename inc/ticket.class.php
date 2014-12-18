@@ -192,10 +192,7 @@ class PluginTalkTicket extends CommonGLPI {
          $groups = $group->find("name = '$group_name'");
          $first_group = array_shift($groups);
          $group->getFromDB($first_group['id']);
-         $content = __("Assigned to")." : ".
-                    "<img src='".$CFG_GLPI['root_doc']."/plugins/talk/pics/group.png' class='group_assign' />".
-                    "&nbsp;<strong>".$group->getLink()."</strong>";
-
+         
          //find user
          $user_name = preg_replace("#(.*)\s\([0-9]*\)#", "$1", $gassign['user_name']);
          $users = $user->find("CONCAT(firstname, ' ', realname) = '$user_name'");
@@ -204,6 +201,9 @@ class PluginTalkTicket extends CommonGLPI {
             $first_user['id'] = false;
          }
 
+         $content = __("Add a link with an item")." (".__("Group").") : ".
+                    "<img src='".$CFG_GLPI['root_doc']."/plugins/talk/pics/group.png' class='group_assign' />".
+                    "&nbsp;<strong>".$group->getLink()."</strong>";
          $timeline[$gassign['date_mod']."_assign_".$logs_id] = array('type' => 'Assign', 
                                                                      'item' => array(
                                                                         'date'     => $gassign['date_mod'],
