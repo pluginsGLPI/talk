@@ -354,7 +354,7 @@ class PluginTalkTicket extends CommonGLPI {
 
          echo "<div class='h_info'>";
          echo "<div class='h_date'>".Html::convDateTime($date)."</div>";
-         if ($item_i['users_id'] !== false) {
+         if ($item_i['users_id'] !== false || isset($item_i['username'])) {
             echo "<div class='h_user'>";
             if (isset($item_i['users_id']) && $item_i['users_id'] != 0) {
                $user->getFromDB($item_i['users_id']);
