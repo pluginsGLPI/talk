@@ -194,8 +194,8 @@ class PluginTalkTicket extends CommonGLPI {
          $group->getFromDB($first_group['id']);
          
          //find user
-         $user_name = preg_replace("#(.*)\s\([0-9]*\)#", "$1", $gassign['user_name']);
-         $users = $user->find("CONCAT(firstname, ' ', realname) = '$user_name'");
+         $username = preg_replace("#(.*)\s\([0-9]*\)#", "$1", $gassign['user_name']);
+         $users = $user->find("CONCAT(firstname, ' ', realname) = '$username'");
          $first_user = array_shift($users);
          if ($first_user == NULL) {
             $first_user['id'] = false;
@@ -209,7 +209,8 @@ class PluginTalkTicket extends CommonGLPI {
                                                                         'date'     => $gassign['date_mod'],
                                                                         'content'  => $content,
                                                                         'can_edit' => false,
-                                                                        'users_id' => $first_user['id']
+                                                                        'users_id' => $first_user['id'],
+                                                                        'username' => $username
                                                                      ));
       }
 
@@ -358,7 +359,9 @@ class PluginTalkTicket extends CommonGLPI {
             if (isset($item_i['users_id']) && $item_i['users_id'] != 0) {
                $user->getFromDB($item_i['users_id']);
                echo $user->getLink();
-            } else echo __("Requester");
+            } else if (isset($item_i['username'])) {
+               echo $item_i['username'];
+            }else echo __("Requester");
             echo "</div>";
          }
          echo "</div>";
