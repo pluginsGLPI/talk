@@ -19,10 +19,10 @@ split_button = function() {
 
          //find status
          match = target.children[0].src.match(/.*\/(.*)\.png/);
-         status = match[1];
+         cstatus = match[1];
 
          //add status to dropdown button
-         Ext.select('.x-button-drop').addClass(status);
+         Ext.select('.x-button-drop').addClass(cstatus);
 
          //fold status list
          splitBtn.removeClass('open');

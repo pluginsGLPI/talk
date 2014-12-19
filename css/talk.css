@@ -547,14 +547,11 @@
    background-image: -o-linear-gradient(top, #fddb6f, #ffb94b);
    background-image: linear-gradient(top, #fddb6f, #ffb94b);
    
-   /* For Internet Explorer 5.5 - 7 */
-   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#fddb6f, endColorstr=#ffb94b);
-   /* For Internet Explorer 8 */
-   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#fddb6f, endColorstr=#ffb94b)";
    text-shadow: 0 1px 0 rgba(255,255,255,0.5);
    -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
    -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
    box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;    
+   
    border-width: 1px;
    border-style: solid;
    border-color: #d69e31 #e3a037 #d5982d #e3a037
@@ -586,6 +583,8 @@
    -moz-border-radius: 0 3px 3px 0;
    -webkit-border-radius: 0 3px 3px 0;
    width: 15px;
+   background-repeat: no-repeat; 
+   background-position: center;
 }
 
 .x-button.x-button-drop:after {
@@ -595,7 +594,6 @@
    content: '\25B2';
 }
 
-.x-button.x-button-drop         { background-repeat: no-repeat; background-position: center; }
 .x-button.x-button-drop.new     { background-image: url(../../../pics/new.png); }
 .x-button-drop.new:after        { content: ' ' !important; }
 .x-button.x-button-drop.assign  { background-image: url(../../../pics/assign.png); }
@@ -632,11 +630,10 @@
    text-align: left;
 }
 
-.x-button-drop-menu li input[type="radio"]:not(:checked),  
-.x-button-drop-menu li input[type="radio"]:checked {  
+.x-button-drop-menu li input[type="radio"] {  
   position: absolute;  
   left: -9999px;  
-}  
+}
 
 .x-button-drop-menu li label {
    background-color: #fddb6f;
@@ -650,7 +647,7 @@
 .x-button-drop-menu li:hover label {
    background-color: #ffb94b !important;
 }
-.x-button-drop-menu li input[type="radio"]:checked + label{  
+.x-button-drop-menu li input[type="radio"]:checked + label {  
    background-color: #EADA8A;
    border: 2px inset #8F5A0A;
 } 
