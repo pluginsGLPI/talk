@@ -21,10 +21,10 @@ split_button = function() {
 
          //find status
          match = event.target.children[0].src.match(/.*\/(.*)\.png/);
-         status = match[1];
+         cstatus = match[1];
 
          //add status to dropdown button
-         $('.x-button-drop').addClass(status);
+         $('.x-button-drop').addClass(cstatus);
 
          //fold status list
          splitBtn.removeClass('open');
