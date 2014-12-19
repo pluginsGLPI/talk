@@ -64,10 +64,10 @@ class PluginTalkTicket extends CommonGLPI {
                              $CFG_GLPI["root_doc"]."/plugins/talk/ajax/viewsubitem.php", $params, "", false);
       echo str_replace("\"itemtype\"", "itemtype", $out);
       echo "};";
-      echo "function viewEditSubitem" . $ticket->fields['id'] . "$rand(e, itemtype, items_id, o) {\n";
-      echo "var e = window.event || e; console.log(e);";
-      echo "if (e.target.localName == 'a') return;";
-      echo "if (e.target.className == 'read_more_button') return;";
+      echo "function viewEditSubitem" . $ticket->fields['id'] . "$rand(e, itemtype, items_id, o) {\n
+               var target = e.target || window.event.srcElement;
+               if (target.nodeName == 'a') return;
+               if (target.className == 'read_more_button') return;";
       $params = array('type'       => 'itemtype',
                       'parenttype' => 'Ticket',
                       'tickets_id' => $ticket->fields['id'],
@@ -82,7 +82,7 @@ class PluginTalkTicket extends CommonGLPI {
       echo "window.scrollTo(0,500);";
 
       // add a mark to currently edited element
-      echo "var found_active = document.getElementsByClassName('talk_active');
+      echo "var found_active = $('.talk_active');
             i = found_active.length;
             while(i--) {
                var classes = found_active[i].className.replace( /(?:^|\s)talk_active(?!\S)/ , '' );
