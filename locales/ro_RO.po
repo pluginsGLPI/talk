@@ -1,0 +1,38 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE ESCALADE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the Talk package.
+# 
+# Translators:
+# Doru  DEACONU <dumitrudeaconu@yahoo.com>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: GLPI Project - Plugin Talk\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-07-30 09:41+0200\n"
+"PO-Revision-Date: 2014-12-13 11:14+0000\n"
+"Last-Translator: Doru  DEACONU <dumitrudeaconu@yahoo.com>\n"
+"Language-Team: Romanian (Romania) (http://www.transifex.com/projects/p/glpi-project-plugin-talk/language/ro_RO/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ro_RO\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
+"X-Generator: Poedit 1.5.4\n"
+
+msgid "Talks"
+msgstr "Discuţii"
+
+msgid "Processing ticket"
+msgstr "Procesare tichet"
+
+msgid "Timeline filter"
+msgstr "Filtru evoluţie timp"
+
+msgid "Actions historical"
+msgstr "Istoric acţiuni"
+
+msgid "Enable Talk Tab"
+msgstr "Activează Tab Discuţie"
+
+msgid "Enable horizontal split view"
+msgstr "Activează vederea separare orizontală"
