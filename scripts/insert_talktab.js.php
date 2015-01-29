@@ -35,6 +35,7 @@ $(document).ready(function() {
          var activeTabHref = tabpanel.find('.ui-tabs-active').children().attr('href');
          if (activeTabHref.indexOf('TicketFollowup') > 0
              || activeTabHref.indexOf('TicketTask') > 0
+             || activeTabHref.indexOf('Ticket\\$2') > 0
              || activeTabHref.indexOf('Document_Item') > 0) {
             tabpanel.tabs( "option", "active", 1 ); 
          }
