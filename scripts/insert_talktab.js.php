@@ -14,7 +14,9 @@ $ticket     = new Ticket;
 $ticket->getFromDB(intval($_SESSION['plugin_talk_lasttickets_id']));
 $talkticket = new PluginTalkTicket;
 $tab_title  = $talkticket->getTabNameForItem($ticket);
-$tab_url    = "/glpi/0.85-git/ajax/common.tabs.php?_target=/glpi/0.85-git/front/ticket.form.php&_itemtype=Ticket&_glpi_tab=PluginTalkTicket$1&id=1";
+$tab_url    = "/glpi/0.85-git/ajax/common.tabs.php?".
+              "_target=/glpi/0.85-git/front/ticket.form.php&_itemtype=Ticket".
+              "&_glpi_tab=PluginTalkTicket$1&id=".$ticket->getID();
 
 $JS = <<<JAVASCRIPT
 $(document).ready(function() {
