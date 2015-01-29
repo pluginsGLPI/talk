@@ -182,7 +182,7 @@
 }
 
 .talk_history .h_item {
-   clear: right;
+   clear: both;
    padding-top: 8px;
    border-top: 1px dashed #D2D2D2;
 }
