@@ -502,8 +502,30 @@ class PluginTalkTicket extends CommonGLPI {
          $timeline_index++;
       } // end foreach timeline
       echo "<div class='break'></div>";
-      echo "</div>";
 
+      // recall ticket content
+      echo "<div class='h_item middle'>";
+         echo "<div class='h_info'>";
+         echo "<div class='h_date'>".Html::convDateTime($ticket->fields['date'])."</div>";
+            echo "<div class='h_user'>";
+               $user->getFromDB($ticket->fields['users_id_recipient']);
+               echo $user->getLink();
+            echo "</div>";
+         echo "</div>";
+         echo "<div class='h_content TicketContent'>";
+            echo "<div class='b_right'>".__("Ticket recall", 'talk')."</div>";
+            echo "<div class='ticket_title'>";
+            echo $ticket->fields['name'];
+            echo "</div>";
+            echo "<div class='ticket_description'>";
+            echo $ticket->fields['content'];
+            echo "</div>";
+         echo "</div>";
+      echo "</div>";
+      echo "<div class='break'></div>";
+
+      // end timeline
+      echo "</div>";
       echo "<script type='text/javascript'>read_more();</script>";
    }
 

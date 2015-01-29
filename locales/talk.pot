@@ -33,3 +33,6 @@ msgstr ""
 
 msgid "Enable horizontal split view"
 msgstr ""
+
+msgid "Ticket recall"
+msgstr ""

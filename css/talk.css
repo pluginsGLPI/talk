@@ -388,6 +388,19 @@
    padding: 0;
 }
 
+.talk_history .h_content.TicketContent {
+   background-color: #B2E0B6;
+   border-color: #093806;
+   color: #093806;
+   background-repeat: no-repeat;
+}
+.talk_history .h_content.TicketContent .ticket_title {
+   font-weight: bold;
+   font-size: 1.2em;
+   margin-bottom: 5px;
+}
+
+
 .edit_document,
 .delete_document {
    opacity: 0.1;

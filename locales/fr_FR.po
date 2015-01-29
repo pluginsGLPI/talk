@@ -36,3 +36,6 @@ msgstr "Activer l'onglet Traitement du ticket"
 
 msgid "Enable horizontal split view"
 msgstr "Activer la vue horizontale sur les tickets"
+
+msgid "Ticket recall"
+msgstr "Rappel du ticket"
