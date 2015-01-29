@@ -148,6 +148,7 @@
 .talk_history {
    /*clear: both;*/
    border-top: 1px dashed #3C5874;
+   overflow: hidden;
 }
 
 .talk_history h2 {
