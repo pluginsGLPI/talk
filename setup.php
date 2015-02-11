@@ -21,7 +21,7 @@ function plugin_init_talk() {
 
          $PLUGIN_HOOKS['use_massive_action']['talk'] = 1;
 
-         if (Session::haveRight('plugin_talk_is_active', 1)) {
+         if (Session::haveRight('plugin_talk_is_active', PluginTalkTicket::ACTIVE)) {
             if (strpos($_SERVER['REQUEST_URI'], "/ticket.form.php") !== false
                && isset($_GET['id'])) {
 
