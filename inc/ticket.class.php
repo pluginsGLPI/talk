@@ -64,7 +64,7 @@ class PluginTalkTicket extends CommonGLPI {
                              $CFG_GLPI["root_doc"]."/plugins/talk/ajax/viewsubitem.php", $params, "", false);
       echo str_replace("\"itemtype\"", "itemtype", $out);
       echo "};";
-      echo "function viewEditSubitem" . $ticket->fields['id'] . "$rand(e, itemtype, items_id, o) {\n
+      $out = "function viewEditSubitem" . $ticket->fields['id'] . "$rand(e, itemtype, items_id, o) {\n
                var target = e.target || window.event.srcElement;
                if (target.nodeName == 'a') return;
                if (target.className == 'read_more_button') return;";
@@ -72,14 +72,14 @@ class PluginTalkTicket extends CommonGLPI {
                       'parenttype' => 'Ticket',
                       'tickets_id' => $ticket->fields['id'],
                       'id'         => 'items_id');
-      $out = Ajax::updateItemJsCode("viewitem" . $ticket->fields['id'] . "$rand",
+      $out.= Ajax::updateItemJsCode("viewitem" . $ticket->fields['id'] . "$rand",
                              $CFG_GLPI["root_doc"]."/plugins/talk/ajax/viewsubitem.php", $params, "", false);
-      echo str_replace("\"itemtype\"", "itemtype", $out);
-      echo str_replace("\"items_id\"", "items_id", $out);
+      $out = str_replace("\"itemtype\"", "itemtype", $out);
+      $out = str_replace("\"items_id\"", "items_id", $out);
       echo $out;
 
       //scroll to edit form
-      echo "window.scrollTo(0,500);";
+      echo "window.scrollTo(0,110);";
 
       // add a mark to currently edited element
       echo "var found_active = $('.talk_active');
@@ -656,9 +656,9 @@ class PluginTalkTicket extends CommonGLPI {
          //replace submit button by a splitted button who can change ticket status
          if (isset($_SESSION["glpiactiveprofile"])
              && $_SESSION["glpiactiveprofile"]["interface"] == "central") {
-            $fup_form_html = preg_replace("/<input type=['\"]submit['\"].*>/U", // ungreedy
+            $fup_form_html = preg_replace("/<input type=['\"]submit['\"].*>/", 
                                           self::getSplittedSubmitButtonHtml($params['tickets_id']), 
-                                          $fup_form_html);
+                                          $fup_form_html, 1); //only one occurence
          } else {
             $ticket = new Ticket;
             $ticket->getFromDB($params['tickets_id']);
@@ -666,9 +666,10 @@ class PluginTalkTicket extends CommonGLPI {
                                                           CommonITILObject::SOLVED, 
                                                           CommonITILObject::CLOSED))) {
                $status_input = "<input type='hidden' name='status' value='".CommonITILObject::ASSIGNED."'>";
-               $fup_form_html = preg_replace("/<input type='submit'.*>/U", // ungreedy
+               $fup_form_html = preg_replace("/<input type='submit'.*>/", 
                                              $status_input."$0",
-                                             $fup_form_html);
+                                             $fup_form_html, 
+                                             1); //only one occurence
             }
          }
       }
