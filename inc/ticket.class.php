@@ -199,7 +199,7 @@ class PluginTalkTicket extends CommonGLPI {
       }
 
       //add assign changes
-      $log_obj = new Log;
+      /*$log_obj = new Log;
       $gassign_items = $log_obj->find("itemtype = 'Ticket' AND items_id = ".$ticket->getID()." 
                                        AND itemtype_link = 'Group' AND linked_action = '15'");
 
@@ -228,7 +228,7 @@ class PluginTalkTicket extends CommonGLPI {
                                                                         'can_edit' => false,
                                                                         'users_id' => $first_user['id']
                                                                      ));
-      }
+      }*/
 
       //add existing solution
       if (!empty($ticket->fields['solution'])) {
