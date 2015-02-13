@@ -179,7 +179,7 @@ class PluginTalkTicket extends CommonGLPI {
       }
 
 
-      //add ticket taks to timeline
+      //add ticket tasks to timeline
       $tasks = $task_obj->find("tickets_id = ".$ticket->getID()." $restrict", 'date DESC');
       foreach ($tasks as $tasks_id => $task) {
          $task_obj->getFromDB($tasks_id);
