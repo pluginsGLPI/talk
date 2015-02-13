@@ -421,36 +421,36 @@ class PluginTalkTicket extends CommonGLPI {
          }
 
          echo "<div class='b_right'>";
-         if (isset($item_i['solutiontypes_id']) && !empty($item_i['solutiontypes_id'])) {
-            echo Dropdown::getDropdownName("glpi_solutiontypes", $item_i['solutiontypes_id'])."<br>";
-         }
-         if (isset($item_i['taskcategories_id']) && !empty($item_i['taskcategories_id'])) {
-            echo Dropdown::getDropdownName("glpi_taskcategories", $item_i['taskcategories_id'])."<br>";
-         }
-         if (isset($item_i['actiontime']) && !empty($item_i['actiontime'])) {
-            echo "<span class='actiontime'>";
-            echo Html::timestampToString($item_i['actiontime'], false);
-            echo "</span>";
-         }
-         if (isset($item_i['state'])) {
-            echo "<span class='state state_".$item_i['state']."'>";
-            echo Planning::getState($item_i['state']);
-            echo "</span>";
-         }
-         if (isset($item_i['begin'])) {
-            echo "<span class='planification'>";
-            echo Html::convDateTime($item_i["begin"]);
-            echo " => ";
-            echo Html::convDateTime($item_i["end"]);
-            echo "</span>";
-         }
+            if (isset($item_i['solutiontypes_id']) && !empty($item_i['solutiontypes_id'])) {
+               echo Dropdown::getDropdownName("glpi_solutiontypes", $item_i['solutiontypes_id'])."<br>";
+            }
+            if (isset($item_i['taskcategories_id']) && !empty($item_i['taskcategories_id'])) {
+               echo Dropdown::getDropdownName("glpi_taskcategories", $item_i['taskcategories_id'])."<br>";
+            }
+            if (isset($item_i['actiontime']) && !empty($item_i['actiontime'])) {
+               echo "<span class='actiontime'>";
+               echo Html::timestampToString($item_i['actiontime'], false);
+               echo "</span>";
+            }
+            if (isset($item_i['state'])) {
+               echo "<span class='state state_".$item_i['state']."'>";
+               echo Planning::getState($item_i['state']);
+               echo "</span>";
+            }
+            if (isset($item_i['begin'])) {
+               echo "<span class='planification'>";
+               echo Html::convDateTime($item_i["begin"]);
+               echo " => ";
+               echo Html::convDateTime($item_i["end"]);
+               echo "</span>";
+            }
 
-         // show "is_private" icon
-         if (isset($item_i['is_private']) && $item_i['is_private']) {
-            echo "<div class='private'>";
-            echo __('Private');
-            echo "</div>";
-         }
+            // show "is_private" icon
+            if (isset($item_i['is_private']) && $item_i['is_private']) {
+               echo "<div class='private'>";
+               echo __('Private');
+               echo "</div>";
+            }
       
          echo "</div>";
 
