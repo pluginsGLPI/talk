@@ -444,6 +444,12 @@ class PluginTalkTicket extends CommonGLPI {
                echo Html::convDateTime($item_i["end"]);
                echo "</span>";
             }
+            if (isset($item_i['users_id_tech'])) {
+               echo "<span class='users_id_tech'>";
+               $user->getFromDB($item_i['users_id_tech']);
+               echo $user->getName();
+               echo "</span>";
+            }
 
             // show "is_private" icon
             if (isset($item_i['is_private']) && $item_i['is_private']) {

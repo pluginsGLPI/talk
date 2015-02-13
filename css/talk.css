@@ -576,6 +576,13 @@
    background-repeat: no-repeat;
 }
 
+.talk_history .b_right .users_id_tech {
+   padding-left: 20px;
+   background-image: url(../pics/user_grey.png);
+   background-repeat: no-repeat;
+
+}
+
 .talk_history .approbation_separator {
    margin-bottom: 55px;
 }
