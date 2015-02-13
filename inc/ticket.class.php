@@ -376,6 +376,10 @@ class PluginTalkTicket extends CommonGLPI {
             echo "<div class='h_user'>";
             if (isset($item_i['users_id']) && $item_i['users_id'] != 0) {
                $user->getFromDB($item_i['users_id']);
+               echo "<div class='tooltip_picture_border'>";
+               echo "<img class='user_picture' alt=\"".__s('Picture')."\" src='".
+                  User::getThumbnailURLForPicture($user->fields['picture'])."'>";
+               echo "</div>";
                echo $user->getLink();
             } else echo __("Requester");
             echo "</div>";

@@ -202,8 +202,8 @@
 }
 
 
-.talk_history .h_date,
-.talk_history .h_user {
+.talk_history .h_user,
+.talk_history .h_date {
    font-weight: bold;
    color:#3C5874;
    background-repeat: no-repeat;
@@ -216,11 +216,46 @@
 .talk_history .h_date {
    background-image: url(../pics/history.png);
 }
-.talk_history .h_user {
-   background-image: url(../pics/user.png);
-}
+
 .talk_history .h_user a {
    color: #3C5874;
+   display: inline-block;
+   vertical-align: middle;
+   width: 60px;
+   text-align: right;
+   margin-right: 5px;
+   margin-top: 10px;
+}
+
+.talk_history .h_user a:hover {
+   text-decoration: underline;
+}
+
+.talk_history .right .h_user a {
+   text-align: left;
+   margin-right: 0;
+   margin-left: 5px;
+}
+
+.talk_history .h_user .tooltip_picture_border {
+   padding: 2px;
+   border-radius: 50%;
+   border: 5px inset #D0D99D;
+   _border: 3px solid #D0D99D;
+   width:51px;
+   height:51px;
+   position: relative;
+   float: right;
+} 
+
+.talk_history .right .h_user .tooltip_picture_border {
+   float: left;
+}
+
+.talk_history .h_user .user_picture {
+   width: 51px;
+   height: 51px;
+   border-radius: 50%;
 }
 
 .talk_history .right .h_user,
@@ -238,6 +273,13 @@
    padding-top: 2px;
 }
 
+.talk_history .h_user, 
+.talk_history .left .h_user {
+   padding-right: 0;
+   padding-left: 0;
+   padding-top: 0;
+}
+
 .talk_history img.group_assign {
    vertical-align: bottom;
 }
@@ -249,7 +291,7 @@
    border:1px solid;
    padding: 5px 5px 5px 8px;
    margin-bottom: 10px;
-   min-height: 50px;
+   min-height: 70px;
    box-shadow: -1px 2px 5px #B7AFA8;
    -moz-box-shadow: -1px 2px 5px #B7AFA8;
    -webkit-box-shadow: -1px 2px 5px #B7AFA8;
@@ -274,7 +316,7 @@
 
 .talk_history .h_content:after, .talk_history .h_content:before {
    right: 100%;
-   top: 32px;
+   top: 53px;
    border: solid transparent;
    content: " ";
    height: 0;
