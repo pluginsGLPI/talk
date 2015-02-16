@@ -179,13 +179,12 @@ class PluginTalkProfile extends Profile {
    static function changeProfile() {
       $prof = new self();
       if ($prof->getFromDBByProfile($_SESSION['glpiactiveprofile']['id'])) {
-         $_SESSION["glpi_plugin_talk_profile"] = $prof->fields;
-
          //get User preferences
          PluginTalkUserpref::loadInSession();
-      } else {
-         unset($_SESSION["glpi_plugin_talk_profile"]);
-      }
+
+         // re-load profile in session (removed in self-service by Session::cleanProfile)
+         $_SESSION['glpiactiveprofile']['plugin_talk_is_active'] = $prof->fields['rights'];
+      } 
    }
     
    function showForm($profiles_id=0, $openform=TRUE, $closeform=TRUE) {
