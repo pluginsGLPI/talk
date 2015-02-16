@@ -519,6 +519,10 @@ class PluginTalkTicket extends CommonGLPI {
          echo "<div class='h_date'>".Html::convDateTime($ticket->fields['date'])."</div>";
             echo "<div class='h_user'>";
                $user->getFromDB($ticket->fields['users_id_recipient']);
+               echo "<div class='tooltip_picture_border'>";
+               echo "<img class='user_picture' alt=\"".__s('Picture')."\" src='".
+                  User::getThumbnailURLForPicture($user->fields['picture'])."'>";
+               echo "</div>";
                echo $user->getLink();
             echo "</div>";
          echo "</div>";
