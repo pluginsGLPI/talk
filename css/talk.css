@@ -264,7 +264,9 @@
 }
 
 .talk_history .left .h_user,
-.talk_history .left .h_date {
+.talk_history .left .h_date,
+.talk_history .middle .h_user,
+.talk_history .middle .h_date {
    text-align: right;
    background-position-x: 100%;
    background-position-y: 0%;
@@ -274,6 +276,7 @@
 }
 
 .talk_history .h_user, 
+.talk_history .middle .h_user,
 .talk_history .left .h_user {
    padding-right: 0;
    padding-left: 0;

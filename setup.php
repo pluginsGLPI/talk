@@ -8,6 +8,7 @@ function plugin_init_talk() {
    
    $plugin = new Plugin();
    if ($plugin->isInstalled('talk') && $plugin->isActivated('talk')) {
+      //load preferences on profile changing
       $PLUGIN_HOOKS['change_profile']['talk'] = array('PluginTalkProfile','changeProfile');
        
       //if glpi is loaded
@@ -75,18 +76,4 @@ function plugin_talk_check_prerequisites() {
 // Uninstall process for plugin : need to return true if succeeded : may display messages or add to message after redirect
 function plugin_talk_check_config() {
    return true;
-}
-
-function plugin_talk_haveRight($module,$right) {
-   $matches=array(
-            ""  => array("","r","w"), // ne doit pas arriver normalement
-            "r" => array("r","w"),
-            "w" => array("w"),
-            "1" => array("1"),
-            "0" => array("0","1"), // ne doit pas arriver non plus
-   );
-   if (isset($_SESSION["glpi_plugin_talk_profile"][$module])
-         && in_array($_SESSION["glpi_plugin_talk_profile"][$module], $matches[$right]))
-      return true;
-   else return false;
 }
