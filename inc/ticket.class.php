@@ -294,10 +294,11 @@ class PluginTalkTicket extends CommonGLPI {
                   'id'        => $validations_id,
                   'date'      => $validation['validation_date'],
                   'content'   => __('Validation request answer')." : ".
-                                 _sx('status', ucfirst($validation['status']))."<br>".
+                                 _sx('status', 
+                                     ucfirst(TicketValidation::getStatus($validation['status'])))."<br>".
                                  $validation['comment_validation'],
                   'users_id'  => $validation['users_id_validate'], 
-                  'status'    => $validation['status'], 
+                  'status'    => "status_".$validation['status'], 
                   'can_edit'  => $canedit
                ));
             }

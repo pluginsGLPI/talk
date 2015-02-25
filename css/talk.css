@@ -369,14 +369,14 @@
 .talk_history .Solution:after{ border-color: #E9F1FF;}
 .talk_history .Solution:before { border-color: #88A3CD;}
 
-.talk_history .TicketValidation.accepted:after{ border-color: #A1D7A2;}
-.talk_history .TicketValidation.accepted:before { border-color: #385139;}
+.talk_history .TicketValidation.status_3:after{ border-color: #A1D7A2;}
+.talk_history .TicketValidation.status_3:before { border-color: #385139;}
 
 .talk_history .TicketValidation:after{ border-color: #FFFFFF;}
 .talk_history .TicketValidation:before { border-color: #BECADD;}
 
-.talk_history .TicketValidation.rejected:after{ border-color: #D3A4A4;}
-.talk_history .TicketValidation.rejected:before { border-color: #5E3232;}
+.talk_history .TicketValidation.status_4:after{ border-color: #D3A4A4;}
+.talk_history .TicketValidation.status_4:before { border-color: #5E3232;}
 
 .talk_history .private {
    width: 30px;
@@ -481,11 +481,11 @@
    padding: 5px 5px 5px 8px;
 }
 
-.talk_history .h_content.TicketValidation.accepted {
+.talk_history .h_content.TicketValidation.status_3 {
    background-color: #A1D7A2;
    border-color: #385139;
 }
-.talk_history .h_content.TicketValidation.rejected {
+.talk_history .h_content.TicketValidation.status_4 {
    background-color: #D3A4A4;
    border-color: #5E3232;
 }
