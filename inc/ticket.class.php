@@ -322,9 +322,6 @@ class PluginTalkTicket extends CommonGLPI {
       $pics_url = "../plugins/talk/pics";
       
       $timeline = self::geTimelineItems($ticket, $rand);
-      if (count($timeline) == 0) {
-         return;
-      }
 
       //include lib for parsing url 
       require GLPI_ROOT."/plugins/talk/lib/urllinker.php";
