@@ -527,10 +527,10 @@ class PluginTalkTicket extends CommonGLPI {
          echo "<div class='h_content TicketContent'>";
             echo "<div class='b_right'>".__("Ticket recall", 'talk')."</div>";
             echo "<div class='ticket_title'>";
-            echo $ticket->fields['name'];
+            echo html_entity_decode($ticket->fields['name']);
             echo "</div>";
             echo "<div class='ticket_description'>";
-            echo $ticket->fields['content'];
+            echo html_entity_decode($ticket->fields['content']);
             echo "</div>";
          echo "</div>";
       echo "</div>";
