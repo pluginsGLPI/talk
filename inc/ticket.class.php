@@ -624,6 +624,7 @@ class PluginTalkTicket extends CommonGLPI {
 
       } else if ($item instanceof TicketFollowup || $item instanceof TicketTask) {
          self::showMultipartForm($item, $id, $params);
+
       } else if (method_exists($item, "showForm")) {
          $item->showForm($id, $params);
 
@@ -632,9 +633,9 @@ class PluginTalkTicket extends CommonGLPI {
 
    static function showMultipartForm($item, $id, $params)  {
       $classname = get_class($item);
-      ob_start();
 
       //get html of followup form
+      ob_start();
       $item->showForm($id, $params);
       $fup_form_html = ob_get_contents();
       ob_clean();
@@ -657,9 +658,8 @@ class PluginTalkTicket extends CommonGLPI {
                                       $fup_form_html);        
 
          //insert document upload                                           
-         $fup_form_html = str_replace("<tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add'", 
-                                      "<tr><td>".$doc_form_html."</td></tr><tr class='tab_bg_2'><td class='center' colspan='4'><input type='submit' name='add'", 
-                                      $fup_form_html);
+         $fup_form_html = preg_replace("/(<tr class='tab_bg_2'><td class='center' colspan='4'><input type=['\"]submit['\"].*>)/", 
+                                       "<tr><td>".$doc_form_html."</td></tr>$0", $fup_form_html, 1);
 
          //replace submit button by a splitted button who can change ticket status
          if (isset($_SESSION["glpiactiveprofile"])
@@ -822,13 +822,12 @@ class PluginTalkTicket extends CommonGLPI {
          }
          echo "<input type='hidden' name='entities_id' value='$entity'>";
          echo "<input type='hidden' name='is_recursive' value='$is_recursive'>";
-
          echo "<input type='hidden' name='itemtype' value='".$item->getType()."'>";
          echo "<input type='hidden' name='items_id' value='$ID'>";
          if ($item->getType() == 'Ticket') {
             echo "<input type='hidden' name='tickets_id' value='$ID'>";
          }
-         echo "<input type='file' name='filename' size='25'>";
+         echo Html::file();
          echo "</td><td class='left'>";
          echo "(".Document::getMaxUploadSize().")&nbsp;";
          echo "</td>";
