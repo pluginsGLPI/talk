@@ -31,6 +31,9 @@ msgstr ""
 msgid "Enable Talk Tab"
 msgstr ""
 
+msgid "Show replaced Tabs"
+msgstr ""
+
 msgid "Enable horizontal split view"
 msgstr ""
 

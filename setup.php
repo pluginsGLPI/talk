@@ -31,7 +31,9 @@ function plugin_init_talk() {
                   //                  array('addtabon' => array('Ticket')));
 
                   $PLUGIN_HOOKS['add_css']['talk'][] = 'css/talk.css';
-                  $PLUGIN_HOOKS['add_css']['talk'][] = 'css/hide_ticket_tabs.css';
+                  if (!PluginTalkUserpref::isFunctionEnabled("old_tabs"))  {
+                     $PLUGIN_HOOKS['add_css']['talk'][] = 'css/hide_ticket_tabs.css';
+                  }
 
                   $_SESSION['plugin_talk_lasttickets_id'] = $_REQUEST['id'];
                   $PLUGIN_HOOKS['add_javascript']['talk'][] = 'scripts/insert_talktab.js.php';
@@ -58,7 +60,7 @@ function plugin_version_talk() {
 
    $author = "<a href='www.teclib.com'>TECLIB'</a>";
    return array ('name' => __("Talks", "talk"),
-                 'version' => '0.85-1.0',
+                 'version' => '0.85-1.1',
                  'author' => $author,
                  'homepage' => 'www.teclib.com',
                  'minGlpiVersion' => '0.85');

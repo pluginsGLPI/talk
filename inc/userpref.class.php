@@ -36,6 +36,7 @@ class PluginTalkUserpref extends CommonDBTM {
             `id`                INT(11) NOT NULL auto_increment,
             `users_id`          INT(11) NOT NULL default '0',
             `talk_tab`   TINYINT(1) NOT NULL default '1',
+            `old_tabs`   TINYINT(1) NOT NULL default '1',
             `split_view` TINYINT(1) NOT NULL default '0',
             PRIMARY KEY  (`id`),
             UNIQUE KEY (`users_id`),
@@ -44,6 +45,11 @@ class PluginTalkUserpref extends CommonDBTM {
       ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci")) {
          return false;
       }   
+
+      if (!FieldExists('glpi_plugin_talk_userprefs', 'old_tabs')) {
+         $migration->addField('glpi_plugin_talk_userprefs', 'old_tabs', 'bool');
+         $migration->migrationOneTable('glpi_plugin_talk_userprefs');
+      }
    }
 
    static function uninstall() {
@@ -107,6 +113,11 @@ class PluginTalkUserpref extends CommonDBTM {
       echo "<td width='10%'>" .__("Enable Talk Tab", 'talk')."</td>";
       echo "<td style='text-align:left;'>";
       Dropdown::showYesNo("talk_tab", $this->fields["talk_tab"]);
+      echo "</td>";
+
+      echo "<td width='10%'>" .__("Show replaced Tabs", 'talk')."</td>";
+      echo "<td style='text-align:left;'>";
+      Dropdown::showYesNo("old_tabs", $this->fields["old_tabs"]);
       echo "</td>";
 
       // echo "<td width='10%'>" .__("Enable horizontal split view", 'talk')."</td>";

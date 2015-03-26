@@ -34,5 +34,11 @@ msgstr "Actions historical"
 msgid "Enable Talk Tab"
 msgstr "Enable Talk Tab"
 
+msgid "Show replaced Tabs"
+msgstr "Show replaced Tabs"
+
 msgid "Enable horizontal split view"
 msgstr "Enable horizontal split view"
+
+msgid "Ticket recall"
+msgstr "Ticket recall"
