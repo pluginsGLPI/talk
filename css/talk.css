@@ -258,6 +258,23 @@
    border-radius: 50%;
 }
 
+.talk_history .users_id_tech .user_picture {
+   width: 31px;
+   height: 31px;
+   border-radius: 50%;
+}
+
+.talk_history .users_id_tech .tooltip_picture_border {
+   padding: 2px;
+   border-radius: 50%;
+   border: 5px inset #D0D99D;
+   _border: 3px solid #D0D99D;
+   width:31px;
+   height:31px;
+   position: relative;
+   float: right;
+} 
+
 .talk_history .right .h_user,
 .talk_history .right .h_date {
    text-align: left;
@@ -289,6 +306,7 @@
 
 .talk_history .h_content {
    max-width:50%;
+   min-width: 200px;
    float: left;
    border-radius: 5px;
    border:1px solid;
@@ -579,12 +597,6 @@
    background-repeat: no-repeat;
 }
 
-.talk_history .b_right .users_id_tech {
-   padding-left: 20px;
-   background-image: url(../pics/user_grey.png);
-   background-repeat: no-repeat;
-
-}
 
 .talk_history .approbation_separator {
    margin-bottom: 55px;

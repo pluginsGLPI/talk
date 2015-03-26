@@ -443,10 +443,14 @@ class PluginTalkTicket extends CommonGLPI {
                echo "</span>";
             }
             if (isset($item_i['users_id_tech'])) {
-               echo "<span class='users_id_tech'>";
+               echo "<div class='users_id_tech'>";
                $user->getFromDB($item_i['users_id_tech']);
-               echo $user->getName();
-               echo "</span>";
+               echo "<div class='tooltip_picture_border'>";
+               echo "<img class='user_picture' alt=\"".__s('Picture')."\" src='".
+                  User::getThumbnailURLForPicture($user->fields['picture'])."'>";
+               echo "</div>";
+               echo $user->getLink();
+               echo "</div>";
             }
 
             // show "is_private" icon
