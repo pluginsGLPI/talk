@@ -97,8 +97,8 @@ class PluginTalkTicket extends CommonGLPI {
       $fup             = new TicketFollowup;
       $ttask           = new TicketTask;
 
-      $canadd_fup      = TicketFollowup::canCreate() && $fup->can(-1, 'w', $tmp);
-      $canadd_task     = TicketTask::canCreate() && $ttask->can(-1, 'w', $tmp);
+      $canadd_fup      = TicketFollowup::canCreate() && $fup->can(-1, UPDATE, $tmp);
+      $canadd_task     = TicketTask::canCreate() && $ttask->can(-1, UPDATE, $tmp);
       $canadd_document = Document::canCreate();
       $canadd_solution = Ticket::canUpdate() && $ticket->canSolve();
 
@@ -158,19 +158,23 @@ class PluginTalkTicket extends CommonGLPI {
                                                             TicketFollowup::SEEPRIVATE))
                  && Session::haveRightsOr("task",     array(TicketTask::SEEPUBLIC, 
                                                             TicketTask::SEEPRIVATE));
-      $showprivate = Session::haveRight("ticket", Ticket::READMY);
-
-      $restrict = "";
-      if (!$showprivate) {
-         $restrict = " AND (`is_private` = '0'
+      $restrict_fup = $restrict_task = "";
+      if (!Session::haveRight("ticket", TicketFollowup::SEEPRIVATE)) {
+         $restrict_fup = " AND (`is_private` = '0'
                             OR `users_id` ='" . Session::getLoginUserID() . "') ";
       }
+      if (!Session::haveRight("ticket", TicketTask::SEEPRIVATE)) {
+         $restrict_task = " AND (`is_private` = '0'
+                            OR `users_id` ='" . Session::getLoginUserID() . "') ";
+      }
+
+
       if (!$showpublic) {
          $restrict = " AND 1 = 0";
       }
 
       //add ticket followups to timeline
-      $followups = $followup_obj->find("tickets_id = ".$ticket->getID()." $restrict", 'date DESC');
+      $followups = $followup_obj->find("tickets_id = ".$ticket->getID()." $restrict_fup", 'date DESC');
       foreach ($followups as $followups_id => $followup) {
          $followup_obj->getFromDB($followups_id);
          $can_edit = $followup_obj->canUpdateItem();
@@ -180,7 +184,7 @@ class PluginTalkTicket extends CommonGLPI {
 
 
       //add ticket tasks to timeline
-      $tasks = $task_obj->find("tickets_id = ".$ticket->getID()." $restrict", 'date DESC');
+      $tasks = $task_obj->find("tickets_id = ".$ticket->getID()." $restrict_task", 'date DESC');
       foreach ($tasks as $tasks_id => $task) {
          $task_obj->getFromDB($tasks_id);
          $can_edit = $task_obj->canUpdateItem();
@@ -276,7 +280,7 @@ class PluginTalkTicket extends CommonGLPI {
         
          $ticket_validations = $ticket_valitation_obj->find('tickets_id = '.$ticket->getID());
          foreach ($ticket_validations as $validations_id => $validation) {
-            $canedit = $ticket_valitation_obj->can($validations_id,'w');
+            $canedit = $ticket_valitation_obj->can($validations_id, UPDATE);
             $user->getFromDB($validation['users_id_validate']);
             $timeline[$validation['submission_date']."_validation_".$validations_id] 
                = array('type' => 'TicketValidation', 'item' => array(
