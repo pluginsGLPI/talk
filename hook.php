@@ -39,27 +39,17 @@ function plugin_talk_uninstall() {
 function plugin_talk_getAddSearchOptions($itemtype) {
    $sopt = array();
    if ($itemtype == 'Profile') {
-         $sopt[63976]['table']      = 'glpi_plugin_talk_profiles';
-         $sopt[63976]['field']      = 'is_active';
-         $sopt[63976]['name']       = __('Talks', 'talk')." - ".__('Active');
-         $sopt[63976]['joinparams'] = array('jointype' => "child");
+      $sopt[63976]['table']          = 'glpi_profilerights';
+      $sopt[63976]['field']          = 'rights';
+      $sopt[63976]['name']           = __('Talks', 'talk')." - ".__('Active');
+      $sopt[63976]['datatype']       = 'right';
+      $sopt[63976]['rightclass']     = 'PluginTalkTicket';
+      $sopt[63976]['rightname']      = 'plugin_talk_is_active';
+      $sopt[63976]['joinparams']     = array('jointype' => 'child',
+                                         'condition' => "AND `NEWTABLE`.`name`= 'plugin_talk_is_active'");
    }
    return $sopt;
 }
-
-function plugin_talk_giveItem($type,$ID,$data,$num) {
-   $searchopt = &Search::getOptions($type);
-   $table = $searchopt[$ID]["table"];
-   $field = $searchopt[$ID]["field"];
-
-   switch ($table.'.'.$field) {
-      case "glpi_plugin_talk_profiles.is_active" :
-         $out = Dropdown::getYesNo($data["ITEM_$num"]);
-         return $out;
-   }
-   return "";
-}
-
 
 function plugin_talk_MassiveActions($type) {
    switch ($type) {
