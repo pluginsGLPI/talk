@@ -23,7 +23,7 @@ class PluginTalkTicket extends CommonGLPI {
     * @see commonDBTM::getRights()
    **/
    function getRights($interface='central') {
-      $values = array(self::ACTIVE => "");
+      $values = array(self::ACTIVE => __('Talks', 'talk')." - ".__('Active'));
       return $values;
    }
    
