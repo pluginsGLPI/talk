@@ -24,11 +24,11 @@ $(document).ready(function() {
    window.setTimeout(function() {
       //function for insert tab
       this.inserTab = function() {
-         tabpanel = $('#tabspanel + div.ui-tabs');
+         var tabpanel          = $('#tabspanel + div.ui-tabs'), 
+             newtab_html_title = "<li title='$tab_title'><a href='$tab_url'>$tab_title</a></li>";
+         
          //insert in second position
-         tabpanel.find('ul li').first().after(
-            "<li title='$tab_title'><a href='$tab_url'>$tab_title</a></li>"
-         );
+         tabpanel.find('ul li').first().after(newtab_html_title);
          tabpanel.tabs("refresh");
 
          // active talk tab when followup/task/solution tabs was selected
