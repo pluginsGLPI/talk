@@ -67,7 +67,7 @@ class PluginTalkProfile extends Profile {
       }
       
       //Migration old rights in new ones
-      if (countElementsInTable("glpi_profilerights", "`name` = 'plugin_talk_is_active") == 0) {
+      if (countElementsInTable("glpi_profilerights", "`name` = 'plugin_talk_is_active'") == 0) {
          foreach ($DB->request("SELECT `id` FROM `glpi_profiles`") as $prof) {
             self::migrateOneProfile($prof['id']);
          }
