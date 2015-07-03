@@ -55,13 +55,22 @@ class PluginTalkTicket extends CommonGLPI {
 
       // javascript function for add and edit items
       echo "<script type='text/javascript' >\n";
+      ?>
+      function getUrlVar(key) {
+         var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search);
+         return result && unescape(result[1]) || "";
+      }
+      <?php
+
       echo "function viewAddSubitem" . $ticket->fields['id'] . "$rand(itemtype) {\n";
       $params = array('type'       => 'itemtype',
                       'parenttype' => 'Ticket',
                       'tickets_id' => $ticket->fields['id'],
+                      'load_kb_sol'=> "load_kb_sol_value",
                       'id'         => -1);
       $out = Ajax::updateItemJsCode("viewitem" . $ticket->fields['id'] . "$rand",
                              $CFG_GLPI["root_doc"]."/plugins/talk/ajax/viewsubitem.php", $params, "", false);
+      $out = str_replace("\"load_kb_sol_value\"", "getUrlVar('load_kb_sol')", $out);
       echo str_replace("\"itemtype\"", "itemtype", $out);
       echo "};";
       $out = "function viewEditSubitem" . $ticket->fields['id'] . "$rand(e, itemtype, items_id, o) {\n
@@ -131,6 +140,16 @@ class PluginTalkTicket extends CommonGLPI {
             echo "<li class='solution' onclick='".
                  "javascript:viewAddSubitem".$ticket->fields['id']."$rand(\"Solution\");'>"
                  .__("Solution")."</li>";
+            echo "<script>";
+            echo 'function getUrlVar(key) {
+                     var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search);
+                     return result && unescape(result[1]) || "";
+                  }';
+            echo "if (getUrlVar('load_kb_sol') != '') {";
+            echo "   viewAddSubitem".$ticket->fields['id']."$rand(\"Solution\");";
+            echo "}";
+            echo "</script>";
+
          }
          echo "</ul>"; // talk_choices
          echo "<div class='clear'>&nbsp;</div>";
@@ -888,7 +907,11 @@ class PluginTalkTicket extends CommonGLPI {
    static function showSubFormSolution($ID) {
       $ticket = new Ticket;
       $ticket->getFromDB($ID);
-      $ticket->showSolutionForm();
+      if (isset($_REQUEST['load_kb_sol']) && !empty($_REQUEST['load_kb_sol'])) {
+         $ticket->showSolutionForm($_REQUEST['load_kb_sol']);
+      } else {
+         $ticket->showSolutionForm();
+      }
    }
 
    static function getSplittedSubmitButtonHtml($tickets_id, $action = "add") {
