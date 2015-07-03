@@ -140,15 +140,7 @@ class PluginTalkTicket extends CommonGLPI {
             echo "<li class='solution' onclick='".
                  "javascript:viewAddSubitem".$ticket->fields['id']."$rand(\"Solution\");'>"
                  .__("Solution")."</li>";
-            echo "<script>";
-            echo 'function getUrlVar(key) {
-                     var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search);
-                     return result && unescape(result[1]) || "";
-                  }';
-            echo "if (getUrlVar('load_kb_sol') != '') {";
-            echo "   viewAddSubitem".$ticket->fields['id']."$rand(\"Solution\");";
-            echo "}";
-            echo "</script>";
+            self::addJavascriptForViewAddSubitem($ticket, $rand);
 
          }
          echo "</ul>"; // talk_choices
@@ -334,6 +326,18 @@ class PluginTalkTicket extends CommonGLPI {
       return $timeline;
    }
 
+   static function addJavascriptForViewAddSubitem(Ticket $ticket, $rand) {
+      echo "<script>";
+      echo 'function getUrlVar(key) {
+               var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search);
+               return result && unescape(result[1]) || "";
+            }';
+      echo "if (getUrlVar('load_kb_sol') != '') {";
+      echo "   viewAddSubitem".$ticket->fields['id']."$rand(\"Solution\");";
+      echo "}";
+      echo "</script>";
+   }
+
    static function showHistory(Ticket $ticket, $rand) {
       global $CFG_GLPI, $DB;
 
@@ -370,6 +374,8 @@ class PluginTalkTicket extends CommonGLPI {
          if ($item['type'] == 'TicketFollowup' && empty($item_i['content'])) {
             continue;
          }
+
+         self::addJavascriptForViewAddSubitem($ticket, $rand);
 
          $date = "";
          if (isset($item_i['date'])) $date = $item_i['date'];
