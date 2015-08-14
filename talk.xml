@@ -10,26 +10,26 @@
       </short>
       <long>
          <fr>Ce plugin GLPI modifie l'interface des formulaires de tickets.   
-            Il regroupe en un onglet les suivants :
+Il regroupe en un onglet les suivants :
 
-            * Followups
-            * Task
-            * Documents
-            * Solution
+* Followups
+* Task
+* Documents
+* Solution
 
-            Le contenu de ces onglets sont affiché dans une "timeline".   
+Le contenu de ces onglets sont affiché dans une "timeline".   
 
-            En option, il est possible de séparer l'interface des tickets verticalement (voir dans les préférences)</fr>
+En option, il est possible de séparer l'interface des tickets verticalement (voir dans les préférences)</fr>
          <en>This glpi plugin alters the ticket form interface. It merges in one tab the followings :
 
-            * Followups
-            * Task
-            * Documents
-            * Solution
+* Followups
+* Task
+* Documents
+* Solution
 
-            The content of theses tabs now displayed in a timeline.   
+The content of theses tabs now displayed in a timeline.   
 
-            Optionnaly, the ticket form can be displayed in horizontal split (see user preferences)</en>
+Optionnaly, the ticket form can be displayed in horizontal split (see user preferences)</en>
       </long>
    </description>
    <homepage>https://github.com/TECLIB/talk#talk</homepage>
