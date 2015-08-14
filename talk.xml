@@ -19,7 +19,7 @@ Il regroupe en un onglet les suivants :
 
 Le contenu de ces onglets sont affiché dans une "timeline".   
 
-En option, il est possible de séparer l'interface des tickets verticalement (voir dans les préférences)</fr>
+En option, il est possible de séparer l'interface des tickets verticalement (en 0.84 seulement, voir dans les préférences)</fr>
          <en>This glpi plugin alters the ticket form interface. It merges in one tab the followings :
 
 * Followups
@@ -29,7 +29,7 @@ En option, il est possible de séparer l'interface des tickets verticalement (vo
 
 The content of theses tabs now displayed in a timeline.   
 
-Optionnaly, the ticket form can be displayed in horizontal split (see user preferences)</en>
+Optionnaly, the ticket form can be displayed in horizontal split (with 0.84 only, see user preferences)</en>
       </long>
    </description>
    <homepage>https://github.com/TECLIB/talk#talk</homepage>
