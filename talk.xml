@@ -5,10 +5,31 @@
    <logo>https://raw.githubusercontent.com/TECLIB/talk/master/pics/1.png</logo>
    <description>
       <short>
-         <fr>Nouvel onglet dans le forumulaire des tickets regroupant les onglets suivis, tahces, documents et solution dans une seule timeline chronologique</fr>
+         <fr>Le plugin Discussion regroupe les onglets principaux des tickets en un seul</fr>
+         <en>Talk plugin merges in one tab the main tabs of ticket form.</en>
       </short>
       <long>
-         <fr>Nouvel onglet dans le forumulaire des tickets regroupant les onglets suivis, tahces, documents et solution dans une seule timeline chronologique</fr>
+         <fr>Ce plugin GLPI modifie l'interface des formulaires de tickets.   
+            Il regroupe en un onglet les suivants :
+
+            * Followups
+            * Task
+            * Documents
+            * Solution
+
+            Le contenu de ces onglets sont affiché dans une "timeline".   
+
+            En option, il est possible de séparer l'interface des tickets verticalement (voir dans les préférences)</fr>
+         <en>This glpi plugin alters the ticket form interface. It merges in one tab the followings :
+
+            * Followups
+            * Task
+            * Documents
+            * Solution
+
+            The content of theses tabs now displayed in a timeline.   
+
+            Optionnaly, the ticket form can be displayed in horizontal split (see user preferences)</en>
       </long>
    </description>
    <homepage>https://github.com/TECLIB/talk#talk</homepage>
