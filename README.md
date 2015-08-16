@@ -1,8 +1,10 @@
 Talk
 ====
 
+__Please note that this plugin has been integrated in GLPi 0.90.__
+
 Download : https://github.com/TECLIB/talk/releases  
-FR Documentation : https://github.com/TECLIB/talk/blob/master/documentation/talk.fr_FR.asciidoc 
+French documentation : https://github.com/TECLIB/talk/blob/master/documentation/talk.fr_FR.asciidoc 
 
 This glpi plugin alters the ticket form interface.
 It merges in one tab the followings : 
