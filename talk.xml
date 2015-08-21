@@ -2,7 +2,7 @@
    <name>Talk</name>
    <key>talk</key>
    <state>stable</state>
-   <logo>https://raw.githubusercontent.com/TECLIB/talk/master/pics/1.png</logo>
+   <logo>https://raw.githubusercontent.com/PluginsGLPI/talk/master/pics/1.png</logo>
    <description>
       <short>
          <fr>Le plugin Discussion regroupe les onglets principaux des tickets en un seul</fr>
@@ -32,10 +32,10 @@ The content of theses tabs now displayed in a timeline.
 Optionnaly, the ticket form can be displayed in horizontal split (with 0.84 only, see user preferences)</en>
       </long>
    </description>
-   <homepage>https://github.com/TECLIB/talk#talk</homepage>
-   <download>https://github.com/TECLIB/talk/releases</download>
-   <issues>https://github.com/TECLIB/talk/issues</issues>
-   <readme>https://raw.githubusercontent.com/TECLIB/talk/master/README.md</readme>
+   <homepage>https://github.com/PluginsGLPI/talk#talk</homepage>
+   <download>https://github.com/PluginsGLPI/talk/releases</download>
+   <issues>https://github.com/PluginsGLPI/talk/issues</issues>
+   <readme>https://raw.githubusercontent.com/PluginsGLPI/talk/master/README.md</readme>
    <authors>
       <author>Alexandre Delaunay</author>
    </authors>
@@ -80,7 +80,7 @@ Optionnaly, the ticket form can be displayed in horizontal split (with 0.84 only
       </en>
    </tags>
    <screenshots>
-      <screenshot>https://raw.githubusercontent.com/TECLIB/talk/master/screenshots/0.84/talk_splitview.png</screenshot>
-      <screenshot>https://raw.githubusercontent.com/TECLIB/talk/master/screenshots/0.84/talk_timeline.png</screenshot>
+      <screenshot>https://raw.githubusercontent.com/PluginsGLPI/talk/master/screenshots/0.84/talk_splitview.png</screenshot>
+      <screenshot>https://raw.githubusercontent.com/PluginsGLPI/talk/master/screenshots/0.84/talk_timeline.png</screenshot>
    </screenshots>
 </root>
