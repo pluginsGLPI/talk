@@ -60,7 +60,7 @@ function plugin_version_talk() {
 
    $author = "<a href='www.teclib.com'>TECLIB'</a>";
    return array ('name' => __("Talks", "talk"),
-                 'version' => '0.85-1.1',
+                 'version' => '0.85-1.2',
                  'author' => $author,
                  'homepage' => 'www.teclib.com',
                  'minGlpiVersion' => '0.85');
