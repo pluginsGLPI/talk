@@ -1,7 +1,7 @@
 Talk
 ====
 
-__Please note that this plugin has been integrated in GLPi 0.90.__
+__Please note that plugin has been integrated in GLPi 0.90.__
 
 Download : https://github.com/TECLIB/talk/releases  
 French documentation : https://github.com/TECLIB/talk/blob/master/documentation/talk.fr_FR.asciidoc 
